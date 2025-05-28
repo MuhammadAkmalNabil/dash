@@ -10,7 +10,7 @@ var osmBasemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
 
 // Variabel Global
 var stuntingLayer;
-var tanamanPanganLayer, tanamanSayuranLayer, tanamanBiofarmaLayer, buahLayer, perkebunanLayer;
+var tanamanPanganLayer, tanamanSayuranLayer, tanamanBiofarmakaLayer, buahLayer, perkebunanLayer;
 var tanamanHiasLayer;
 var dagingTernakLayer, telurUnggasLayer;
 var perikananTangkapLayer, perikananBudidayaLayer;
@@ -84,7 +84,7 @@ function createPopupContent(properties) {
         'Tanaman Hias': { layer: tanamanHiasLayer, key: 'Tanaman_Hias' },
         'Tanaman Pangan': { layer: tanamanPanganLayer, key: 'Tanaman_Pangan' },
         'Tanaman Sayuran': { layer: tanamanSayuranLayer, key: 'Tanaman_Sayuran' },
-        'Tanaman Biofarma': { layer: tanamanBiofarmaLayer, key: 'Tanaman_Biofarma' }, // Atau 'Tanaman_Biofarmaka'
+        'Tanaman Biofarmaka': { layer: tanamanBiofarmakaLayer, key: 'Tanaman_Biofarmaka' }, // Atau 'Tanaman_Biofarmaka'
         'Buah': { layer: buahLayer, key: 'Buah' }, // Atau 'Buah_'
         'Perkebunan': { layer: perkebunanLayer, key: 'Perkebunan' }, // Atau 'Perkebunan_'
         'Daging Ternak': { layer: dagingTernakLayer, key: 'Daging_Ternak' },
@@ -242,7 +242,7 @@ function styleKomoditasDefault(feature, categoryKey, colorIfData, colorIfNoData 
 function styleTanamanHias(feature) { return styleKomoditasDefault(feature, 'Tanaman_Hias', '#FF69B4'); }
 function styleTanamanPangan(feature) { return styleKomoditasDefault(feature, 'Tanaman_Pangan', '#90EE90'); }
 function styleTanamanSayuran(feature) { return styleKomoditasDefault(feature, 'Tanaman_Sayuran', '#32CD32'); }
-function styleTanamanBiofarma(feature) { return styleKomoditasDefault(feature, 'Tanaman_Biofarma', '#FFD700'); }
+function styleTanamanBiofarmaka(feature) { return styleKomoditasDefault(feature, 'Tanaman_Biofarmaka', '#FFD700'); }
 function styleBuah(feature) { return styleKomoditasDefault(feature, 'Buah', '#FFA500'); }
 function stylePerkebunan(feature) { return styleKomoditasDefault(feature, 'Perkebunan', '#D2691E'); }
 function styleDagingTernak(feature) { return styleKomoditasDefault(feature, 'Daging_Ternak', '#A52A2A'); }
@@ -257,7 +257,7 @@ function updateVisibleLegends() {
         tanamanHias: tanamanHiasLayer && map.hasLayer(tanamanHiasLayer),
         tanamanPangan: tanamanPanganLayer && map.hasLayer(tanamanPanganLayer),
         tanamanSayuran: tanamanSayuranLayer && map.hasLayer(tanamanSayuranLayer),
-        tanamanBiofarma: tanamanBiofarmaLayer && map.hasLayer(tanamanBiofarmaLayer),
+        tanamanBiofarmaka: tanamanBiofarmakaLayer && map.hasLayer(tanamanBiofarmakaLayer),
         buah: buahLayer && map.hasLayer(buahLayer),
         perkebunan: perkebunanLayer && map.hasLayer(perkebunanLayer),
         dagingTernak: dagingTernakLayer && map.hasLayer(dagingTernakLayer),
@@ -320,7 +320,7 @@ function showLayerPanel(properties) {
         'Tanaman Hias': {layer: tanamanHiasLayer, key: 'Tanaman_Hias'},
         'Tanaman Pangan': { layer: tanamanPanganLayer, key: 'Tanaman_Pangan' },
         'Tanaman Sayuran': { layer: tanamanSayuranLayer, key: 'Tanaman_Sayuran' },
-        'Tanaman Biofarma': { layer: tanamanBiofarmaLayer, key: 'Tanaman_Biofarma' },
+        'Tanaman Biofarmaka': { layer: tanamanBiofarmakaLayer, key: 'Tanaman_Biofarmaka' },
         'Buah': { layer: buahLayer, key: 'Buah' },
         'Perkebunan': { layer: perkebunanLayer, key: 'Perkebunan' },
         'Daging Ternak': { layer: dagingTernakLayer, key: 'Daging_Ternak' },
@@ -482,7 +482,7 @@ function initializeApplication() {
         'tanamanHias': tanamanHiasLayer,
         'tanamanPangan': tanamanPanganLayer,
         'tanamanSayuran': tanamanSayuranLayer,
-        'tanamanBiofarma': tanamanBiofarmaLayer,
+        'tanamanBiofarmaka': tanamanBiofarmakaLayer,
         'buah': buahLayer,
         'perkebunan': perkebunanLayer,
         'dagingTernak': dagingTernakLayer,
@@ -816,7 +816,7 @@ fetch('data/coba.geojson')
         tanamanHiasLayer = L.geoJson(geojsonData, { style: styleTanamanHias, onEachFeature: onEachFeatureDefault });
         tanamanPanganLayer = L.geoJson(geojsonData, { style: styleTanamanPangan, onEachFeature: onEachFeatureDefault });
         tanamanSayuranLayer = L.geoJson(geojsonData, { style: styleTanamanSayuran, onEachFeature: onEachFeatureDefault });
-        tanamanBiofarmaLayer = L.geoJson(geojsonData, { style: styleTanamanBiofarma, onEachFeature: onEachFeatureDefault });
+        tanamanBiofarmakaLayer = L.geoJson(geojsonData, { style: styleTanamanBiofarmaka, onEachFeature: onEachFeatureDefault });
         buahLayer = L.geoJson(geojsonData, { style: styleBuah, onEachFeature: onEachFeatureDefault });
         perkebunanLayer = L.geoJson(geojsonData, { style: stylePerkebunan, onEachFeature: onEachFeatureDefault });
         dagingTernakLayer = L.geoJson(geojsonData, { style: styleDagingTernak, onEachFeature: onEachFeatureDefault });
