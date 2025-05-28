@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Swasembada Pangan Pangan Jawa Timur</title>
+    <link rel="icon" type="image/png" sizes="48x48" href="image/logo3.jpg">
+    <!-- Menggunakan CSS dari file eksternal -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style-peta.css">
+
+    <!-- Leaflet CSS (versi 1.7.1) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Leaflet Search CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.css" />
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tidak ada blok <style> inline di sini, karena styling sudah di style-peta.css -->
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-title">
+                <img src="image/Reg I Primary without Text.png" alt="Logo" class="logo">
+                <h1>Direktorat Regional I | <span class="non-bold">Kementerian PPN/Bappenas</span></h1>
+            </div>
+            <nav>
+                <ul class="menu" >
+                    <li ><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang</a></li>
+                    <li><a href="kontak.html">Kontak</a></li>
+              </ul>
+              <div class="tombol">
+                ☰
+            </div>
+          </nav>
+        </div>
+    </header>
+    
+    <!-- Panel informasi fitur (popup saat klik di peta) - Style dari CSS -->
+    <div id="layerPanel" class="layer-panel">
+        <div id="layerContent"></div>
+        <!-- Tombol close untuk panel ini akan ditambahkan oleh JS jika diperlukan -->
+    </div>
+
+    <!-- TOMBOL-TOMBOL KONTROL PETA -->
+    <div id="toggleLayerControlButtonContainer"> <!-- Wrapper untuk tombol-tombol kontrol -->
+        <div id="toggleLayerControlButton" class="toggle-layer-control-button" title="Daftar Layer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+        </div>
+        
+        <div id="toggleBasemapGalleryButton" class="custom-map-button" title="Galeri Peta Dasar">
+            <i class="fas fa-map"></i>
+        </div>
+
+        <div id="toggleWilayahLabelControlButton" class="custom-map-button" title="Kontrol Label Wilayah" style="left: 170px; top: 75px;"> <!-- Posisi bisa diatur lebih lanjut di CSS jika diinginkan -->
+            <i class="fas fa-tags"></i>
+        </div>
+    </div>
+    
+    <!-- PANEL DAFTAR LAYER KUSTOM -->
+    <div id="customLayerControl" class="custom-layer-control" style="display: none;">
+        <div class="custom-layer-control-header">
+            <strong>Daftar Layer</strong>
+            <button id="closeCustomLayerControl" class="close-button-custom-layer" title="Tutup">×</button>
+        </div>
+        <div class="custom-layer-control-body">
+            <!-- Data Stunting -->
+            <div class="layer-item-with-legend">
+                <div class="layer-control-row">
+                    <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-stunting" title="Toggle Legenda">
+                        <span class="toggle-arrow">▸</span>
+                    </button>
+                    <label class="layer-label-text">
+                        <input type="checkbox" data-layer-name="stunting" data-legend-group-id="legendaGroupStunting"> Data Stunting
+                    </label>
+                </div>
+                <div class="legend-content-panel" id="legend-content-stunting" style="display: none;">
+                    <!-- Konten legenda akan diisi oleh JavaScript dari #legendaGroupStunting -->
+                </div>
+            </div>
+
+            <!-- Grup untuk Data Komoditas -->
+            <div class="layer-group-item">
+                <div class="layer-group-header">
+                    <button class="group-toggle-btn" aria-expanded="false" aria-controls="group-content-komoditas" title="Toggle Grup Komoditas">
+                        <span class="toggle-arrow">▸</span>
+                    </button>
+                    <label class="layer-label-text group-master-label">
+                        <input type="checkbox" id="komoditasMasterCheckbox" data-is-master="true">
+                        <span class="group-label-text">Data Komoditas</span>
+                    </label>
+                </div>
+                <div class="layer-group-content" id="group-content-komoditas" style="display: none;">
+                    <!-- Layer Tanaman Pangan -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanPangan" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="tanamanPangan" data-legend-group-id="legendaGroupTanamanPangan" class="komoditas-child-checkbox">
+                                Tanaman Pangan
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-tanamanPangan" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupTanamanPangan -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Tanaman Sayuran -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanSayuran" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="tanamanSayuran" data-legend-group-id="legendaGroupTanamanSayuran" class="komoditas-child-checkbox">
+                                 Tanaman Sayuran
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-tanamanSayuran" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupTanamanSayuran -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Tanaman Biofarma -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanBiofarma" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="tanamanBiofarma" data-legend-group-id="legendaGroupTanamanBiofarma" class="komoditas-child-checkbox">
+                                 Tanaman Biofarma
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-tanamanBiofarma" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupTanamanBiofarma -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Buah -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-buah" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="buah" data-legend-group-id="legendaGroupBuah" class="komoditas-child-checkbox">
+                                 Buah
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-buah" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupBuah -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Perkebunan -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-perkebunan" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="perkebunan" data-legend-group-id="legendaGroupPerkebunan" class="komoditas-child-checkbox">
+                                 Perkebunan
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-perkebunan" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupPerkebunan -->
+                        </div>
+                    </div>
+                    
+                    <!-- Layer Tanaman Hias -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanHias" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="tanamanHias" data-legend-group-id="legendaGroupHias" class="komoditas-child-checkbox">
+                                 Tanaman Hias
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-tanamanHias" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupHias -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Daging Ternak -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-dagingTernak" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="dagingTernak" data-legend-group-id="legendaGroupDagingTernak" class="komoditas-child-checkbox">
+                                 Data Daging Ternak
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-dagingTernak" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupDagingTernak -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Telur Unggas -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-telurUnggas" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="telurUnggas" data-legend-group-id="legendaGroupTelurUnggas" class="komoditas-child-checkbox">
+                                 Telur Unggas & Susu Sapi
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-telurUnggas" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupTelurUnggas -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Perikanan Tangkap -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-perikananTangkap" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="perikananTangkap" data-legend-group-id="legendaGroupPerikananTangkap" class="komoditas-child-checkbox">
+                                 Perikanan Tangkap
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-perikananTangkap" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupPerikananTangkap -->
+                        </div>
+                    </div>
+
+                    <!-- Layer Perikanan Budidaya -->
+                    <div class="layer-item-with-legend child-layer-item">
+                        <div class="layer-control-row">
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-perikananBudidaya" title="Toggle Legenda">
+                                <span class="toggle-arrow">▸</span>
+                            </button>
+                            <label class="layer-label-text">
+                                <input type="checkbox" data-layer-name="perikananBudidaya" data-legend-group-id="legendaGroupPerikananBudidaya" class="komoditas-child-checkbox">
+                                 Perikanan Budidaya
+                            </label>
+                        </div>
+                        <div class="legend-content-panel" id="legend-content-perikananBudidaya" style="display: none;">
+                            <!-- Diisi oleh JS dari #legendaGroupPerikananBudidaya -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Akhir Grup Data Komoditas -->
+        </div>
+    </div>
+
+    <!-- PANEL KONTROL LABEL WILAYAH -->
+    <div id="wilayahLabelControlPanel" class="custom-wilayah-label-control" style="display: none;">
+        <div class="custom-wilayah-label-control-header">
+            <strong>Label Nama Wilayah</strong>
+            <button id="closeWilayahLabelControl" class="close-button-custom-wilayah-label" title="Tutup">×</button>
+        </div>
+        <div class="custom-wilayah-label-control-body">
+            <div class="layer-item" style="margin-bottom: 8px;"> <!-- Class .layer-item bisa digunakan ulang dari CSS panel layer -->
+                <label class="layer-label-text">
+                    <input type="checkbox" id="toggleKabupatenLabelsCheckbox" checked>
+                    Kabupaten
+                </label>
+            </div>
+            <div class="layer-item">
+                <label class="layer-label-text">
+                    <input type="checkbox" id="toggleKotaLabelsCheckbox" checked>
+                    Kota
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PANEL GALERI BASEMAP -->
+    <div id="basemapGalleryPanel" class="basemap-gallery-panel" style="display: none;">
+        <div class="basemap-gallery-header">
+            <span>Galeri Peta Dasar</span>
+            <button id="closeBasemapGalleryButton" class="close-button-custom-gallery" title="Tutup">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="basemap-gallery-content">
+            <div class="basemap-item active" data-basemap-type="osmStandard">
+                <img src="image/osm.png" alt="OpenStreetMap Standard">
+                <span>OpenStreetMap Standard</span>
+            </div>
+            <div class="basemap-item" data-basemap-type="esriImagery">
+                <img src="image/esri.png" alt="Esri Imagery">
+                <span>Esri Imagery</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- KONTAINER PETA -->
+    <div id="map">
+        <!-- Legenda utama yang akan menjadi SUMBER untuk legenda di panel -->
+        <!-- Style display:none penting agar tidak tampil langsung di peta, JS yang akan mengambil kontennya -->
+        <div class="legend" style="display: none;"> 
+            <h4>Legenda Peta (Sumber)</h4> <!-- Judul ini tidak akan disalin, hanya konten di bawahnya -->
+
+            <!-- Stunting -->
+            <div id="legendaGroupStunting">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: green;"></span> <span>Stunting Rendah</span>
+                </div>
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: orange;"></span> <span>Stunting Sedang</span>
+                </div>
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: red;"></span> <span>Stunting Tinggi</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #CCCCCC;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Tanaman Hias -->
+            <div id="legendaGroupHias">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #FF69B4;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Tanaman Pangan -->
+            <div id="legendaGroupTanamanPangan">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #90EE90;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Tanaman Sayuran -->
+            <div id="legendaGroupTanamanSayuran">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #32CD32;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Tanaman Biofarma -->
+            <div id="legendaGroupTanamanBiofarma">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #FFD700;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Buah -->
+            <div id="legendaGroupBuah">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #FFA500;"></span> <span>Data Tersediauah</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Perkebunan -->
+            <div id="legendaGroupPerkebunan">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #D2691E;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Daging Ternak -->
+            <div id="legendaGroupDagingTernak">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #A52A2A;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Telur Unggas & Susu Sapi -->
+            <div id="legendaGroupTelurUnggas">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #F5F5DC;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+            
+            <!-- Perikanan Tangkap -->
+            <div id="legendaGroupPerikananTangkap">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #4682B4;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+
+            <!-- Perikanan Budidaya -->
+            <div id="legendaGroupPerikananBudidaya">
+                <div class="legend-item">
+                    <span class="color-circle" style="background-color: #ADD8E6;"></span> <span>Data Tersedia</span>
+                </div>
+                 <div class="legend-item">
+                    <span class="color-circle" style="background-color: #E0E0E0;"></span> <span>Data Tidak Tersedia</span>
+                </div>
+            </div>
+            
+            <!-- Batas Wilayah (Jika ingin ada legendanya di panel, tambahkan checkbox yang merujuk ke ID ini) -->
+            <!-- <div id="legendaBatasWilayah" class="legend-item">
+                <span class="color-box" style="background-color: #000000; border-radius:0;"></span> <span>Batas Wilayah</span>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+    <script src="js/peta.js"></script>
+    
+    <script type="text/javascript">
+        // Script untuk toggle menu navigasi mobile (jika ada)
+		const tombol = document.querySelector('.tombol'); // Pastikan class .tombol ada di header Anda
+		const menu = document.querySelector('.menu');     // Pastikan class .menu ada di header Anda
+		if (tombol && menu) {
+            tombol.addEventListener('click', () => {
+                menu.classList.toggle('aktif');
+            });
+        }
+	</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grafik Indikator Kesejahteraan</title>
+  <link rel="stylesheet" href="css/style-tren.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- plagin garis putus-putus -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+          <div class="header-container">
+              <!-- Logo dan Judul -->
+              <div class="logo-title">
+                  <img src="image/Reg I Primary without Text.png" alt="Logo" class="logo">
+                  <h1>Direktorat Pembangunan Indonesia Barat | <span class="non-bold">Kementerian PPN/Bappenas</span></h1>
+              </div>
+      
+              <!-- Navigasi -->
+              <nav>
+                <ul class="menu" >
+                    <li ><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang</a></li>
+                    <!-- <li><a href="#tableau-dashboard">Dashboard</a></li> -->
+                    <!-- <li><a href="peta.html">Peta</a></li> -->
+                    <li><a href="kontak.html">Kontak</a></li>
+              </ul>
+              <div class="tombol">
+                &#9776;
+            </div>
+          </nav>
+          </div>
+      </header>
+  <div class="legend-header">
+    <h3>PAPAN SKOR INDIKATOR PANGAN</h3>
+    <div class="legend">
+      <span><span class="box green"></span>Tantangan Rendah</span>
+      <span><span class="box yellow"></span>Tantangan Potensial</span>
+      <span><span class="box red"></span>Tantangan Tinggi</span>
+      <span><span class="box gray"></span>Data Tidak Tersedia</span>
+    </div>
+  </div>
+
+  <div class="container-">
+    <aside class="sidebar">
+      <div id="location-selector-wrapper">
+        <label for="location-selector">Pilih Wilayah:</label>
+        <select id="location-selector">
+            <option value="">Memuat data...</option>
+            <!-- Options will be populated by JavaScript -->
+        </select>
+        </div>
+        <ul class="indicator-nav">
+          <li onclick="scrollToSection('indikator-persentase-miskin')">Persentase Penduduk Miskin</li>
+          <li onclick="scrollToSection('indikator-jumlah-miskin')">Jumlah Penduduk Miskin (Ribu Jiwa)</li>
+          <li onclick="scrollToSection('indikator-manusia')">Indeks Pembangunan Manusia</li>
+          <li onclick="scrollToSection('indikator-terbuka')">Tingkat Pengangguran Terbuka</li>
+          <li onclick="scrollToSection('indikator-ekonomi')">Laju Pertumbuhan Ekonomi</li>
+          <li onclick="scrollToSection('indikator-gini')">Rasio Gini</li>
+          <li onclick="scrollToSection('indikator-pangan')">Indeks Ketahanan Pangan</li>
+          <li onclick="scrollToSection('indikator-stunting')">Prevalensi Stunting</li>
+        </ul>
+    </aside>
+      
+    <main class="content">
+        <h2>Indikator</h2>
+      
+        <div id="indikator-persentase-miskin" class="chart-card">
+          <div class="chart-header">
+            <h3 id="title-persentase-miskin">Persentase Penduduk Miskin <span>(Persen)</span></h3>
+            <p>Hasil > Kemiskinan</p> <!-- Atau Faktor Pendorong > Pendapatan dan Distribusi Pertumbuhan -->
+          </div>
+          <canvas id="chart-persentase-miskin"></canvas>
+          <p class="sumber"><strong>SUMBER :</strong> BPS - Susenas Konsumsi dan Pengeluaran</p>
+          <div class="desc">
+            <div>
+              <h4>PENGERTIAN</h4>
+              <p>Proporsi penduduk yang hidup di bawah Garis Kemiskinan Nasional. Garis kemiskinan diukur berdasarkan kemampuan memenuhi kebutuhan dasar makanan dan non-makanan.</p>
+            </div>
+            <div>
+              <h4>RELEVANSI</h4>
+              <p>Indikator utama untuk mengukur tingkat kemiskinan dan efektivitas program pengentasan kemiskinan. Mencerminkan kemampuan penduduk dalam mengakses kebutuhan dasar.</p>
+            </div>
+          </div>
+        </div>
+
+          <div id="indikator-jumlah-miskin" class="chart-card">
+            <div class="chart-header">
+              <h3 id="title-jumlah-miskin">Jumlah Penduduk Miskin <span>(Ribu Jiwa)</span></h3>
+              <p>Hasil > Kemiskinan</p> <!-- Atau Faktor Pendorong > Pendapatan dan Distribusi Pertumbuhan -->
+            </div>
+            <canvas id="chart-jumlah-miskin"></canvas>
+            <p class="sumber"><strong>SUMBER :</strong> BPS - Susenas Konsumsi dan Pengeluaran</p>
+            <div class="desc">
+              <div>
+                <h4>PENGERTIAN</h4>
+                <p>Jumlah absolut penduduk yang hidup di bawah Garis Kemiskinan Nasional. Memberikan gambaran skala masalah kemiskinan.</p>
+              </div>
+              <div>
+                <h4>RELEVANSI</h4>
+                <p>Penting untuk perencanaan alokasi sumber daya dan program intervensi pengentasan kemiskinan secara terarah pada populasi yang membutuhkan.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="indikator-manusia" class="chart-card">
+            <div class="chart-header">
+              <h3 id="title-manusia">Indeks Pembangunan Manusia <span>(Indeks)</span></h3>
+              <p>Hasil > Kualitas Hidup</p>
+            </div>
+            <canvas id="chart-manusia"></canvas>
+            <p class="sumber"><strong>SUMBER :</strong> Badan Pusat Statistik (BPS)</p>
+            <div class="desc">
+              <div>
+                <h4>PENGERTIAN</h4>
+                <p>Ukuran komposit capaian rata-rata dalam tiga dimensi dasar pembangunan manusia: umur panjang dan hidup sehat, pengetahuan, dan standar hidup layak.</p>
+              </div>
+              <div>
+                <h4>RELEVANSI</h4>
+                <p>Indikator penting untuk mengukur tingkat kemajuan pembangunan manusia suatu daerah. Mencerminkan akses penduduk terhadap kesehatan, pendidikan, dan daya beli.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="indikator-terbuka" class="chart-card">
+            <div class="chart-header">
+              <h3 id="title-terbuka">Tingkat Pengangguran Terbuka <span>(Persen)</span></h3>
+              <p>Faktor Pendorong > Pasar Tenaga Kerja</p> <!-- Atau Hasil > Ketenagakerjaan -->
+            </div>
+            <canvas id="chart-terbuka"></canvas>
+            <p class="sumber"><strong>SUMBER :</strong> Badan Pusat Statistik (BPS) - Sakernas</p>
+            <div class="desc">
+              <div>
+                <h4>PENGERTIAN</h4>
+                <p>Persentase jumlah angkatan kerja yang sedang mencari pekerjaan atau mempersiapkan usaha baru, terhadap jumlah angkatan kerja.</p>
+              </div>
+              <div>
+                <h4>RELEVANSI</h4>
+                <p>Indikator kondisi pasar tenaga kerja yang menunjukkan sejauh mana penawaran tenaga kerja belum termanfaatkan. Mencerminkan efisiensi ekonomi dan kesejahteraan sosial.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="indikator-ekonomi" class="chart-card">
+            <div class="chart-header">
+              <h3 id="title-ekonomi">Laju Pertumbuhan Ekonomi <span>(Persen)</span></h3>
+              <p>Faktor Pendorong > Aktivitas Ekonomi</p>
+            </div>
+            <canvas id="chart-ekonomi"></canvas>
+            <p class="sumber"><strong>SUMBER :</strong> Badan Pusat Statistik (BPS) - PDRB</p>
+            <div class="desc">
+              <div>
+                <h4>PENGERTIAN</h4>
+                <p>Perubahan persentase Produk Domestik Regional Bruto (PDRB) atas dasar harga konstan dari satu periode ke periode berikutnya. Mengukur pertumbuhan output ekonomi riil.</p>
+              </div>
+              <div>
+                <h4>RELEVANSI</h4>
+                <p>Indikator utama kinerja ekonomi suatu daerah. Pertumbuhan ekonomi yang tinggi dan berkelanjutan diharapkan dapat meningkatkan kesempatan kerja dan pendapatan masyarakat.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="indikator-gini" class="chart-card">
+            <div class="chart-header">
+              <h3 id="title-gini">Rasio Gini <span>(Indeks/Rasio)</span></h3> <!-- "Indeks" atau "Rasio" sama-sama bisa digunakan, konsistenkan dengan data JSON Anda -->
+              <p>Faktor Pendorong > Pendapatan dan Distribusi Pertumbuhan</p>
+            </div>
+            <canvas id="chart-gini"></canvas>
+            <p class="sumber"><strong>SUMBER :</strong> Badan Pusat Statistik (BPS) - Susenas Konsumsi dan Pengeluaran</p>
+            <div class="desc">
+              <div>
+                <h4>PENGERTIAN</h4>
+                <p>Ukuran ketimpangan distribusi pendapatan atau pengeluaran di antara penduduk suatu wilayah. Nilai berkisar antara 0 (kesetaraan sempurna) hingga 1 (ketimpangan sempurna).</p>
+              </div>
+              <div>
+                <h4>RELEVANSI</h4>
+                <p>Mengindikasikan sejauh mana manfaat pertumbuhan ekonomi terdistribusi secara merata. Ketimpangan yang tinggi dapat menimbulkan masalah sosial dan menghambat pembangunan berkelanjutan.</p>
+              </div>
+            </div>
+
+            <div id="indikator-pangan" class="chart-card">
+            <div class="chart-header">
+              <h3 id="title-pangan">Indeks Ketahanan Pangan <span>(Indeks)</span></h3>
+              <p>Hasil > Ketahanan Pangan</p> <!-- Atau Faktor Pendorong > Akses Pangan -->
+            </div>
+            <canvas id="chart-pangan"></canvas>
+            <p class="sumber"><strong>SUMBER :</strong> Badan Pangan Nasional (Bapanas) / Kementerian Pertanian (disesuaikan)</p> <!-- Sesuaikan sumbernya jika berbeda -->
+            <div class="desc">
+              <div>
+                <h4>PENGERTIAN</h4>
+                <p>Ukuran komposit yang menggambarkan kondisi ketahanan pangan suatu wilayah, mencakup aspek ketersediaan, keterjangkauan, dan pemanfaatan pangan.</p>
+              </div>
+              <div>
+                <h4>RELEVANSI</h4>
+                <p>Indikator penting untuk menilai kemampuan suatu wilayah dalam memenuhi kebutuhan pangan penduduknya secara berkelanjutan. Ketahanan pangan yang baik mendukung kesehatan dan produktivitas masyarakat.</p>
+              </div>
+            </div>
+
+            <div id="indikator-stunting" class="chart-card">
+            <div class="chart-header">
+              <h3 id="title-stunting">Prevalensi Stunting pada Anak Balita <span>(Persen)</span></h3>
+              <p>Hasil > Status Gizi</p>
+            </div>
+            <canvas id="chart-stunting"></canvas>
+            <p class="sumber"><strong>SUMBER :</strong> Kementerian Kesehatan (SSGI/Riskesdas)</p>
+            <div class="desc">
+              <div>
+                <h4>PENGERTIAN</h4>
+                <p>Stunting adalah masalah gizi kronis yang berdampak pada gangguan pertumbuhan fisik dan perkembangan kognitif anak.</p>
+              </div>
+              <div>
+                <h4>RELEVANSI</h4>
+                <p>Menurunkan angka stunting berarti membuka peluang anak-anak Indonesia untuk tumbuh cerdas, sehat, dan berdaya. Ini adalah investasi penting untuk masa depan bangsa.</p>
+              </div>
+            </div>
+      
+        <!-- Tambahkan bagian indikator lainnya di bawah ini jika ingin -->
+      </main>
+      
+  </div>
+
+  <script src="js/script-tren.js"></script>
+  <script type="text/javascript">
+		// deklarasi tombol dan menu
+		const tombol = document.querySelector('.tombol');
+		const menu = document.querySelector('.menu');
+ 
+		// membuat event click
+		// pada saat tombol di click, tambahkan class aktif pada class menu
+		// saat diklik lagi, maka class aktif dihilangkan dari class menu (toggle)
+		tombol.addEventListener('click', () => {
+			menu.classList.toggle('aktif');
+		});
+	</script>
+</body>
+</html>

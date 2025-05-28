@@ -1,0 +1,17 @@
+{
+    "WADMKK": "Kota Pasuruan",
+    "categories": {
+        "Pertanian": [
+            {"name": "Padi", "value": "1000 ton/tahun"},
+            {"name": "Jagung", "value": "1000 ton/tahun"}
+        ],
+        "Peternakan": [
+            {"name": "Sapi", "value": "1000 ton/tahun"},
+            {"name": "Ayam", "value": "1000 ton/tahun"}
+        ],
+        "Perkebunan": [
+            {"name": "Kelapa Sawit", "value": "1000 ton/tahun"},
+            {"name": "Tebu", "value": "1000 ton/tahun"}
+        ]
+    }
+}

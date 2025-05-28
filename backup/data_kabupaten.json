@@ -1,0 +1,535 @@
+[
+    {
+        "name": "Malang",
+        "coords": [-8.216667, 112.684445],
+        "stunting_rate": 23,
+        "main_commodity": [
+            "Cabe Rawit",
+            "Bawang Merah",
+            "Kentang",
+            "Kubis",
+            "Tomat",
+            "Cabai Keriting",
+            "Jahe",
+            "Kencur",
+            "Mawar",
+            "Krisan",
+            "Anggrek Pot",
+            "Anggrek Potong",
+            "Pisang",
+            "Jeruk Siam/Keprok Apel",
+            "Durian",
+            "Pepaya",
+            "Salak",
+            "Tebu",
+            "Kopi",
+            "Teh",
+            "Sapi",
+            " Ayam Kampung",
+            "Ayam Petelur",
+            "Kambing",
+            "Babi",
+            "Susu Sapi",
+            "Telur Ayam Kampung",
+            "Cakalang",
+            "Tuna"
+        ],
+        "icon_image": "image/icon/kabupaten malang.jpg"
+    },
+    {
+        "name": "Sidoarjo",
+        "coords": [-7.457459, 112.717063],
+        "stunting_rate": 16.1,
+        "main_commodity": [
+            "Sapi",
+            "Ayam Kampung",
+            "Kambing",
+            "Itik dan Itik Manila",
+            "Udang"
+        ],
+        "icon_image": "image/icon/sidoarjo.jpg"
+    },
+    {
+        "name": "Madiun",
+        "coords": [-7.5448794, 111.6541451],
+        "stunting_rate": 17.6,
+        "main_commodity": [
+            "Bawang Putih",
+            "Ayam Kampung", 
+            "Telur Ayam Kampung"
+        ],
+        "icon_image": "image/icon/madiun.webp"
+    },
+    {
+        "name": "Jember",
+        "coords": [-8.184485, 113.668076],
+        "stunting_rate": 34.9,
+        "main_commodity": [
+            "Padi", 
+            "Cabai Besar",
+            "Sedap Malam",
+            "Pisang",
+            "Jeruk Siam/ Keprok",
+            "Durian", 
+            "Pepaya",
+            "Salak",
+            "Tembakau",
+            "Kelapa",
+            " Kopi",
+            "Teh",
+            "Kakao",
+            "Karet",
+            "Ayam Kampung",
+            "Domba",
+            "Telur Ayam Kampung"
+        ],
+        "icon_image": "image/icon/jember.jpg"
+    },
+    {
+        "name": "Banyuwangi",
+        "coords": [-8.219243, 114.369094],
+        "stunting_rate": 18.1,
+        "main_commodity": [
+            "Padi",
+            "Cabai Besar",
+            "Tomat",
+            "Sedap Malam",
+            "Pisang",
+            "Jeruk Siam/ Keprok",
+            "Pepaya",
+            "Kelapa",
+            "Kopi",
+            "Kakao",
+            "Karet",
+            "Kerbau",
+            " Perikanan Tangkap",
+            " Tongkol",
+            "Cakalang",
+            "Tuna",
+            "Udang"
+        ],
+        "icon_image": "image/icon/banyuwangi.webp"
+    },
+    {
+        "name": "Blitar",
+        "coords": [-8.095216, 112.256051],
+        "stunting_rate": 14.3,
+        "main_commodity": [
+           " Cabai Rawit",
+            "Cabai Besar",
+            "Tomat",
+            "Cabai Keriting",
+            "Mawar",
+           " Anggrek Potong",
+            "Salak",
+            "Tebu",
+            "Kelapa",
+            "Kopi",
+            "Teh",
+            "Kakao",
+            "Karet",
+            " Ayam Petelur",
+            "Kambing",
+            "Itik dan Itik Manila",
+            "Susu Sapi",
+            "Telur Ayam Kampung"
+        ],
+        "icon_image": "image/icon/kabupaten blitar.webp"
+    },
+    {
+        "name": "Kediri",
+        "coords": [-7.839899, 112.108354],
+        "stunting_rate": 21.6,
+        "main_commodity": [
+            "Cabai Rawit",
+            "Cabai Besar",
+            "Kunyit",
+            "Mawar",
+            "Anggrek Pot",
+            "Mangga",
+            "Tebu",
+            "Kakao",
+            "Babi"
+        ],
+        "icon_image": "image/icon/kabupaten kediri.jpg"
+    },
+    {
+        "name": "Lumajang",
+        "coords": [-8.140602, 113.225968],
+        "stunting_rate": 23.8,
+        "main_commodity": [
+            "Kentang",
+            "Cabai Besar",
+            "Kubis",
+            "Pepaya",
+            "Salak",
+            "Tebu",
+            "Teh",
+            "Karet",
+            "Kuda",
+            " Babi",
+            "Kerbau"
+        ],
+        "icon_image": "image/icon/lumajang.jpg"
+    },
+    {
+        "name": "Bondowoso",
+        "coords": [-7.913509, 113.821213],
+        "stunting_rate": 32,
+        "main_commodity": [
+            "Kentang",
+            "Bawang Putih",
+            "Kubis",
+            "Kunyit",
+            "Mangga",
+            "Kopi"
+        ],
+        "icon_image": "image/icon/bondowoso.jpeg"
+    },
+    {
+        "name": "Situbondo",
+        "coords": [-7.706835, 114.009760],
+        "stunting_rate": 30.9,
+        "main_commodity": "Tembakau",
+        "icon_image": "image/icon/situbondo.webp"
+    },
+    {
+        "name": "Probolinggo",
+        "coords": [-7.7534035, 113.3848352],
+        "stunting_rate": 17.3,
+        "main_commodity": [
+            "Bawang Merah",
+            "Kentang",
+            "Bawang Putih",
+            "Kubis",
+            "Tomat",
+            "Laos",
+            "Pisang",
+            "Mangga",
+            "Durian",
+            " Tembakau",
+            "Udang"
+        ],
+        "icon_image": "image/icon/kabupaten probolinggo.jpg"
+    },
+    {
+        "name": "Pasuruan",
+        "coords": [-7.716561, 112.907020],
+        "stunting_rate": 20.5,
+        "main_commodity": [
+            "Kentang",
+            "Laos",
+            "Kencur",
+            "Sedap Malam",
+            "Krisan",
+            "Anggrek Potong",
+            "Mangga",
+            "Durian",
+            "Domba",
+            "Susu Sapi"
+        ],
+        "icon_image": "image/icon/kabupaten mojokerto.jpg"
+    },
+    {
+        "name": "Mojokerto",
+        "coords": [-7.573175, 112.419594],
+        "stunting_rate": 11.6,
+        "main_commodity": [
+            "Bawang Putih",
+            "Krisan",
+            "Anggrek Pot"
+        ],
+        "icon_image": "image/icon/mojokerto.jpg"
+    },
+    {
+        "name": "Jombang",
+        "coords": [-7.555125, 112.233638],
+        "stunting_rate": 22.1,
+        "main_commodity": [
+            "Cabai Rawit",
+            "Anggrek Potong",
+            "Tebu"
+        ],
+        "icon_image": "image/icon/jombang.webp"
+    },
+    {
+        "name": "Nganjuk",
+        "coords": [-7.605006, 111.901400],
+        "stunting_rate": 20,
+        "main_commodity": [
+            "Bawang Merah",
+            "Mawar",
+            "Kerbau"
+        ],
+        "icon_image": "image/icon/nganjuk.jpg"
+    },
+
+
+    {
+        "name": "Ngawi",
+        "coords": [-7.396710, 111.444306],
+        "stunting_rate": 28.5,
+        "main_commodity": [
+            "Padi",
+            "Pepaya",
+            "Teh",
+            "Karet"
+        ],
+        "icon_image": "image/icon/ngawi.jpg"
+    },
+    {
+        "name": "Magetan",
+        "coords": [-7.644578, 111.351317],
+        "stunting_rate": 14.9,
+        "main_commodity": [
+            "Kubis",
+            "Cabai Keriting",
+            "Kunyit",
+            "Jahe"
+        ],
+        "icon_image": "image/icon/magetan.jpg"
+    },
+    {
+        "name": "Ponorogo",
+        "coords": [-7.865169, 111.469301],
+        "stunting_rate": 14.2,
+        "main_commodity": [
+            "Jahe",
+            "Laos",
+           " Susu Sapi"
+        ],
+        "icon_image": "image/icon/ponorogo.jpg"
+    },
+    {
+        "name": "Pacitan",
+        "coords": [-8.210511, 111.104966],
+        "stunting_rate": 20.6,
+        "main_commodity": [
+            "Cabai Keriting",
+            "Kunyit",
+            "Jahe",
+            "Laos",
+            "Kencur",
+            "Kelapa",
+            "Perikanan Tangkap",
+            "Tongkol",
+            "Cakalang",
+            "Tuna"
+        ],
+        "icon_image": "image/icon/pacitan.jpg"
+    },
+    {
+        "name": "Tulungagung",
+        "coords": [-8.065476, 111.902487],
+        "stunting_rate": 17.3,
+        "main_commodity": [
+            "Anggrek Pot",
+            "Jeruk Siam/ Keprok",
+            "Sapi",
+            "Ayam Petelur",
+            "Kambing",
+            "Itik dan Itik Manila",
+            "Babi",
+            "Kerbau",
+            "Susu Sapi",
+            "Telur Ayam Kampung",
+            "Tongkol",
+            "Cakalang",
+            "Tuna"
+        ],
+        "icon_image": "image/icon/tulungagung.jpg"
+    },
+    {
+        "name": "Trenggalek",
+        "coords": [-8.053663, 111.705022],
+        "stunting_rate": 19.5,
+        "main_commodity": [
+            "Kencur",
+            "Sedap Malam",
+            "Durian",
+            "Kakao",
+            "Domba",
+            "Kerbau",
+            "Tongkol",
+            " Cakalang",
+            "Tuna"
+        ],
+        "icon_image": "image/icon/trenggalek.jpg"
+    },
+
+
+    {
+        "name": "Bojonegoro",
+        "coords": [-7.150975, 111.881917],
+        "stunting_rate": 24.3,
+        "main_commodity": [
+            "Padi",
+            "Bawang Merah",
+            "Krisan",
+            "Pisang",
+            "Salak",
+            "Tembakau",
+            "Domba"
+        ],
+        "icon_image": "image/icon/bojonegoro.jpg"
+    },
+
+
+    {
+        "name": "Tuban",
+        "coords": [-6.895433, 112.061371],
+        "stunting_rate": 24.9,
+        "main_commodity": [
+            "Padi",
+            "Cabai Keriting",
+            "Domba",
+            "Perikanan Tangkap"
+        ],
+        "icon_image": "image/icon/tuban.webp"
+    },
+    {
+        "name": "Lamongan",
+        "coords": [-7.116585, 112.415623],
+        "stunting_rate": 27.5,
+        "main_commodity": [
+            "Padi",
+            "Cabai Rawit",
+            "Jahe",
+            "Sapi",
+            "Ayam Petelur",
+            "Perikanan Tangkap",
+            "Udang"
+        ],
+        "icon_image": "image/icon/lamongan.webp"
+    },
+    {
+        "name": "Gresik",
+        "coords": [-7.155033, 112.565040],
+        "stunting_rate": 10.7,
+        "main_commodity": [
+            "Kunyit",
+            "Mangga",
+            "Kambing",
+            "Udang"
+        ],
+        "icon_image": "image/icon/gresik.jpg"
+    },
+    {
+        "name": "Bangkalan",
+        "coords": [-7.045675, 112.740913],
+        "stunting_rate": 26.2,
+        "main_commodity": "Itik dan Itik Manila",
+        "icon_image": "image/icon/bangkalan.jpg"
+    },
+    {
+        "name": "Sampang",
+        "coords": [-7.190716, 113.243575],
+        "stunting_rate": 6.9,
+        "main_commodity": [
+            "Cabai Rawit",
+            "Bawang Merah"
+        ],
+        "icon_image": "image/icon/sampang.jpg"
+    },
+    {
+        "name": "Pamekasan",
+        "coords": [-7.161862, 113.472563],
+        "stunting_rate": 8.1,
+        "main_commodity": [
+            "Bawang Merah",
+            "Laos",
+            "Kencur",
+            "Sedap Malam",
+            "Tembakau"
+        ],
+        "icon_image": "image/icon/pamekasan.jpg"
+    },
+    {
+        "name": "Sumenep",
+        "coords": [-7.024406, 113.865582],
+        "stunting_rate": 21.6,
+        "main_commodity": [
+            "Kelapa",
+            "Perikanan Tangkap",
+            "Tongkol"
+        ],
+        "icon_image": "image/icon/sumenep.webp"
+    },
+    {
+        "name": "Kota Surabaya",
+        "coords": [-7.257472, 112.752090],
+        "stunting_rate": 4.8,
+        "main_commodity": [
+            "Sapi",
+            "Ayam Kampung",
+            "Ayam Petelur",
+            "Itik dan Itik Manila",
+            "Babi"
+        ],
+        "icon_image": "image/icon/surabaya.jpg"
+    },
+    {
+        "name": "Kota Batu",
+        "coords": [-7.867140, 112.523081],
+        "stunting_rate": 25.2,
+        "main_commodity": [
+            "Bawang Putih",
+            "Tomat",
+            "Mawar",
+            "Krisan",
+            "Anggrek Pot",
+            "Anggrek Potong",
+            "Jeruk Siam/ Keprok"
+        ],
+        "icon_image": "image/icon/batu.jpeg"
+    },
+    {
+        "name": "Kota Blitar",
+        "coords": [-8.098416, 112.168646],
+        "stunting_rate": 12.8,
+        "main_commodity": "-",
+        "icon_image": "image/icon/blitar.jpg"
+    },
+    {
+        "name": "Kota Malang",
+        "coords": [-7.966620, 112.632629],
+        "stunting_rate": 18.6,
+        "main_commodity": "-",
+        "icon_image": "image/icon/malang.jpg"
+    },
+    {
+        "name": "Kota Probolinggo",
+        "coords": [-7.756928, 113.215683],
+        "stunting_rate": 23.3,
+        "main_commodity": "-",
+        "icon_image": "image/icon/probolinggo.jpeg"
+    },
+    {
+        "name": "Kota Pasuruan",
+        "coords": [-7.645887, 112.907637],
+        "stunting_rate": 21.1,
+        "main_commodity": "-",
+        "icon_image": "image/icon/kabupaten pasuruan.jpg"
+    },
+    {
+        "name": "Kota Mojokerto",
+        "coords": [-7.472484, 112.434636],
+        "stunting_rate": 8.4,
+        "main_commodity": "-",
+        "icon_image": "image/icon/kabupaten mojokerto.jpg"
+    },
+    {
+        "name": "Kota Madiun",
+        "coords": [-7.629807, 111.523087],
+        "stunting_rate": 9.7,
+        "main_commodity": "-",
+        "icon_image": "image/icon/madiun.webp"
+    },
+    {
+        "name": "Kota Kediri",
+        "coords": [-7.811082, 112.004584],
+        "stunting_rate": 14.3,
+        "main_commodity": "-",
+        "icon_image": "image/icon/kediri.png"
+    }    
+]

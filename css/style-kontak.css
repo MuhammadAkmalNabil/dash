@@ -1,0 +1,154 @@
+.hero-section-kontak {
+  text-align: center;
+  padding: 50px 20px;
+  /* background-color: #f4f4f9; */
+}
+.hero-section-kontak h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+.hero-section-kontak p {
+  font-size: 1.2rem;
+  margin: 10px 0 30px;
+  color: #666;
+}
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+.logo-container a {
+  text-decoration: none;
+  color: black;
+}
+.logo-container a:hover {
+  color: #333;
+}
+.logo-kerjasama {
+  width: 220px; /* Sesuaikan ukuran logo */
+  height: auto;
+  transition: transform 0.3s ease}
+  .logo-kerjasama-akm {
+    width: 220px; /* Sesuaikan ukuran logo */
+    height: auto;
+    transition: transform 0.3s ease}
+    
+.logo-kerjasama-ppn {
+  width: 250px; /* Sesuaikan ukuran logo */
+  height: auto;
+  transition: transform 0.3s ease;
+}
+.logo-kerjasama-utm {
+  width: 200px; /* Sesuaikan ukuran logo */
+  height: auto;
+  transition: transform 0.3s ease;
+}
+.logo-kerjasama:hover {
+  transform: scale(1.1); /* Efek hover untuk memperbesar logo */
+}
+
+
+/* footer */
+footer {
+    background-color: #f8f8f8;
+    padding: 20px 10px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px 10px;
+    border-top: 1px solid #ccc;
+}
+
+.footer-section {
+    flex: 1;
+    margin: 15px;
+    min-width: 150px;
+}
+
+.footer-section h4 {
+    margin: 0;
+    color: #666; 
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.footer-section a {
+  margin: 0;
+  color: black;
+}
+
+.footer-section p {
+  margin: 0;
+  padding-top: 14px;
+  padding-bottom: 8px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    color: black;
+    text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+}
+
+.logo-footer img {
+    width: 40px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.footer-bottom img {
+    height: 30px;
+    margin: 0 5px;
+}
+
+.footer-bottom p {
+    margin: 10px 0;
+}
+
+.custom-a {
+  padding-top:15px;
+}
+
+@media (max-width: 768px) {
+  .logo-kerjasama{
+    width: 100px; /* Sesuaikan ukuran logo */
+  }
+  .logo-kerjasama-akm{
+    position: relative;
+    top: 10px;
+    width: 100px; /* Sesuaikan ukuran logo */
+  }
+  .logo-kerjasama-ppn{
+    width: 165px; /* Sesuaikan ukuran logo */
+  }
+  .logo-kerjasama-utm{
+    width: 140px; /* Sesuaikan ukuran logo */
+  }
+
+}
+  

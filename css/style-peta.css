@@ -1,0 +1,612 @@
+/* === STYLE GLOBAL & RESET DASAR (Jika ada, letakkan di atas) === */
+/* Misalnya: body, html { font-family: Arial, sans-serif; margin: 0; padding: 0; } */
+
+/* === PANEL INFORMASI FITUR (Pop-up saat klik di peta) === */
+.layer-panel {
+    display: none; /* Sembunyikan panel secara default */
+    position: fixed;
+    top: 130px;
+    right: 17px; /* MODIFIKASI: Sebelumnya 20px, disesuaikan dengan JS Anda */
+    width: 320px; /* Sedikit lebih lebar mungkin */
+    background: white;
+    border-radius: 8px; /* Konsisten dengan panel lain */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Konsisten */
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+    border-left: 4px solid #007bff; /* Border kiri sebagai aksen */
+}
+
+/* Tombol close untuk .layer-panel */
+.layer-panel > button.close-btn { /* Target lebih spesifik */
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 24px; /* Sedikit lebih besar */
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    z-index: 10; /* Di atas konten panel */
+}
+.layer-panel > button.close-btn:hover {
+    color: #333;
+}
+
+/* Konten di dalam .layer-panel */
+#layerContent { /* Ini adalah target untuk konten yang di-scroll */
+    padding: 15px;
+    padding-top: 10px; 
+    max-height: 450px; 
+    overflow-y: auto;
+}
+
+.panel-header-info {
+    margin-bottom: 10px;
+    padding-right: 25px; 
+}
+
+.panel-header-info h3 {
+    margin: 0 0 2px 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50; 
+}
+.panel-header-info .panel-subtitle {
+    font-size: 13px;
+    color: #7f8c8d; 
+    margin: 0;
+}
+
+.panel-section {
+    margin-top: 10px; 
+    padding-top: 0;   
+}
+.panel-section:first-child {
+    margin-top: 0; 
+}
+
+hr.panel-section-separator {
+    border: 0;
+    height: 1px;
+    background-color: #ecf0f1; 
+    margin: 12px 0; 
+}
+
+.panel-section-title {
+    font-size: 15px; 
+    font-weight: bold;
+    color: #34495e; 
+    margin: 0 0 8px 0; 
+}
+
+.panel-data-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin: 4px 0;
+}
+.panel-data-text strong {
+    color: #444;
+}
+
+.panel-data-list {
+    list-style-type: disc; 
+    padding-left: 20px; 
+    margin: 5px 0 10px 0;
+}
+
+.panel-data-item {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    /* MODIFIKASI: Tambahkan margin-bottom untuk memberi spasi antar item */
+    margin-bottom: 20px; /* Anda bisa coba nilai antara 6px - 8px atau sesuai selera */
+}
+
+.panel-no-data {
+    font-size: 14px;
+    color: #888;
+    font-style: italic;
+    margin: 5px 0 10px 0;
+}
+.panel-no-data-inline { 
+    color: #888;
+    font-style: italic;
+}
+
+.panel-message { 
+    font-size: 14px;
+    color: #777;
+    font-style: italic;
+    text-align: center;
+    padding: 15px 0;
+}
+
+/* Styling untuk bagian grafik */
+.chart-section {
+    margin-top: 15px; 
+}
+.chart-canvas-wrapper {
+    width: 100%; 
+    max-width: 280px; 
+    height: 200px; 
+    margin: 0 auto; 
+    background: #fdfdfd;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+}
+#stuntingChart {
+    width: 100% !important; 
+    height: 100% !important; 
+}
+
+
+/* === KONTAINER PETA UTAMA === */
+#map {
+    position: relative;
+    width: 100%;
+    height: 644px; /* Sesuaikan sesuai kebutuhan layout Anda */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* ... Sisa CSS Anda (tombol, panel layer, dll. tetap sama) ... */
+/* Saya akan menyalin sisa CSS Anda tanpa perubahan dari sini ke bawah agar lengkap */
+
+/* MODIFIKASI/CATATAN: Rule ini untuk menyembunyikan elemen .legend sumber.
+   Jika JS sudah meng-handle semua (tidak menampilkan legend-content-panel secara default),
+   dan Anda tidak punya .legend lain di #map, ini mungkin tidak esensial.
+   Namun, aman untuk dipertahankan jika ingin memastikan elemen sumber tidak pernah terlihat. */
+/* #map > .legend {
+    display: none !important;
+} */
+
+
+/* === TOMBOL-TOMBOL KONTROL UMUM DI PETA === */
+.custom-map-button { /* Tombol seperti Galeri Basemap, Kontrol Label Wilayah */
+    position: absolute;
+    /* left dan top diatur per tombol via inline style atau ID spesifik */
+    background-color: white;
+    padding: 10px; /* Sedikit lebih kecil agar konsisten dengan tombol layer */
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+    z-index: 1001; /* Di atas peta, di bawah panel yang mungkin muncul */
+    border: 1px solid #ccc;
+    color: #333;
+    display: flex; /* Untuk alignment ikon */
+    align-items: center;
+    justify-content: center;
+}
+.custom-map-button:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+.custom-map-button i { /* Untuk ikon Font Awesome */
+    font-size: 18px; /* Sesuaikan ukuran ikon */
+    line-height: 1;
+}
+
+.toggle-layer-control-button { /* Tombol untuk membuka/menutup panel daftar layer */
+    position: absolute;
+    top: 75px;
+    left: 60px;
+    background-color: white;
+    padding: 10px; /* Samakan dengan .custom-map-button */
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+}
+.toggle-layer-control-button svg { /* Untuk ikon SVG Feather */
+    width: 20px; /* Samakan dengan font-size ikon FA */
+    height: 20px;
+    stroke: #333;
+}
+.toggle-layer-control-button:hover {
+    background-color: #f5f5f5;
+}
+
+/* Posisi spesifik untuk tombol tertentu */
+#toggleBasemapGalleryButton {
+    top: 75px;
+    left: 115px; /* Jarak dari tombol sebelumnya */
+}
+#toggleWilayahLabelControlButton {
+    /* Posisi diatur via inline style di HTML, itu oke */
+}
+
+
+/* === PANEL DAFTAR LAYER KUSTOM (.custom-layer-control) === */
+.custom-layer-control {
+    position: fixed;
+    top: 130px; /* Di bawah tombol kontrol */
+    left: 60px; /* Sejajar dengan tombol toggle-nya */
+    width: 260px; /* Sedikit lebih lebar agar konten tidak terlalu sempit */
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 0; /* Padding diatur di header dan body */
+    font-family: Arial, sans-serif;
+    z-index: 1002; /* Di atas tombol dan peta */
+    overflow: hidden; /* Untuk border-radius bekerja dengan baik */
+}
+.custom-layer-control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+.custom-layer-control-header strong {
+    font-size: 15px;
+    color: #333;
+}
+.close-button-custom-layer { /* Tombol X di header panel daftar layer */
+    background: none;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0 5px; /* Beri sedikit padding agar mudah diklik */
+    line-height: 1;
+}
+.close-button-custom-layer:hover {
+    color: #333;
+}
+.custom-layer-control-body {
+    padding: 10px 15px; /* Konsistenkan padding */
+    max-height: 350px; /* Sedikit tambah tinggi jika perlu */
+    overflow-y: auto;
+}
+
+/* Item Layer Individual (dengan potensi legenda) */
+.custom-layer-control-body .layer-item-with-legend {
+    display: flex;
+    flex-direction: column; /* Agar panel legenda di bawah row kontrol */
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+.custom-layer-control-body .layer-item-with-legend:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.custom-layer-control-body .layer-control-row { /* Baris yang berisi tombol toggle, checkbox, label */
+    display: flex;
+    align-items: center;
+}
+.custom-layer-control-body .legend-toggle-btn { /* Tombol ▸/▾ untuk legenda */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px 2px 0; /* Sesuaikan padding */
+    margin-right: 4px; /* Jarak ke checkbox/label */
+    color: #767676;
+    font-size: 18px; /* Sedikit lebih kecil dari label utama */
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Agar tidak mengecil */
+    transition: color 0.15s ease-in-out;
+}
+.custom-layer-control-body .legend-toggle-btn .toggle-arrow {
+    display: inline-block;
+    width: 1em; /* MODIFIKASI: Menstabilkan lebar tombol saat ikon berubah */
+    text-align: center;
+}
+.custom-layer-control-body .legend-toggle-btn:hover {
+    color: #333;
+}
+.custom-layer-control-body .layer-label-text { /* Label untuk checkbox layer */
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+    user-select: none; /* Mencegah teks terseleksi saat klik cepat */
+}
+.custom-layer-control-body .layer-label-text input[type="checkbox"] {
+    margin-right: 8px; /* Jarak checkbox ke teks label */
+    width: 15px; /* Ukuran checkbox standar */
+    height: 15px;
+    cursor: pointer;
+    vertical-align: middle; /* Untuk alignment yang lebih baik jika ada teks multi-baris (jarang) */
+}
+
+/* Panel Konten Legenda (yang muncul saat di-toggle) */
+.custom-layer-control-body .legend-content-panel {
+    padding: 8px 10px; /* Sedikit kurangi padding internal */
+    margin-top: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0; /* Border lebih soft */
+    border-radius: 4px;
+    font-size: 0.875em; /* 14px * 0.875 = 12.25px, atau set ke 12px atau 13px */
+    margin-left: 24px; /* Indentasi dari sisi kiri item layer induknya (tombol toggle + marginnya) */
+                                /* (lebar tombol toggle-btn + margin-right nya) */
+}
+.custom-layer-control-body .legend-content-panel .legend-item { /* Setiap baris di legenda */
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px; /* Jarak antar item legenda */
+    line-height: 1.4; /* Keterbacaan teks */
+}
+.custom-layer-control-body .legend-content-panel .legend-item:last-child {
+    margin-bottom: 0;
+}
+.custom-layer-control-body .legend-content-panel .color-circle,
+.custom-layer-control-body .legend-content-panel .color-box { /* Lingkaran/kotak warna legenda */
+    width: 13px; /* Sedikit lebih kecil agar proporsional dengan font legenda */
+    height: 13px;
+    border-radius: 50%; /* Untuk .color-circle */
+    margin-right: 8px;
+    border: 1px solid #b0b0b0; /* Border yang sedikit lebih jelas */
+    flex-shrink: 0;
+    /* display: flex, align-items, justify-content TIDAK PERLU di sini, ini untuk span/div itu sendiri */
+}
+.custom-layer-control-body .layer-item-with-legend.highlighted > .layer-control-row {
+    /* Styling ini dari JS Anda, sepertinya belum terpakai tapi bisa untuk highlight */
+    background-color: #e0e6ed;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+/* ... (styling .highlighted lainnya jika masih relevan) ... */
+
+
+/* === GRUP LAYER DALAM CUSTOM LAYER CONTROL === */
+.custom-layer-control-body .layer-group-item {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+.custom-layer-control-body .layer-group-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.custom-layer-control-body .layer-group-header { /* Header grup (tombol toggle grup, checkbox master, label grup) */
+    display: flex;
+    align-items: center;
+    padding: 2px 0; /* Padding vertikal kecil */
+}
+.custom-layer-control-body .group-toggle-btn { /* Tombol ▸/▾ untuk grup */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 4px 2px 0; /* Mirip legend-toggle-btn */
+    margin-right: 4px;
+    color: #767676;
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.15s ease-in-out;
+}
+.custom-layer-control-body .group-toggle-btn .toggle-arrow {
+    display: inline-block;
+    width: 1em; /* MODIFIKASI: Menstabilkan lebar */
+    text-align: center;
+}
+.custom-layer-control-body .group-toggle-btn:hover {
+    color: #333;
+}
+/* .group-master-label mewarisi style dari .layer-label-text, itu oke */
+.custom-layer-control-body .group-master-label .group-label-text { /* Teks label grup master */
+    font-weight: bold;
+    color: #333; /* Lebih gelap dari item biasa */
+}
+.custom-layer-control-body .layer-group-content { /* Kontainer untuk child-layer-item */
+    padding-left: 20px; /* Indentasi untuk item anak */
+    margin-top: 4px; /* Sedikit spasi dari header grup */
+}
+
+/* Item Layer ANAK (di dalam grup) */
+.custom-layer-control-body .child-layer-item { /* Ini adalah .layer-item-with-legend di dalam .layer-group-content */
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #f0f0f0; /* Garis putus-putus yang lebih soft */
+}
+.custom-layer-control-body .child-layer-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.custom-layer-control-body .child-layer-item .layer-label-text {
+    font-size: 13px; /* Anak sedikit lebih kecil */
+}
+.custom-layer-control-body .child-layer-item .legend-toggle-btn {
+    font-size: 16px; /* Tombol toggle anak lebih kecil */
+}
+.custom-layer-control-body .child-layer-item .legend-content-panel {
+    margin-left: 22px; /* Sesuaikan indentasi panel legenda anak */
+                                /* (lebar tombol toggle anak + marginnya) */
+    font-size: 0.85em; /* Lebih kecil lagi untuk legenda anak */
+}
+
+
+/* === LABEL WILAYAH DI PETA (L.DivIcon) === */
+.region-map-label-divicon {
+    color: #FFFFFF !important; /* Penting untuk override Leaflet default */
+    font-size: 12px; /* Sedikit lebih kecil agar tidak terlalu dominan */
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;
+    /* position: absolute; transform: translate(-50%, -50%); -> Di-handle Leaflet */
+    pointer-events: none; /* Agar tidak mengganggu interaksi peta */
+    text-shadow:
+       -1px -1px 0 #000,  
+        1px -1px 0 #000,
+       -1px  1px 0 #000,
+        1px  1px 0 #000,
+       -0.5px -0.5px 0 #000, /* Tambahan untuk outline lebih halus */
+        0.5px -0.5px 0 #000,
+       -0.5px  0.5px 0 #000,
+        0.5px  0.5px 0 #000;
+}
+/* .region-map-label-divicon span { display: inline-block; } -> Tidak selalu perlu, tergantung struktur HTML di divIcon */
+
+
+/* === PANEL KONTROL LABEL WILAYAH === */
+.custom-wilayah-label-control {
+    position: fixed;
+    top: 130px;
+    left: 170px; /* Sesuaikan jika lebar panel layer berubah */
+    width: 220px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 0;
+    font-family: Arial, sans-serif;
+    z-index: 1002;
+    overflow: hidden;
+}
+.custom-wilayah-label-control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+.custom-wilayah-label-control-header strong {
+    font-size: 15px;
+    color: #333;
+}
+.close-button-custom-wilayah-label { /* Tombol X */
+    background: none;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+}
+.close-button-custom-wilayah-label:hover {
+    color: #333;
+}
+.custom-wilayah-label-control-body {
+    padding: 12px 15px;
+}
+/* Styling untuk item dan label di dalam .custom-wilayah-label-control-body
+   bisa mewarisi dari .layer-item dan .layer-label-text jika classnya sama,
+   atau definisikan secara spesifik jika perlu. */
+.custom-wilayah-label-control-body .layer-item { /* Asumsi class ini dipakai */
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.custom-wilayah-label-control-body .layer-item:last-child {
+    margin-bottom: 0;
+}
+.custom-wilayah-label-control-body .layer-label-text { /* Asumsi class ini dipakai */
+    /* Style sudah ada di atas, akan terwarisi jika classnya sama */
+}
+.custom-wilayah-label-control-body .layer-label-text input[type="checkbox"] {
+    /* Style sudah ada di atas, akan terwarisi jika classnya sama */
+}
+
+
+/* === PANEL GALERI BASEMAP === */
+.basemap-gallery-panel {
+    position: fixed;
+    top: 130px; 
+    left: 115px; /* Atau sesuaikan berdasarkan posisi tombolnya */
+    /* width: auto; -> Biarkan auto berdasarkan kontennya */
+    min-width: 280px; /* Lebar minimal */
+    max-width: 450px; 
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1002; 
+    font-family: Arial, sans-serif;
+    overflow: hidden; 
+}
+.basemap-gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #343a40; /* Gelap agar kontras */
+    color: white;
+    border-bottom: 1px solid #495057;
+}
+.basemap-gallery-header span {
+    font-size: 15px;
+    font-weight: bold;
+}
+.close-button-custom-gallery { /* Tombol X */
+    background: none;
+    border: none;
+    color: #adb5bd; 
+    font-size: 18px; /* Sedikit lebih besar untuk ikon X */
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+}
+.close-button-custom-gallery:hover {
+    color: white;
+}
+/* .close-button-custom-gallery i { ... }  Styling untuk ikon jika ada minimize/maximize */
+.basemap-gallery-content {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-start; /* Mulai dari kiri */
+    gap: 10px; /* Jarak antar item */       
+    padding: 15px;
+    max-height: 280px; /* Sesuaikan tinggi scroll */
+    overflow-y: auto;
+}
+.basemap-item {
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 8px; /* Padding internal item */
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    width: 120px; /* Lebar tetap atau bisa diatur dengan flex-basis */
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    background-color: #fff;
+    display: flex; /* Untuk alignment internal */
+    flex-direction: column; /* Teks di bawah gambar */
+    align-items: center;
+}
+.basemap-item:hover {
+    border-color: #007bff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+}
+.basemap-item.active { 
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.5); /* Efek outline saat aktif */
+}
+.basemap-item img {
+    width: 100%; 
+    height: 70px; /* Sedikit lebih kecil */
+    object-fit: cover; 
+    border: 1px solid #eee;
+    margin-bottom: 6px; /* Jarak gambar ke teks */
+    border-radius: 3px; 
+}
+.basemap-item span { 
+    font-size: 12px;
+    color: #333;
+    display: block; 
+    line-height: 1.3;
+}

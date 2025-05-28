@@ -1,0 +1,161 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #fff;
+  }
+  
+  .legend-header {
+    background: #f0f3f6;
+    padding: 10px 20px;
+    text-align: center;
+  }
+  
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+  }
+  
+  .legend .box {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    margin-right: 5px;
+    border-radius: 2px;
+  }
+  
+  .green { background-color: #69cd66; }
+  .yellow { background-color: #ffd700; }
+  .red { background-color: #de3d3d; }
+  .gray { background-color: #bdbdbd; }
+  
+  .container- {
+    display: flex;
+    padding: 10px 20px;
+    align-items: flex-start; 
+  }
+  
+  .sidebar {
+    width: 300px;
+    flex-shrink: 0; /* prevent shrinking or stretching */
+    max-height: 90vh;
+    max-width: 90vh;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar li {
+    padding: 15px 10px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .sidebar li:hover,
+.sidebar li.active {
+  background-color: #d9e7f7;
+  border-left: 4px solid #2a6ebb;
+}
+  
+  .content {
+    flex: 1; /* allows content to grow and fill the rest */
+    padding-left: 20px;
+    min-width: 0; /* prevents content from forcing container to overflow */
+  }
+  
+  .chart-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  
+  .chart-header h3 {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .chart-header span {
+    color: #888;
+  }
+  
+  .sumber {
+    font-size: 12px;
+    color: #555;
+    margin-top: 10px;
+  }
+  
+  .desc {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-top: 15px;
+  }
+  
+  .desc h4 {
+    margin-bottom: 5px;
+    color: #003366;
+    font-size: 13px;
+  }
+  .desc p {
+    white-space: normal; /* Agar teks tidak satu baris panjang */
+  }
+
+#location-selector-wrapper { 
+  margin-top: 1px;
+  margin-bottom: 2px; 
+}
+#location-selector-container label { 
+  margin-right: 3px; 
+  font-weight: bold;
+}
+#location-selector { 
+  padding: 8px; 
+  border-radius: 4px; 
+  border: 1px solid #ccc; 
+}
+  
+@media (max-width: 768px) {
+  .sidebar {
+    flex-shrink: 0; /* prevent shrinking or stretching */
+    max-height: 90vh;
+    max-width: 15vh;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    font-size: 12px;
+  }
+  #location-selector-wrapper { 
+    margin-top: 1px;
+    margin-bottom: 2px; 
+    font-size: 13px;
+    
+  }
+  #location-selector-container label { 
+    margin-right: 3px; 
+    font-weight: bold;
+    font-size: 8px;
+  }
+  #location-selector { 
+    padding: 8px; 
+    border-radius: 4px; 
+    border: 1px solid #ccc; 
+    font-size: 11px;
+    width: 138px;
+  }
+}
+  

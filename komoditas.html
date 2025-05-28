@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Komoditas Pangan Jawa Timur</title>
+    <link rel="icon" type="image/png" sizes="48x48" href="image/logo3.jpg" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- <link rel="stylesheet" href="backup/style(1).css" /> -->
+</head>
+
+<body>
+    <!-- Navigasi -->
+    <header>
+        <div class="header-container">
+            <!-- Logo dan Judul -->
+            <div class="logo-title">
+                <img src="image/Reg I Primary without Text.png" alt="Logo" class="logo">
+                <h1>Direktorat Pembangunan Indonesia Barat | <span class="non-bold">Kementerian PPN/Bappenas</span></h1>
+            </div>
+    
+            <!-- Navigasi -->
+            <nav>
+                <ul class="menu" >
+                    <li ><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang</a></li>
+                    <!-- <li><a href="#tableau-dashboard">Dashboard</a></li> -->
+                    <!-- <li><a href="peta.html">Peta</a></li> -->
+                    <li><a href="kontak.html">Kontak</a></li>
+              </ul>
+              <div class="tombol">
+                &#9776;
+            </div>
+          </nav>
+        </div>
+    </header>
+        <!-- Section Tableau Embed -->
+        <section id="tableau-dashboard">
+            <h2>Visualisasi Tableau</h2>
+            <!-- Embed Code Baru -->
+            <div class='tableauPlaceholder' id='viz1736916437022' style='position: relative'>
+                <noscript>
+                    <a href='#'>
+                        <img alt='Dashboard 1' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CO&#47;COVID-19Tableau_17369164054220&#47;Dashboard1&#47;1_rss.png' style='border: none' />
+                    </a>
+                </noscript>
+                <object class='tableauViz' style='display:none;'>
+                    <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                    <param name='embed_code_version' value='3' />
+                    <param name='site_root' value='' />
+                    <param name='name' value='COVID-19Tableau_17369164054220&#47;Dashboard1' />
+                    <param name='tabs' value='no' />
+                    <param name='toolbar' value='yes' />
+                    <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;CO&#47;COVID-19Tableau_17369164054220&#47;Dashboard1&#47;1.png' />
+                    <param name='animate_transition' value='yes' />
+                    <param name='display_static_image' value='yes' />
+                    <param name='display_spinner' value='yes' />
+                    <param name='display_overlay' value='yes' />
+                    <param name='display_count' value='yes' />
+                    <param name='language' value='en-US' />
+                    <param name='filter' value='publish=yes' />
+                </object>
+            </div>
+            <script type='text/javascript'>
+                var divElement = document.getElementById('viz1736916437022');
+                var vizElement = divElement.getElementsByTagName('object')[0];
+                if (divElement.offsetWidth > 800) {
+                    vizElement.style.width = '1000px';
+                    vizElement.style.height = '827px';
+                } else if (divElement.offsetWidth > 500) {
+                    vizElement.style.width = '1000px';
+                    vizElement.style.height = '827px';
+                } else {
+                    vizElement.style.width = '100%';
+                    vizElement.style.height = '1227px';
+                }
+                var scriptElement = document.createElement('script');
+                scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+                vizElement.parentNode.insertBefore(scriptElement, vizElement);
+            </script>
+        
+            <!-- Filter Section -->
+            <div id="filter-section">
+                <label for="filter-year">Filter Tahun:</label>
+                <select id="filter-year">
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                </select>
+                <button id="apply-filter">Terapkan Filter</button>
+            </div>
+        </section>
+        
+        
+    
+        <!-- Section Data Description -->
+        <section id="data-description">
+            <h2>Informasi Data</h2>
+            <p>Dashboard ini menunjukkan analisis data stunting dan kemandirian pangan di Jawa Timur berdasarkan data tahun X-Y.</p>
+        </section>
+    
+        <!-- Section Cards -->
+        <section id="card-section">
+            <h2>Statistik Utama</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3>Rata-rata Stunting</h3>
+                    <p>27.5%</p>
+                </div>
+                <div class="card">
+                    <h3>Kemandirian Pangan</h3>
+                    <p>Skor 75/100</p>
+                </div>
+                <div class="card">
+                    <h3>Populasi Rentan</h3>
+                    <p>1.2 Juta</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 - Dashboard Pangan dan Stunting</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script type="text/javascript">
+		// deklarasi tombol dan menu
+		const tombol = document.querySelector('.tombol');
+		const menu = document.querySelector('.menu');
+ 
+		// membuat event click
+		// pada saat tombol di click, tambahkan class aktif pada class menu
+		// saat diklik lagi, maka class aktif dihilangkan dari class menu (toggle)
+		tombol.addEventListener('click', () => {
+			menu.classList.toggle('aktif');
+		});
+	</script>
+</body>
+</html>
