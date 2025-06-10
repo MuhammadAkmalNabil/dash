@@ -1,52 +1,235 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
+header {
+    position: absolute; /* Awalnya absolute agar bisa di atas peta */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent; /* Awalnya transparan */
+    color: #000000; /* Teks putih untuk kontras dengan peta (jika peta gelap) atau sesuaikan */
+    z-index: 10000; /* z-index LEBIH TINGGI dari elemen peta Leaflet (biasanya Leaflet controls punya z-index sekitar 1000) */
+    padding: 0.5rem 1rem; /* Sesuaikan padding agar header tidak terlalu besar */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    font-family: sans-serif; /* Atau font header yang Anda inginkan */
+    box-sizing: border-box; /* Penting agar padding tidak menambah lebar/tinggi total */
+   
+}
+
+header.scrolled {
+    position: fixed; /* Menjadi fixed saat di-scroll agar tetap di atas */
+    background-color: #df0000; /* Latar belakang solid */
+    color: #333333; /* Teks menjadi gelap */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Warna teks elemen dalam header saat di-scroll (mirip index.html) */
+header.scrolled .logo-title h1,
+header.scrolled .non-bold,
+header.scrolled .menu li a,
+header.scrolled .tombol {
+    color: #333333;
+}
+header.scrolled .menu a:hover {
+    color: #007bff;
+}
+
+/* Gaya awal untuk elemen di dalam header (saat transparan) */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo-title h1 {
+    font-size: 1.3rem;
+    position: relative;
+    top: -2px;
     margin: 0;
-    background: #fff;
-  }
-  
-  .legend-header {
-    background: #f0f3f6;
-    padding: 10px 20px;
-    text-align: center;
-  }
-  
-  .legend {
+    font-weight: bold;
+    left: -159px;
+    color: #000000; /* Default untuk transparan */
+}
+.non-bold {
+    font-weight: normal;
+    font-size: 1.1rem;
+    color: #000000; /* Default untuk transparan */
+}
+.logo {
+    position: relative;
+    right: 150px;
+    top:-1px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+nav {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 14px;
-  }
-  
-  .legend .box {
-    width: 12px;
-    height: 12px;
+    justify-content: flex-end;
+}
+.menu {
+    margin: 0;
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+.menu li {
+    margin-right: 15px;
+}
+.menu li:last-child {
+    margin-right: 0;
+}
+.menu li a {
+    color: #060606; /* Default untuk transparan */
+    text-decoration: none;
+    position: relative;
+    right: -40px;
     display: inline-block;
-    margin-right: 5px;
-    border-radius: 2px;
-  }
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+.tombol {
+    display: none;
+    color: #ffffff; /* Default untuk transparan */
+    font-size: 19pt;
+}
+.legend-header {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, readable font stack */
+  background: #f8f9fa; /* A slightly off-white, clean background */
+  padding: 20px 25px; /* Comfortable padding */
+  border-radius: 8px; /* Softer, more modern rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* A subtle but effective shadow */
+  margin-bottom: 25px; /* Ensure space below the header if content follows directly */
+}
+
+.title-container {
+  display: flex;
+  justify-content: flex-end; /* Aligns button to the far right */
+  align-items: center;
+  position: relative;
+  flex-wrap: wrap; /* For responsiveness if more items were added */
+}
+
+
+
+.btn-related-data {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px; /* Balanced padding for button size */
+  text-decoration: none;
+  border-radius: 6px; /* Consistent rounded corners */
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  border: none; /* Remove default border, rely on background and shadow */
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.25); /* Subtle shadow for depth */
+}
+
+.btn-related-data svg {
+  margin-right: 8px; /* Good spacing for the icon */
+  width: 16px; /* Ensure icon size is consistent */
+  height: 16px;
+}
+
+.btn-related-data:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3); /* Enhanced shadow on hover */
+}
+
+.btn-related-data:active {
+  background-color: #004085; /* Even darker for active/click state */
+  transform: translateY(0px); /* Reset lift for press effect */
+  box-shadow: 0 2px 4px rgba(0, 64, 133, 0.2); /* Slightly reduced shadow when pressed */
+}
+
+.legend {
+  display: flex;
+  justify-content: center; /* Center the legend items horizontally */
+  align-items: center; /* Vertically align items if they wrap to multiple lines */
+  gap: 15px 30px; /* row-gap column-gap: good spacing between items */
+  font-size: 13px; /* Clear but not overpowering font size for legend text */
+  color: #495057; /* Softer, dark gray for text, good contrast */
+  flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+  margin-top: 20px; /* Space between the button area and the legend */
+  padding-top: 15px; /* Space above legend items, below the border */
+  border-top: 1px solid #dee2e6; /* A light, clean separator line */
+}
+
+.legend span { /* This is each individual legend item (box + text) */
+  display: inline-flex; /* Allows alignment of box and text */
+  align-items: center; /* Vertically centers the box with its text */
+}
+
+.legend .box {
+  width: 14px;
+  height: 14px;
+  min-width: 14px; /* Prevent box from shrinking */
+  display: inline-block;
+  margin-right: 8px; /* Space between the color box and its label */
+  border-radius: 3px; /* Slightly rounded corners for the boxes */
+  /* General border for all boxes for better definition, especially on light backgrounds */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Specific styles for colored boxes (original colors are good) */
+.legend .box.blue {
+  background-color: #0055ff;
+  border-color: #0041cc; /* Slightly darker border for definition */
+}
+.legend .box.green {
+  background-color: #229100;
+  border-color: #229100; /* Darker border for yellow to stand out */
+}
+.legend .box.red {
+  background-color: #de3d3d;
+  border-color: #c33434; /* Slightly darker border */
+}
+.legend .box.gray {
+  background-color: #bdbdbd;
+  border-color: #ababab; /* Slightly darker border for gray */
+}
+
+.custom-legend-container {
+  margin-top: 15px; /* Jarak dari elemen di atasnya (misal judul chart) */
+  margin-bottom: 10px; /* Jarak ke chart di bawahnya */
+  padding: 0 10px; /* Padding horizontal jika diperlukan */
+  text-align: center; /* Memusatkan semua konten di dalamnya */
+}
+.custom-legend-title {
+  display: block; /* Agar mengambil lebar penuh dan bisa di-text-align */
+  font-size: 13px; /* Sedikit lebih kecil dan halus */
+  color: #555e68; /* Warna abu-abu tua yang lembut */
+  margin-bottom: 12px; /* Jarak antara judul dan item legenda */
+  font-style: italic; /* Memberi kesan sebagai petunjuk */
+}
   
-  .green { background-color: #69cd66; }
-  .yellow { background-color: #ffd700; }
-  .red { background-color: #de3d3d; }
-  .gray { background-color: #bdbdbd; }
-  
-  .container- {
+  .tren-layout-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; 
     display: flex;
-    padding: 10px 20px;
-    align-items: flex-start; 
+    align-items: flex-start;
+    gap: 5px;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 20px;
+     
   }
   
   .sidebar {
-    width: 300px;
+    width: 290px;
     flex-shrink: 0; /* prevent shrinking or stretching */
-    max-height: 90vh;
-    max-width: 90vh;
+    height: calc(100vh - 120px);
     overflow-y: auto;
     border-right: 1px solid #ccc;
     position: sticky;
-    top: 0;
+    top: 85px;
     background-color: white;
     z-index: 10;
+    
   }
   
   .sidebar ul {
@@ -79,6 +262,7 @@ body {
     border: 1px solid #ddd;
     padding: 20px;
     margin-top: 10px;
+    scroll-margin-top: 65px;
   }
   
   .chart-header h3 {
@@ -95,67 +279,55 @@ body {
     color: #555;
     margin-top: 10px;
   }
+
+  .desc > div:nth-child(2) {
+    border-left: 1px solid #e0e0e0; /* Buat garis vertikal (sesuaikan warna/ketebalan) */
+    padding-left: 25px; /* Beri jarak antara garis dan teks (sesuaikan dengan nilai 'gap' pada .desc) */
+}
   
-  .desc {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    margin-top: 15px;
-  }
-  
-  .desc h4 {
-    margin-bottom: 5px;
-    color: #003366;
-    font-size: 13px;
-  }
-  .desc p {
-    white-space: normal; /* Agar teks tidak satu baris panjang */
-  }
+  /* Pastikan style .desc dan isinya tetap ada */
+.desc {
+  display: flex;
+  /* justify-content: space-between; Mungkin flex-start lebih baik jika kolom tidak selalu sama panjang */
+  justify-content: flex-start;
+  gap: 25px; /* Jarak antar kolom */
+  font-size: 13px;
+  margin-top: 20px;
+  background-color: #fdfdfd;
+  padding: 20px; /* Padding di sekeliling desc */
+  border-radius: 4px;
+  border: 1px solid #eee;
+}
+.desc > div {
+   flex: 1; /* Agar kolom mencoba mengisi ruang */
+   min-width: 0; /* Mencegah overflow pada flex item */
+}
+.desc h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #1a5a9c;
+  font-size: 14px;
+  font-weight: 600;
+}
+.desc p {
+  white-space: normal;
+  line-height: 1.6;
+  margin: 0;
+  color: #555;
+  text-align: justify; /* Tambahkan ini agar teks rata kiri-kanan */
+}
 
 #location-selector-wrapper { 
-  margin-top: 1px;
+  margin-top: 10px;
   margin-bottom: 2px; 
 }
 #location-selector-container label { 
-  margin-right: 3px; 
+  margin-right: 10px; 
   font-weight: bold;
 }
 #location-selector { 
   padding: 8px; 
   border-radius: 4px; 
   border: 1px solid #ccc; 
-}
-  
-@media (max-width: 768px) {
-  .sidebar {
-    flex-shrink: 0; /* prevent shrinking or stretching */
-    max-height: 90vh;
-    max-width: 15vh;
-    overflow-y: auto;
-    border-right: 1px solid #ccc;
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 10;
-    font-size: 12px;
-  }
-  #location-selector-wrapper { 
-    margin-top: 1px;
-    margin-bottom: 2px; 
-    font-size: 13px;
-    
-  }
-  #location-selector-container label { 
-    margin-right: 3px; 
-    font-weight: bold;
-    font-size: 8px;
-  }
-  #location-selector { 
-    padding: 8px; 
-    border-radius: 4px; 
-    border: 1px solid #ccc; 
-    font-size: 11px;
-    width: 138px;
-  }
 }
   

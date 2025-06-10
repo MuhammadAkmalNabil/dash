@@ -1,74 +1,540 @@
 /* Container untuk semua kartu */
-.card-container {
-  
+body {
+    margin: 0; /* Pastikan body tidak punya margin default yang mengganggu */
+    padding: 0;
+    overflow-x: hidden; /* Opsional: Mencegah horizontal scrollbar jika 100vw sedikit lebih besar dari actual width karena scrollbar vertikal */
+header {
+    /* position: sticky; HAPUS INI UNTUK EFEK AWAL TRANSPARAN */
+    position: absolute; /* Atau 'fixed' jika ingin selalu di atas, tapi 'absolute' lebih umum untuk efek ini */
+    top: 0;
+    left: 0; /* Tambahkan ini */
+    width: 100%; /* Pastikan header mengambil lebar penuh */
+    font-family: sans-serif;
+    /* border-radius: 10px; Hapus ini jika tidak ingin radius pada header transparan */
+    background-color: transparent; /* AWALNYA TRANSPARAN */
+    color: #ffffff; /* WARNA TEKS AWAL PUTIH (atau warna kontras dengan hero) */
+    z-index: 1000;
+    padding: 0.2rem 1rem; /* Sesuaikan padding jika perlu */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); Hapus shadow awal */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Transisi untuk perubahan saat scroll */
+}
+
+
+/* Container Header (Tidak banyak berubah, pastikan paddingnya sesuai) */
+.header-container {
     display: flex;
-    flex-direction: column; /* Susunan vertikal untuk semua kartu */
-    gap: 20px; /* Jarak antar kartu */
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Batasi lebar agar kontennya terpusat */
+    margin: 0 auto; /* Pusatkan konten header */
+    /* gap: 2rem; */ /* Dihapus agar justify-content bekerja lebih baik, atur jarak via nav dan logo-title */
+}
+
+.non-bold {
+    font-weight: normal;
+    font-size: 1.2rem;
+    color: #f0f0f0; /* Sesuaikan warna agar kontras dengan hero */
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
     position: relative;
-    right:220px;
-    margin: 20px;
-  }
-  .card-link {
-    text-decoration: none; /* Menghilangkan garis bawah pada link */
-    color: inherit; /* Mempertahankan warna teks dari elemen dalam card */
-    display: block; /* Membuat card sepenuhnya klikable */
-  }
-  
-  
-  /* Gaya dasar untuk setiap kartu */
-  .card1 {
-    position: relative; /* Untuk memposisikan elemen konten di atas gambar */
+    right: 130px;
+    top: 12px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}
+
+.logo-title h1 {
+     position: relative;
+    right: 130px;
+    top: 8px;
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: bold;
+    color: #ffffff; /* WARNA JUDUL AWAL PUTIH */
+}
+
+nav {
+    /* flex-grow: 1; */ /* Tidak perlu jika header-container sudah diatur max-width dan margin auto */
+    /* text-align: right; */ /* Tidak perlu jika menggunakan flex-end */
     display: flex;
-    top: 340px;
-    right: 950px;
+    justify-content: flex-end;
+}
+
+.menu {
+    /* background: #ffffff; HAPUS BACKGROUND PUTIH AWAL */
+    margin: 0;
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.tombol {
+    display: none;
+    color: #ffffff; /* WARNA TOMBOL HAMBURGER AWAL PUTIH */
+    font-size: 19pt;
+}
+
+.menu li {
+     position: relative;
+    right: -69px;
+    /* padding-left: 0; */ /* Sudah di-handle oleh margin-right */
+    margin-right: 20px; /* Sesuaikan jarak antar menu */
+}
+.menu li:last-child {
+    margin-right: 0; /* Hapus margin kanan pada item terakhir */
+}
+
+.menu li a {
+    /* padding:10px; */ /* Padding bisa diatur di sini atau di .menu a */
+    color: #ffffff; /* WARNA LINK MENU AWAL PUTIH */
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    padding: 8px 10px; /* Tambahkan padding agar lebih mudah diklik */
+    transition: color 0.3s ease, font-weight 0.3s ease, transform 0.3s ease; /* Tambahkan transisi */
+}
+
+.menu a:hover {
+    color: #cccccc; /* Warna hover tetap bisa lebih terang atau beda */
+    font-weight: bold;
+    transform: scale(1.05); /* Sedikit lebih halus */
+}
+
+/* File: css/style.css */
+
+/* ... CSS lain ... */
+header.scrolled .logo{
+    position: relative;
+    width: 80px;
+    height: 80px;
+    top: 3px;
+}
+header.scrolled {
+    position: fixed; /* Ubah ke fixed agar tetap di atas saat scroll */
+    background-color: #457c43; /* Warna latar belakang solid saat di-scroll */
+    color: #ffffff; /* Warna teks default menjadi gelap */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Tambahkan shadow */
+    padding: 1px;
+    border-radius: 10px;
+}
+
+header.scrolled .logo-title h1 {
+    color: #ffffff; /* Warna judul menjadi gelap */
+    position: relative;
+    top: -2px;
+}
+
+header.scrolled .non-bold {
+    color: #ffffff; /* Warna .non-bold menjadi gelap */
+}
+
+header.scrolled .menu li a {
+    color: #ffffff; /* Warna link menu menjadi gelap */
+}
+
+header.scrolled .menu a:hover {
+    color: #ffffff; /* Warna hover bisa diubah menjadi warna aksen */
+    font-weight: bold;
+}
+
+header.scrolled .tombol { /* Jika tombol hamburger digunakan */
+    color: #333333; /* Warna tombol hamburger menjadi gelap */
+}
+
+/* Hamburger Menu */
+.menu-icon {
+    display: none; /* Default: disembunyikan */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+    
+    position: absolute; /* Pastikan posisinya absolute agar tetap di tempat */
+    right: 1rem; /* Berada di pinggir kanan layar */
+    top: 40%; /* Atur jarak vertikal jika diperlukan */
+    transform: translateY(-1%); /* Untuk memposisikannya tepat di tengah secara vertikal */
+}
+.menu-icon span {
+    background-color: rgb(0, 0, 0);
+    height: 3px;
+    width: 25px;
+    transition: all 0.3s ease;
+}
+#hero-section {
+    padding: 1.6rem 1rem;
+    display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 15px; /* Sudut melengkung */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Bayangan lebih tebal */
-    overflow: hidden; /* Agar elemen tidak keluar dari kartu */
-    height: 150px; /* Tinggi kartu */
-    width: 180%; /* Lebar kartu */
-    transition: transform 0.3s, box-shadow 0.3s; /* Animasi saat hover */
+    min-height: 81vh;
+    background-image: url('image/vecteezy_rice-field-landscape-aerial-view_34581508.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left 90%; /* Gambar lebih ke bawah */
 }
+#hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 22%; /* Hanya bagian atas */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.381), rgba(255, 255, 255, 0));
+    z-index: 1; /* Pastikan ini berada di atas gambar */
+}
+/* Animasi Hero Section */
+#hero-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+/* Animasi Hero Section */
+#hero-section.animate-hero {
+    opacity: 1;
+    transform: translateY(0);
+}
+#section-dua {
+    width: 100%; /* Agar full width */
+    padding: 180px 20px; /* Beri padding atas/bawah dan kiri/kanan untuk konten */
+    background-color: #e9e9e9; /* Contoh: warna background abu-abu muda */
+
+    box-sizing: border-box;
+    text-align: center; /* Contoh: pusatkan teks */
+}
+
+.container-section-dua {
+    max-width: 1100px; /* Batasi lebar konten agar mudah dibaca */
+    margin: 0 auto; /* Pusatkan container */
+}
+
+.hero-container {
+    
+    max-width: 1200px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+}
+
+.hero-text {
+    font-family: sans-serif;
+    flex: 1;
+    position: relative;
+    top: -55px;
+    left: 100px;
+    max-width: 900px;
+}
+
+.hero-text h1 {
+    font-size: 4.1rem;
+    margin-bottom: 0rem;
+    margin-left: 7.2rem;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    
+    color: #ffffff;
+    margin-left: 2rem;
+    text-align: center;
+}
+
+.hero-text p:first-of-type {
+    margin-top: -5px;
+}
+
+ /* Responsivitas */
+ @media screen and (max-width: 768px) {
+	.menu {
+		display: none;
+	}
+    .menu li {
+		padding: 2px;
+	}
+ 
+	.menu.aktif{
+		display:inline-block;
+		position: absolute;
+		top: 64px;
+		background: #ffffff;
+		padding: 10px 20px;
+		right: 0;
+		left: 0;
+	}
+ 
+	.menu.aktif li a{
+		padding: 9px;
+		display: inline-block !important;
+	}
+ 
+	.tombol {
+		display: block;
+	}
+    .menu.aktif li {
+        text-align: left; /* Memastikan <a> yang inline-block rata kiri di dalam <li> */
+    }
+  }}
+.card-container {
+
+  display: flex;
+  flex-direction: column;
+  /* Susunan vertikal untuk semua kartu */
+  gap: 20px;
+  /* Jarak antar kartu */
+  position: relative;
+  right: 220px;
+  margin: 20px;
+}
+
+.card-link {
+  text-decoration: none;
+  /* Menghilangkan garis bawah pada link */
+  color: inherit;
+  /* Mempertahankan warna teks dari elemen dalam card */
+  display: block;
+  /* Membuat card sepenuhnya klikable */
+}
+
+
+/* Gaya dasar untuk setiap kartu */
+/* Pastikan Anda telah membersihkan definisi CSS yang duplikat.
+   Berikut adalah modifikasi dan tambahan untuk .card1, .card2, .card3
+   untuk efek animasi slide-up. */
+
+/* CARD 1 */
+.card1 {
+  position: relative;
+  /* atau absolute jika parentnya relative */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  height: 300px;
+  /* Tinggi kartu Anda */
+  width: 100%;
+  /* Atau lebar spesifik */
+
+  /* 1. Tentukan Posisi AKHIR (setelah animasi) */
+  /* Bagian atas .card1 akan berada 100px dari atas kontainernya SETELAH animasi. */
+  top: 620px;
+  /* << GANTI NILAI INI untuk posisi akhir yang Anda inginkan */
+  right: 530px;
+  /* Posisi horizontal akhir Anda */
+
+  /* 2. Atur Offset AWAL agar "Mengintip" */
+  opacity: 1;
+  /* Pastikan kartu terlihat */
+
+  /* Hitungan untuk translateY agar mengintip 40px:
+       Jika tinggi kartu 300px, dan ingin 40px terlihat,
+       maka kartu perlu didorong ke bawah sejauh (300px - 40px) = 260px
+       dari posisi 'top' akhirnya. */
+  transform: translateY(150px);
+  /* << GANTI NILAI INI untuk mengatur seberapa banyak "mengintip" */
+
+  /* Transisi untuk animasi */
+  transition: transform 0.7s cubic-bezier(0.15, 0.26, 0.25, 0.74),
+    box-shadow 0.3s;
+}
+
+
+/* CARD 2 */
+.card2 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  height: 300px;
+  width: 100%;
+
+  top: 300px;
+  /* Posisi akhir */
+  right: 184px;
+
+  opacity: 1;
+  /* Terlihat */
+  transform: translateY(150px);
+  /* CONTOH: Sesuaikan nilai ini agar 'mengintip' dengan benar */
+
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s,
+    /* Delay animasi */
+    box-shadow 0.3s;
+}
+
+/* CARD 3 */
+.card3 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  height: 300px;
+  width: 100%;
+
+  top: -21px;
+  /* Posisi akhir */
+  right: -165px;
+
+  opacity: 1;
+  /* Terlihat */
+  transform: translateY(150px);
+  /* CONTOH: Sesuaikan nilai ini agar 'mengintip' dengan benar */
+
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s,
+    /* Delay animasi */
+    box-shadow 0.3s;
+}
+
+/* Kelas ini akan ditambahkan oleh JavaScript ketika section kedua terlihat
+   untuk memicu gerakan slide-up PENUH ke posisi 'top' yang didefinisikan. */
+.card1.animate-slide-up,
+.card2.animate-slide-up,
+.card3.animate-slide-up {
+  transform: translateY(0);
+  /* Bergerak ke posisi 'top' yang telah didefinisikan, tanpa offset Y */
+}
+
+.card1:hover,
+.card2:hover,
+.card3:hover {
+  /* Jika Anda ingin efek scale saat hover di keadaan awal juga: */
+  /* transform: translateY(260px) scale(1.10); (gunakan nilai translateY yang sesuai) */
+  /* ATAU, jika hanya ingin box-shadow berubah saat hover di awal: */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
 /* Modifikasi untuk .hero-video-wrapper dan #hero-video */
 /* Pastikan ini adalah CSS yang aktif untuk wrapper */
- /* CSS untuk membuat iframe YouTube responsif dan mengisi wrapper */
-        /* Serta trik untuk memotong UI YouTube */
-        .hero-video-wrapper {
-            width: 670px;
-            height: 300px;
-            border-radius: 10px;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
-            position: relative;
-            top: -100px; /* Posisi wrapper Anda */
-            left: 90px;  /* Posisi wrapper Anda */
-            overflow: hidden; /* SANGAT PENTING untuk memotong iframe */
-            border: 3px solid white;
-            box-sizing: border-box;
-            /* background-color: rgba(255, 0, 0, 0.2); /* Untuk debugging wrapper */
-        }
+/* CSS untuk membuat iframe YouTube responsif dan mengisi wrapper */
+/* Serta trik untuk memotong UI YouTube */
+.hero-video-wrapper {
+    /* Ukuran Asli: width: 670px; height: 300px; */
+    /* Kita perbesar sekitar 25% */
+    width: 838px;  /* 670 * 1.25 = 837.5 (dibulatkan) */
+    height: 375px; /* 300 * 1.25 = 375 */
 
-        #hero-video { /* Ini adalah iframe Anda */
-            position: absolute;
-            border: none;
-            width: 100%; /* Lebar iframe = lebar wrapper */
-            
-            /* Nilai height dan top ini perlu Anda EKSPERIMEN untuk video baru */
-            /* Mulai dengan nilai ini, lalu sesuaikan dengan Developer Tools */
-            height: 170%; /* Contoh: Coba tingkatkan jika UI bawah masih terlihat */
-            top: -35%;    /* Contoh: Coba buat lebih negatif jika UI atas masih terlihat */
-            
-            left: 50%;
-            transform: translateX(-50%);
-            /* background-color: rgba(0, 0, 255, 0.2); /* Untuk debugging iframe */
-        }
+    border-radius: 12px; /* Bisa sedikit diperbesar juga jika mau */
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25); /* Bayangan bisa sedikit disesuaikan */
+    position: relative;
+
+    /* Posisi wrapper: Anda mungkin perlu menyesuaikan ini lagi
+       setelah ukurannya berubah agar tetap di tempat yang diinginkan. */
+    top: 90px;  /* Tetap, atau sesuaikan */
+    left: 380px; /* Tetap, atau sesuaikan */
+
+    overflow: hidden; /* SANGAT PENTING */
+    border: 3px solid white; /* Ketebalan border bisa disesuaikan jika mau */
+    box-sizing: border-box;
+    /* background-color: rgba(255, 0, 0, 0.2); /* Untuk debugging wrapper */
+}
+.deskripsi-video {
+  top: -300px;
+  font-family: sans-serif;
+  
+  /* Gaya Anda yang sudah ada: position, top, right, font-size, dll.
+     Pastikan 'position: relative' atau 'absolute' agar transform bekerja
+     relatif terhadap posisi normalnya atau parentnya. */
+  position: relative;
+  /* top: -300px; <-- Ini mungkin perlu disesuaikan atau dihapus jika animasi
+                       mengatur posisi vertikal akhir */
+  /* right: 580px; <-- Ini juga mungkin perlu disesuaikan atau dihapus */
+  right: 500px;
+
+  /* Keadaan Awal (Sebelum Animasi) */
+  opacity: 0;
+  transform: translateX(-100px); /* Awalnya di kiri dan transparan */
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Anda bisa menambahkan transition-delay jika mau */
+}
+
+.deskripsi-video.slide-in-from-left {
+  /* Keadaan Akhir (Setelah Animasi) */
+  opacity: 1;
+  transform: translateX(0); /* Kembali ke posisi X normalnya */
+}
+
+/* CSS untuk <p> di dalam .deskripsi-video */
+.deskripsi-video p {
+  font-family: sans-serif;
+  /* Gaya Anda yang sudah ada: font-size, right, text-align, padding, dll. */
+  position: relative;
+  left: 510px;
+  top: -10px;
+  font-size: 15px;
+  /* right: -20px; <-- Sesuaikan atau hapus jika bentrok dengan animasi parent */
+  text-align: justify;
+  padding: 15px;
+}
+
+
+/* --- Untuk Wrapper Video (Muncul dari Kanan) --- */
+.hero-video-wrapper {
+  /* Gaya Anda yang sudah ada: width, height, border-radius, box-shadow,
+     position, top, left, overflow, border, box-sizing */
+  width: 838px;
+  height: 375px;
+  border-radius: 12px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+  position: relative;
+  /* top: 90px; <-- Sesuaikan atau hapus jika animasi mengatur posisi vertikal akhir */
+  /* left: 90px; <-- Sesuaikan atau hapus jika animasi mengatur posisi horizontal akhir */
+  overflow: hidden;
+  border: 3px solid white;
+  box-sizing: border-box;
+
+  /* Keadaan Awal (Sebelum Animasi) */
+  opacity: 0;
+  transform: translateX(100px); /* Awalnya di kanan dan transparan */
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 2s cubic-bezier(0.35, 0.56, 0.55, 0.94);
+  /* Tambahkan transition-delay jika ingin video muncul setelah teks, misal:
+     transition-delay: 0.2s;
+     atau
+     transition: opacity 0.8s ... 0.2s, transform 0.8s ... 0.2s;
+  */
+}
+
+.hero-video-wrapper.slide-in-from-right {
+  /* Keadaan Akhir (Setelah Animasi) */
+   opacity: 1;
+  transform: translateX(0); /* Posisi akhir setelah muncul */
+}
+
+/* CSS untuk #hero-video (iframe) tetap sama seperti sebelumnya */
+#hero-video {
+  position: absolute;
+  border: none;
+  width: 100%;
+  height: 170%;
+  top: -35%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .video-control-button:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .mute-button {
   position: relative;
-  bottom: -10px; 
+  bottom: -10px;
   right: -5px;
   background: rgb(231, 238, 238);
   border: none;
@@ -79,110 +545,93 @@
 }
 
 
-.card2 {
-    position: relative; /* Untuk memposisikan elemen konten di atas gambar */
-    display: flex;
-    top: 170px;
-    right: 475px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px; /* Sudut melengkung */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Bayangan lebih tebal */
-    overflow: hidden; /* Agar elemen tidak keluar dari kartu */
-    height: 150px; /* Tinggi kartu */
-    width: 180%; /* Lebar kartu */
-    transition: transform 0.3s, box-shadow 0.3s; /* Animasi saat hover */
-}
-.card3 {
-    position: relative; /* Untuk memposisikan elemen konten di atas gambar */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px; /* Sudut melengkung */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Bayangan lebih tebal */
-    overflow: hidden; /* Agar elemen tidak keluar dari kartu */
-    height: 150px; /* Tinggi kartu */
-    width: 180%; /* Lebar kartu */
-    transition: transform 0.3s, box-shadow 0.3s; /* Animasi saat hover */
-}
-/*  */
-
-.card-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; /* Gambar memenuhi lebar kartu */
-    height: 100%; /* Gambar memenuhi tinggi kartu */
-    object-fit: cover; /* Sesuaikan gambar agar tetap proporsional */
-}
-.card:hover {
-  transform: scale(1.10); /* Perbesar sedikit saat di-hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Tingkatkan bayangan */
-}
-
-/* Konten kartu */
-/* Konten kartu */
 /* Container untuk semua kartu */
 .card-container {
-  
+
   display: flex;
-  flex-direction: column; /* Susunan vertikal untuk semua kartu */
-  gap: 20px; /* Jarak antar kartu */
+  flex-direction: column;
+  /* Susunan vertikal untuk semua kartu */
+  gap: 20px;
+  /* Jarak antar kartu */
   position: relative;
-  right:220px;
+  right: 270px;
   margin: 20px;
 }
+
 .card-link {
-  text-decoration: none; /* Menghilangkan garis bawah pada link */
-  color: inherit; /* Mempertahankan warna teks dari elemen dalam card */
-  display: block; /* Membuat card sepenuhnya klikable */
+  text-decoration: none;
+  /* Menghilangkan garis bawah pada link */
+  color: inherit;
+  /* Mempertahankan warna teks dari elemen dalam card */
+  display: block;
+  /* Membuat card sepenuhnya klikable */
 }
 
 
 /* Gaya dasar untuk setiap kartu */
 .card {
-  position: relative; /* Untuk memposisikan elemen konten di atas gambar */
+  position: relative;
+  /* Untuk memposisikan elemen konten di atas gambar */
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 15px; /* Sudut melengkung */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Bayangan lebih tebal */
-  overflow: hidden; /* Agar elemen tidak keluar dari kartu */
-  height: 150px; /* Tinggi kartu */
-  width: 180%; /* Lebar kartu */
-  transition: transform 0.3s, box-shadow 0.3s; /* Animasi saat hover */
+  border-radius: 15px;
+  /* Sudut melengkung */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  /* Bayangan lebih tebal */
+  overflow: hidden;
+  /* Agar elemen tidak keluar dari kartu */
+  height: 150px;
+  /* Tinggi kartu */
+  width: 180%;
+  /* Lebar kartu */
+  transition: transform 0.3s, box-shadow 0.3s;
+  /* Animasi saat hover */
 }
 
 .card-image {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%; /* Gambar memenuhi lebar kartu */
-  height: 100%; /* Gambar memenuhi tinggi kartu */
-  object-fit: cover; /* Sesuaikan gambar agar tetap proporsional */
+  width: 100%;
+  /* Gambar memenuhi lebar kartu */
+  height: 40%;
+  /* Gambar memenuhi tinggi kartu */
 }
+
 .card:hover {
-transform: scale(1.10); /* Perbesar sedikit saat di-hover */
-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Tingkatkan bayangan */
+  transform: scale(1.10);
+  /* Perbesar sedikit saat di-hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  /* Tingkatkan bayangan */
 }
 
 /* Konten kartu */
 /* Konten kartu */
 .card-content {
-position: relative;
-z-index: 2; /* Letakkan konten di atas gambar */
-color: rgb(0, 0, 0); /* Warna teks */
-background: rgba(255, 255, 255, 0.9); /* Latar belakang semi-transparan */
-padding: 20px; /* Tambahkan ruang di sekitar teks */
-right: -90px; /* Sesuaikan posisi */
-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Efek bayangan lebih besar */
-border-radius: 20px; /* Perbesar sedikit sudut melengkung */
-text-align: center;
-width: 30%; /* Perbesar lebar */
-height: 50%;
-transform: scale(1.1); /* Perbesar keseluruhan */
-font-size: 12px; /* Perkecil ukuran teks */
-line-height: 1.4; /* Sesuaikan jarak antar baris */
+  position: relative;
+  font-family: sans-serif;
+  z-index: 2;
+  /* Letakkan konten di atas gambar */
+  color: rgb(0, 0, 0);
+  /* Warna teks */
+  background: rgb(255, 254, 254);
+  /* Latar belakang semi-transparan */
+  padding: 20px;
+  /* Tambahkan ruang di sekitar teks */
+  right: 0px;
+  /* Sesuaikan posisi */
+  top: 73px;
+  text-align: center;
+  width: 100%;
+  /* Perbesar lebar */
+  height: 50%;
+  transform: scale(1.1);
+  /* Perbesar keseluruhan */
+  font-size: 12px;
+  /* Perkecil ukuran teks */
+  line-height: 1.4;
+  /* Sesuaikan jarak antar baris */
 }
 
 
@@ -204,115 +653,138 @@ line-height: 1.4; /* Sesuaikan jarak antar baris */
   font-size: 200rem;
   margin: 0;
 }
+
 .card-title-p {
-position: relative;
-top: 10px;
-right: -2px;
-font-size: 200rem;
-margin: 0;
+  position: relative;
+  top: 10px;
+  right: -2px;
+  font-size: 200rem;
+  margin: 0;
 }
+
 .card-title-w {
-position: relative;
-top: 3px;
-right: -2px;
-font-size: 200rem;
-margin: 0;
+  position: relative;
+  top: 3px;
+  right: -2px;
+  font-size: 200rem;
+  margin: 0;
 }
 
 .card-description {
-    font-size: 0.95rem;
-    margin: 0;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
-  
+
 /* Responsivitas */
 @media (max-width: 768px) {
   .hero-section {
-      background-size: cover;
-      background-position: center; /* Tambahkan ini untuk centering yang lebih baik */
-      background-repeat: no-repeat; /* Tambahkan ini untuk mencegah tiling */
-      min-height: 300px; /* ATAU height: 300px; (sesuaikan nilainya) */
-      width: 100%; /* Pastikan lebarnya juga ada jika perlu */
+    background-size: cover;
+    background-position: center;
+    /* Tambahkan ini untuk centering yang lebih baik */
+    background-repeat: no-repeat;
+    /* Tambahkan ini untuk mencegah tiling */
+    min-height: 300px;
+    /* ATAU height: 300px; (sesuaikan nilainya) */
+    width: 100%;
+    /* Pastikan lebarnya juga ada jika perlu */
   }
-    .hero-container {
-        flex-direction: column;
-        text-align: center;
-        position: relative;
-        top: -60px;
-        right:70px;
-        
-    }
-    .hero-text h1 {
-        font-size: 2.1rem;
-        position: relative;
-        top: -153px;
-        right:-10px;
-        margin-right: -290px;
-        font-weight: bold;
-        /* Menggunakan blur-radius untuk outline yang lebih lembut */
-        text-shadow:
-          -1px -1px 2px #000,
-           1px -1px 2px #000,
-          -1px  1px 2px #000,
-           1px  1px 2px #000;
+
+  .hero-container {
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+    top: -60px;
+    right: 70px;
+
   }
-    .hero-text p {
-        font-size: 0.9rem;
-        position: relative;
-        top: -143px;
-        right:-258px;
-        margin-left: -170px;
-    }
-    .card-container {
-  
-      display: flex;
-      flex-direction: column; /* Susunan vertikal untuk semua kartu */
-      gap: 20px; /* Jarak antar kartu */
-      position: relative;
-      top: 120px;
-      right:142px;
-      margin: 20px;
-      width: 490px;
-    }
-    
-    .card-content {
-      position: relative;
-      z-index: 2; /* Letakkan konten di atas gambar */
-      color: rgb(0, 0, 0); /* Warna teks */
-      background: rgba(235, 235, 235, 0.9); /* Latar belakang semi-transparan */
-      padding: 20px; /* Tambahkan ruang di sekitar teks */
-      right: -10px; /* Sesuaikan posisi */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Efek bayangan lebih besar */
-      border-radius: 10px; /* Perbesar sedikit sudut melengkung */
-      text-align: center;
-      width: 30%; /* Perbesar lebar */
-      height: 30%;
-      transform: scale(1.1); /* Perbesar keseluruhan */
-      line-height: 1.4; /* Sesuaikan jarak antar baris */
-    }
-    .card-title-d {
-      position: relative;
-      top: -14px;
-      right: 2px;
-      font-size: 200rem;
-      margin: 0;
+
+  .hero-text h1 {
+    font-size: 2.1rem;
+    position: relative;
+    top: -153px;
+    right: -10px;
+    margin-right: -290px;
+    font-weight: bold;
+    /* Menggunakan blur-radius untuk outline yang lebih lembut */
+    text-shadow:
+      -1px -1px 2px #000,
+      1px -1px 2px #000,
+      -1px 1px 2px #000,
+      1px 1px 2px #000;
   }
+
+  .hero-text p {
+    font-size: 0.9rem;
+    position: relative;
+    top: -143px;
+    right: -258px;
+    margin-left: -170px;
+  }
+
+  .card-container {
+
+    display: flex;
+    flex-direction: column;
+    /* Susunan vertikal untuk semua kartu */
+    gap: 20px;
+    /* Jarak antar kartu */
+    position: relative;
+    top: 120px;
+    right: 142px;
+    margin: 20px;
+    width: 490px;
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 2;
+    /* Letakkan konten di atas gambar */
+    color: rgb(0, 0, 0);
+    /* Warna teks */
+    background: rgba(235, 235, 235, 0.9);
+    /* Latar belakang semi-transparan */
+    padding: 20px;
+    /* Tambahkan ruang di sekitar teks */
+    right: -10px;
+    /* Sesuaikan posisi */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Efek bayangan lebih besar */
+    border-radius: 10px;
+    /* Perbesar sedikit sudut melengkung */
+    text-align: center;
+    width: 30%;
+    /* Perbesar lebar */
+    height: 30%;
+    transform: scale(1.1);
+    /* Perbesar keseluruhan */
+    line-height: 1.4;
+    /* Sesuaikan jarak antar baris */
+  }
+
+  .card-title-d {
+    position: relative;
+    top: -14px;
+    right: 2px;
+    font-size: 200rem;
+    margin: 0;
+  }
+
   .card-title-p {
     position: relative;
     top: -25px;
     right: 2px;
     font-size: 200rem;
     margin: 0;
+  }
+
+  .card-title-w {
+    position: relative;
+    top: -13px;
+    right: 2px;
+    font-size: 200rem;
+    margin: 0;
+  }
+
+
 }
-.card-title-w {
-  position: relative;
-  top: -13px;
-  right: 2px;
-  font-size: 200rem;
-  margin: 0;
-}
-    
-    
-}
-  
-  

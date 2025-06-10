@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard SAPA Jatim</title>
     <link rel="icon" type="image/png" sizes="48x48" href="image/logo3.jpg">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style-dashboard.css" />
     
     <style>
@@ -18,10 +17,9 @@
         <div class="header-container">
             <!-- Logo dan Judul -->
             <div class="logo-title">
-                <img src="image/Reg I Primary without Text.png" alt="Logo" class="logo">
+                <img src="image/logosaja.png" alt="Logo" class="logo">
                 <h1>Direktorat Pembangunan Indonesia Barat | <span class="non-bold">Kementerian PPN/Bappenas</span></h1>
             </div>
-            <!-- Navigasi -->
             <nav>
                   <ul class="menu" >
                       <li ><a href="index.html">Beranda</a></li>
@@ -33,13 +31,57 @@
               </div>
             </nav>
         </div>
-    </header><br>
+    </header>
 
     <main>
      
         <!-- Hero Section -->
-        <section id="hero-section" style="background-image: url('image/vecteezy_rice-field-landscape-aerial-view_34581508.jpg'); " >
-          <div class="hero-video-wrapper">  
+        <section id="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('image/vecteezy_rice-field-landscape-aerial-view_34581508.jpg');height: 655px; /* Tinggi section */
+       margin: -5px auto;
+       z-index: 0; " >
+          
+              <!-- === AKHIR BAGIAN VIDEO YOUTUBE === -->
+
+              <div class="hero-text">
+                  <h1 class="montserrat">Dashboard SAPA Jatim</h1>
+                  <p style="position: relative;right: 0px;font-size: 25px;">(Swasembada Pangan Provinsi Jawa Timur)</p>
+                  <p style="position: relative;right: -12px;">Mewujudkan ekosistem swasembada pangan yang berkelanjutan melalui data dan inovasi, mendukung program makan bergizi gratis serta pemberdayaan masyarakat desa di Jawa Timur</p>
+              </div>
+          </div>
+          <div class="card-container">
+            <!-- Card 1 -->
+            <a href="peta.html" class="card-link">
+              <div class="card1">
+                <img src="image/petaaa.png" alt="Card Image" class="card-image" />
+                <div class="card-content">
+                    <h3 class="card-title-p" style="font-size: 22px;">Peta Tematik Wilayah</h3>
+                    <p style="font-size: 13px;">Menyajikan visualisasi data <BR> spesifik untuk tema tertentu <BR>pada suatu area geografis.</p>
+                </div>
+            </div>
+            </a>
+            <a href="tren.html" class="card-link">
+              <div class="card2" sty>
+                <img src="image/grafikdata.jpg" alt="Card Image" class="card-image"  />
+                <div class="card-content">
+                    <h3 class="card-title-d" style="font-size: 25px;">Data Terkait</h3>
+                    <p style="font-size: 13px;">Menyediakan akses ke berbagai <BR>indikator sosial-ekonomi penting suatu <BR> daerah yang divisualisasikan <BR> dalam bentuk grafik.</p>
+                </div>
+            </div>
+            </a>
+            <a href="https://test-peta-rapat.rajawali.site/" class="card-link">
+              <div class="card3">
+                <img src="image/petawebgis.jpg" alt="Card Image" class="card-image" />
+                <div class="card-content">
+                    <h3 class="card-title-w" style="font-size: 25px;">WebGIS Jatim</h3>
+                    <p style="font-size: 13px;">Web Geograraphic Information System <BR> yang menyajikan peta dan <BR> data geografis secara interaktif.</p>
+                </div>
+            </div>
+            </a>
+          </div>
+      </section>
+      <section id="section-dua" style="background-image: url(image/section2.png);height: 700px;">  <!-- INI SECTION BARU ANDA -->
+        <div class="container-section-dua"> <!-- Opsional: container untuk konten di section baru -->
+            <div class="hero-video-wrapper">  
             
     <iframe
         id="hero-video"
@@ -51,42 +93,17 @@
         allowfullscreen>
     </iframe>
 </div>
-              <!-- === AKHIR BAGIAN VIDEO YOUTUBE === -->
-
-              <div class="hero-text">
-                  <h1>Dashboard SAPA Jatim</h1>
-                  <p>(Swasembada Pangan Provinsi Jawa Timur)</p>
-                  <p>Mewujudkan ekosistem swasembada pangan yang berkelanjutan melalui data dan inovasi, mendukung program makan bergizi gratis serta pemberdayaan masyarakat desa di Jawa Timur</p>
-              </div>
-          </div>
-          <div class="card-container">
-            <!-- Card 1 -->
-            <a href="peta.html" class="card-link">
-              <div class="card1">
-                <img src="image/peta1.png" alt="Card Image" class="card-image" />
-                <div class="card-content">
-                    <h3 class="card-title-p" style="font-size: 22px;">Peta Tematik Wilayah</h3>
-                </div>
-            </div>
-            </a>
-            <a href="tren.html" class="card-link">
-              <div class="card2">
-                <img src="image/data_terkait.png" alt="Card Image" class="card-image" />
-                <div class="card-content">
-                    <h3 class="card-title-d" style="font-size: 25px;">Data Terkait</h3>
-                </div>
-            </div>
-            </a>
-            <a href="https://test-peta-rapat.rajawali.site/" class="card-link">
-              <div class="card3">
-                <img src="image/image.png" alt="Card Image" class="card-image" />
-                <div class="card-content">
-                    <h3 class="card-title-w" style="font-size: 25px;">WebGis Jatim</h3>
-                </div>
-            </div>
-            </a>
-          </div>
-      </section>
+        </div>
+        <div class="deskripsi-video">
+            <h1>Judul Video</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Sed do eiusmod <br> tempor incididunt ut labore et dolore magna aliqua.
+                 Nunc sed id semper <br> risus in hendrerit. Pharetra sit amet aliquam id diam maecenas ultricies mi.</p>
+        </div>
+        <div class="copyright" style="position: relative;top: -50px;right: 530px;font-size: 17px;font-family:sans-serif ;">
+            Copyright BAPPEDA Provinsi Jawa Timur Tahun 2025
+        </div>
+        
+    </section>
       
     
     <script src="js/script.js"></script>
@@ -98,6 +115,137 @@
           menu.classList.toggle('aktif');
       });
   </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const heroSection = document.querySelector('#hero-section');
+    const sectionPemicuKonten = document.querySelector('#section-dua');
+    const cardsToAnimate = document.querySelectorAll('.card1, .card2, .card3');
+    const deskripsiVideo = document.querySelector('.deskripsi-video');
+    const videoWrapper = document.querySelector('.hero-video-wrapper');
+
+    // ... (Pemeriksaan elemen seperti sebelumnya) ...
+    if (!heroSection) console.warn('#hero-section tidak ditemukan.');
+    if (!sectionPemicuKonten) console.warn('#section-dua tidak ditemukan.');
+    if (cardsToAnimate.length === 0) console.warn('Tidak ada kartu ditemukan.');
+    if (!deskripsiVideo) console.warn('.deskripsi-video tidak ditemukan.');
+    if (!videoWrapper) console.warn('.hero-video-wrapper tidak ditemukan.');
+
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger ketika 10% dari section terlihat.
+                       // Anda mungkin perlu menyesuaikan ini.
+    };
+
+    // Observer untuk #section-dua (Memicu animasi NAIK/MUNCUL)
+    if (sectionPemicuKonten && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
+        const contentObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Kartu naik
+                    cardsToAnimate.forEach(card => card.classList.add('animate-slide-up'));
+                    // Teks & Video muncul
+                    if (deskripsiVideo) deskripsiVideo.classList.add('slide-in-from-left');
+                    if (videoWrapper) videoWrapper.classList.add('slide-in-from-right');
+                }
+            });
+        }, observerOptions);
+        contentObserver.observe(sectionPemicuKonten);
+    }
+
+    // Observer untuk #hero-section (Memicu animasi KEMBALI KE AWAL)
+    if (heroSection && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
+        const heroObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Kartu kembali
+                    cardsToAnimate.forEach(card => card.classList.remove('animate-slide-up'));
+                    // Teks & Video kembali (memicu transisi ke state awal)
+                    if (deskripsiVideo) deskripsiVideo.classList.remove('slide-in-from-left');
+                    if (videoWrapper) videoWrapper.classList.remove('slide-in-from-right');
+                }
+            });
+        }, observerOptions);
+        heroObserver.observe(heroSection);
+    }
+});
+document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('header');
+        // Tentukan jarak scroll sebelum header berubah (misalnya, 50 piksel)
+        const scrollThreshold = 50;
+
+        if (header) { // Pastikan elemen header ada
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > scrollThreshold) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        } else {
+            console.warn('Elemen header tidak ditemukan untuk efek scroll.');
+        }
+
+        // Script untuk tombol hamburger Anda (jika masih ada)
+        const tombol = document.querySelector('.tombol');
+        const menu = document.querySelector('.menu');
+
+        if (tombol && menu) { // Tambahkan pengecekan
+            tombol.addEventListener('click', () => {
+                menu.classList.toggle('aktif');
+            });
+        }
+
+        // Script untuk animasi hero dan section-dua (dari kode Anda sebelumnya)
+        // ... (kode IntersectionObserver Anda bisa diletakkan di sini juga
+        //      atau pastikan sudah ada di file js/script.js) ...
+        const heroSection = document.querySelector('#hero-section');
+        const sectionPemicuKonten = document.querySelector('#section-dua');
+        const cardsToAnimate = document.querySelectorAll('.card1, .card2, .card3');
+        const deskripsiVideo = document.querySelector('.deskripsi-video');
+        const videoWrapper = document.querySelector('.hero-video-wrapper');
+
+        if (!heroSection) console.warn('#hero-section tidak ditemukan.');
+        if (!sectionPemicuKonten) console.warn('#section-dua tidak ditemukan.');
+        if (cardsToAnimate.length === 0) console.warn('Tidak ada kartu ditemukan.');
+        if (!deskripsiVideo) console.warn('.deskripsi-video tidak ditemukan.');
+        if (!videoWrapper) console.warn('.hero-video-wrapper tidak ditemukan.');
+
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        if (sectionPemicuKonten && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
+            const contentObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        cardsToAnimate.forEach(card => card.classList.add('animate-slide-up'));
+                        if (deskripsiVideo) deskripsiVideo.classList.add('slide-in-from-left');
+                        if (videoWrapper) videoWrapper.classList.add('slide-in-from-right');
+                    }
+                });
+            }, observerOptions);
+            contentObserver.observe(sectionPemicuKonten);
+        }
+
+        if (heroSection && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
+            const heroObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        cardsToAnimate.forEach(card => card.classList.remove('animate-slide-up'));
+                        if (deskripsiVideo) deskripsiVideo.classList.remove('slide-in-from-left');
+                        if (videoWrapper) videoWrapper.classList.remove('slide-in-from-right');
+                    }
+                });
+            }, observerOptions);
+            heroObserver.observe(heroSection);
+        }
+    });
+</script>
   
 </body>
 </html>

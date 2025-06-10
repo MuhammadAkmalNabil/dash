@@ -1,20 +1,20 @@
-/* Header */
-.container {
-    display: flex;
-	justify-content: space-between;
-	align-items: center;
+ /* File: css/style.css */
+
+html, body {
+    margin: 0;
+    padding: 0; /* Lebih aman untuk mereset padding juga */
+}
+/* Lalu atur padding-top yang Anda butuhkan hanya pada body */
+body {
+    padding-top: 70px; /* Ganti dengan tinggi header Anda */
 }
 
-header {
-    position: sticky;
-    top: 0;
-    border-radius: 10px;
-    background-color: #ffffff; /* Warna biru untuk header */
-    color: rgb(0, 0, 0);
-    z-index: 1000;
-    padding: 0.2rem 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+.montserrat{
+    font-family: "Montserrat", sans-serif;
 }
+
 
 /* Container Header */
 .header-container {
@@ -80,9 +80,10 @@ nav {
 	list-style: none;
 	padding: 0;			
 }
- 
 .menu li{
-	padding-left: 0;
+    position: relative;
+right:-90px;
+	padding-left: 1px;
 	margin-right: 10px;
 }
  
@@ -101,104 +102,6 @@ nav {
     font-weight: bold; /* Jadikan teks bold */
     transform: scale(1.1); /* Membesar sedikit */
 }
-
-/* Hamburger Menu */
-.menu-icon {
-    display: none; /* Default: disembunyikan */
-    flex-direction: column;
-    cursor: pointer;
-    gap: 5px;
-    
-    position: absolute; /* Pastikan posisinya absolute agar tetap di tempat */
-    right: 1rem; /* Berada di pinggir kanan layar */
-    top: 40%; /* Atur jarak vertikal jika diperlukan */
-    transform: translateY(-1%); /* Untuk memposisikannya tepat di tengah secara vertikal */
-}
-
-.menu-icon span {
-    background-color: rgb(0, 0, 0);
-    height: 3px;
-    width: 25px;
-    transition: all 0.3s ease;
-}
-
-
-/* Hero Section */
-#hero-section {
-    background-color: #f7f9fc;
-    padding: 1.3rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 81vh;
-    background-image: url('image/vecteezy_rice-field-landscape-aerial-view_34581508.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: left 90%; /* Gambar lebih ke bawah */
-    border-radius: 15px;
-}
-
-#hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 22%; /* Hanya bagian atas */
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
-    z-index: 1; /* Pastikan ini berada di atas gambar */
-    border-radius: 15px 15px 0 0; /* Hanya sudut atas */
-}
-/* Animasi Hero Section */
-#hero-section {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-/* Animasi Hero Section */
-#hero-section.animate-hero {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.hero-container {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    text-align: left;
-}
-
-.hero-text {
-    flex: 1;
-    position: relative;
-    top: -125px;
-    left: 100px;
-    max-width: 600px;
-}
-
-.hero-text h1 {
-    font-size: 4.1rem;
-    margin-bottom: 0rem;
-    margin-left: 4rem;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.hero-text p {
-    font-size: 1.2rem;
-    color: #ffffff;
-    margin-left: 4rem;
-    text-align: justify;
-}
-
-.hero-text p:first-of-type {
-    margin-top: -5px;
-}
-
  /* Responsivitas */
  @media screen and (max-width: 768px) {
 	.menu {

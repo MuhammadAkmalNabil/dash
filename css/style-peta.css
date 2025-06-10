@@ -1,6 +1,105 @@
+html, body {
+    overflow: hidden; /* MENCEGAH SCROLLBAR PADA BODY */
+}
 /* === STYLE GLOBAL & RESET DASAR (Jika ada, letakkan di atas) === */
 /* Misalnya: body, html { font-family: Arial, sans-serif; margin: 0; padding: 0; } */
+header {
+    position: absolute; /* Awalnya absolute agar bisa di atas peta */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: transparent; /* Awalnya transparan */
+    color: #000000; /* Teks putih untuk kontras dengan peta (jika peta gelap) atau sesuaikan */
+    z-index: 10000; /* z-index LEBIH TINGGI dari elemen peta Leaflet (biasanya Leaflet controls punya z-index sekitar 1000) */
+    padding: 0.5rem 1rem; /* Sesuaikan padding agar header tidak terlalu besar */
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    font-family: sans-serif; /* Atau font header yang Anda inginkan */
+    box-sizing: border-box; /* Penting agar padding tidak menambah lebar/tinggi total */
+   
+}
 
+header.scrolled {
+    position: fixed; /* Menjadi fixed saat di-scroll agar tetap di atas */
+    background-color: #df0000; /* Latar belakang solid */
+    color: #333333; /* Teks menjadi gelap */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Warna teks elemen dalam header saat di-scroll (mirip index.html) */
+header.scrolled .logo-title h1,
+header.scrolled .non-bold,
+header.scrolled .menu li a,
+header.scrolled .tombol {
+    color: #333333;
+}
+header.scrolled .menu a:hover {
+    color: #007bff;
+}
+
+/* Gaya awal untuk elemen di dalam header (saat transparan) */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo-title h1 {
+    font-size: 1.3rem;
+    position: relative;
+    top: -2px;
+    margin: 0;
+    font-weight: bold;
+    left: -159px;
+    color: #000000; /* Default untuk transparan */
+}
+.non-bold {
+    font-weight: normal;
+    font-size: 1.1rem;
+    color: #000000; /* Default untuk transparan */
+}
+.logo {
+    position: relative;
+    right: 150px;
+    top:-1px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+nav {
+    display: flex;
+    justify-content: flex-end;
+}
+.menu {
+    margin: 0;
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+.menu li {
+    margin-right: 15px;
+}
+.menu li:last-child {
+    margin-right: 0;
+}
+.menu li a {
+    color: #060606; /* Default untuk transparan */
+    text-decoration: none;
+    position: relative;
+    right: -40px;
+    display: inline-block;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+}
+
+.tombol {
+    display: none;
+    color: #ffffff; /* Default untuk transparan */
+    font-size: 19pt;
+}
 /* === PANEL INFORMASI FITUR (Pop-up saat klik di peta) === */
 .layer-panel {
     display: none; /* Sembunyikan panel secara default */
@@ -151,7 +250,7 @@ hr.panel-section-separator {
     position: relative;
     width: 100%;
     height: 644px; /* Sesuaikan sesuai kebutuhan layout Anda */
-    border-radius: 10px;
+ 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
@@ -195,7 +294,7 @@ hr.panel-section-separator {
 
 .toggle-layer-control-button { /* Tombol untuk membuka/menutup panel daftar layer */
     position: absolute;
-    top: 75px;
+    top: 81px;
     left: 60px;
     background-color: white;
     padding: 10px; /* Samakan dengan .custom-map-button */
@@ -222,15 +321,13 @@ hr.panel-section-separator {
     top: 75px;
     left: 115px; /* Jarak dari tombol sebelumnya */
 }
-#toggleWilayahLabelControlButton {
-    /* Posisi diatur via inline style di HTML, itu oke */
-}
+
 
 
 /* === PANEL DAFTAR LAYER KUSTOM (.custom-layer-control) === */
 .custom-layer-control {
     position: fixed;
-    top: 130px; /* Di bawah tombol kontrol */
+    top: 140px; /* Di bawah tombol kontrol */
     left: 60px; /* Sejajar dengan tombol toggle-nya */
     width: 260px; /* Sedikit lebih lebar agar konten tidak terlalu sempit */
     background-color: white;
@@ -513,16 +610,6 @@ hr.panel-section-separator {
     align-items: center;
     margin-bottom: 8px;
 }
-.custom-wilayah-label-control-body .layer-item:last-child {
-    margin-bottom: 0;
-}
-.custom-wilayah-label-control-body .layer-label-text { /* Asumsi class ini dipakai */
-    /* Style sudah ada di atas, akan terwarisi jika classnya sama */
-}
-.custom-wilayah-label-control-body .layer-label-text input[type="checkbox"] {
-    /* Style sudah ada di atas, akan terwarisi jika classnya sama */
-}
-
 
 /* === PANEL GALERI BASEMAP === */
 .basemap-gallery-panel {
