@@ -1,3 +1,5 @@
+
+
 .hero-section-kontak {
   text-align: center;
   padding: 50px 20px;
@@ -29,11 +31,11 @@
 .logo-kerjasama {
   width: 220px; /* Sesuaikan ukuran logo */
   height: auto;
-  transition: transform 0.3s ease}
-  .logo-kerjasama-akm {
-    width: 220px; /* Sesuaikan ukuran logo */
-    height: auto;
-    transition: transform 0.3s ease}
+  transition: transform 0.3s ease;}
+.logo-kerjasama-akm {
+ width: 220px; /* Sesuaikan ukuran logo */
+ height: auto;
+ transition: transform 0.3s ease;}
     
 .logo-kerjasama-ppn {
   width: 250px; /* Sesuaikan ukuran logo */
@@ -46,6 +48,15 @@
   transition: transform 0.3s ease;
 }
 .logo-kerjasama:hover {
+  transform: scale(1.1); /* Efek hover untuk memperbesar logo */
+}
+.logo-kerjasama-akm:hover {
+  transform: scale(1.1); /* Efek hover untuk memperbesar logo */
+}
+.logo-kerjasama-ppn:hover {
+  transform: scale(1.1); /* Efek hover untuk memperbesar logo */
+}
+.logo-kerjasama-utm:hover {
   transform: scale(1.1); /* Efek hover untuk memperbesar logo */
 }
 
@@ -69,11 +80,21 @@ footer {
 .footer-section {
     flex: 1;
     margin: 15px;
-    min-width: 150px;
+    min-width: 200px;
+}
+
+/* Target khusus untuk kolom Menu */
+.footer-section-menu {
+  margin-right: 5px; /* Anda bisa sesuaikan nilai ini, defaultnya 15px */
+}
+
+/* Target khusus untuk kolom Maps */
+.footer-section-maps {
+  margin-left: 5px; /* Anda bisa sesuaikan nilai ini, defaultnya 15px */
 }
 
 .footer-section h4 {
-    margin: 0;
+    margin: 0 0 15px 0;
     color: #666; 
     font-size: 30px;
     font-weight: bold;
@@ -109,9 +130,21 @@ footer {
 }
 
 .logo-footer img {
-    width: 40px;
+    /* width: 40px; */
     margin-right: 10px;
     vertical-align: middle;
+}
+
+.footer-section .map-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.footer-section .map-container iframe {
+  width: 100%;
+  height: 260px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
 
 .footer-bottom {

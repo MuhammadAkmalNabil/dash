@@ -9,6 +9,9 @@ var osmBasemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
 }).addTo(map);
 
 // Variabel Global
+
+var kemiskinanLayer; // Pastikan variabel ini ada
+var geojsonData;
 var stuntingLayer;
 var tanamanPanganLayer, tanamanSayuranLayer, tanamanBiofarmakaLayer, buahLayer, perkebunanLayer;
 var tanamanHiasLayer;
@@ -43,7 +46,84 @@ function parseNumericString(value) {
     }
     return 0;
 }
+// <<< TAMBAHKAN DUA FUNGSI BARU INI >>>
 
+function formatJumlahOrang(value) {
+    const number = parseInt(value, 10);
+    if (isNaN(number)) return 'N/A';
+    return number.toLocaleString('id-ID') + ' jiwa';
+}
+
+// <<< TAMBAHKAN FUNGSI BARU INI >>>
+function processAllIndicatorsForYear(trendData, year) {
+    const allDataByRegion = {};
+    const indicators = trendData.indicators;
+
+    // Pastikan daftar lokasi ada
+    if (!indicators.locations) {
+        console.error("Properti 'locations' tidak ditemukan di data-tren.json");
+        return {};
+    }
+
+    // Iterasi setiap wilayah yang ada di daftar
+    indicators.locations.forEach(regionName => {
+        allDataByRegion[regionName] = {};
+
+        // Iterasi setiap jenis indikator (persentase, jumlah, manusia, dll.)
+        for (const indicatorKey in indicators) {
+            // Lewati properti yang bukan objek indikator data
+            if (indicatorKey === 'locations' || !indicators[indicatorKey].data) continue;
+
+            const indicator = indicators[indicatorKey];
+            const yearIndex = indicator.labels.indexOf(year);
+
+            // Jika tahun ditemukan dan ada data untuk wilayah ini
+            if (yearIndex !== -1 && indicator.data[regionName] !== undefined) {
+                const value = indicator.data[regionName][yearIndex];
+                
+                // Simpan data dengan format yang rapi
+                allDataByRegion[regionName][indicatorKey] = {
+                    name: indicator.name,
+                    value: value,
+                    unit: indicator.unit
+                };
+            }
+        }
+    });
+
+    return allDataByRegion;
+}
+
+// <<< TAMBAHKAN JUGA FUNGSI HELPER UNTUK FORMAT ANGKA UMUM >>>
+function formatGenericNumber(value) {
+    if (value === null || typeof value === 'undefined') return 'N/A';
+    // Gunakan toLocaleString untuk format angka yang baik dengan pemisah ribuan
+    return parseFloat(value).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function processTrendData(trendData) {
+    const kemiskinanData = {};
+    const persentaseIndicator = trendData.indicators.persentase;
+    const jumlahIndicator = trendData.indicators.jumlah;
+    const index2024 = persentaseIndicator.labels.indexOf(2024);
+
+    if (index2024 === -1) {
+        console.error("Tahun 2024 tidak ditemukan dalam data tren.");
+        return {};
+    }
+
+    for (const wilayah in persentaseIndicator.data) {
+        if (jumlahIndicator.data[wilayah]) {
+            const persentase = persentaseIndicator.data[wilayah][index2024];
+            const jumlah = jumlahIndicator.data[wilayah][index2024] * 1000;
+            kemiskinanData[wilayah] = {
+                persentase_penduduk_miskin: persentase,
+                jumlah_penduduk_miskin_2024: jumlah
+            };
+        }
+    }
+    return kemiskinanData;
+}
 // Fungsi untuk memformat angka menjadi format Rupiah
 function formatRupiah(value) {
     const number = parseNumericString(value);
@@ -52,9 +132,6 @@ function formatRupiah(value) {
     return 'Rp ' + number.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
-// Helper function untuk mengekstrak angka peringkat dari string value
-// <<< GANTI DENGAN DUA FUNGSI BARU INI >>>
-// <<< GANTI FUNGSI LAMA ANDA DENGAN VERSI BARU INI >>>
 // <<< GANTI FUNGSI LAMA ANDA DENGAN VERSI BARU INI >>>
 // <<< GANTI DENGAN VERSI FINAL INI >>>
 function extractPeringkatFromValue(valueString) {
@@ -124,25 +201,54 @@ const KATEGORI_DENGAN_PERINGKAT = [
     'Telur Unggas & Susu Sapi',
     'Perikanan Budidaya',
 ];
+// <<< TAMBAHKAN FUNGSI BARU INI DI BAGIAN ATAS >>>
+function normalizeRegionName(name) {
+    if (typeof name !== 'string') return '';
+    // Menghapus "Kabupaten " atau "Kota " (tidak case-sensitive) dan spasi di awal/akhir
+    return name.replace(/^(Kabupaten |Kota )/i, '').trim();
+}
 
 // Fungsi untuk membuat konten popup
+// <<< GANTI FUNGSI createPopupContent ANDA DENGAN VERSI LENGKAP INI >>>
 function createPopupContent(properties) {
     let content = `
-        <div style="text-align: left; max-height: 300px; overflow-y: auto; padding-right:10px;">
+        <div style="text-align: left; max-height: 350px; overflow-y: auto; padding-right:10px;">
             <div style="text-align: center;">
-                <img src="${properties.icon_image || 'image/default.jpg'}" style="width:100px; height:100px; border-radius:5px; margin-bottom:10px;"><br>
+                <img src="${properties.icon_image || 'image/default.jpg'}" style="width:80px; height:80px; border-radius:5px; margin-bottom:10px;"><br>
                 <b style="font-size: 17px;">${properties.WADMKK}</b><br>
                 Provinsi: ${properties.WADMPR}<br>
             </div>`;
+            
     let dataAdded = false;
 
-    if (stuntingLayer && map.hasLayer(stuntingLayer) && typeof properties.stunting_rate !== 'undefined') {
-        content += `<hr style="margin: 8px 0;">
-                    <strong>Tingkat Stunting:</strong> <strong>${properties.stunting_rate}%</strong><br>
-                    Komoditas Utama Umum: ${properties.main_commodity || '-'}`;
+    // BAGIAN 1: DATA TREN (SELALU TAMPIL)
+    if (properties.trendIndicators2024 && Object.keys(properties.trendIndicators2024).length > 0) {
+        content += `<hr style="margin: 8px 0;"><strong>Indikator Utama (2024):</strong>
+                    <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 0;font-size:11px;">`;
+        
+        const trend = properties.trendIndicators2024;
+        const displayOrder = ['persentase', 'jumlah', 'manusia', 'ekonomi', 'terbuka', 'gini', 'pangan', 'stunting'];
+
+        displayOrder.forEach(key => {
+            if (trend[key] && trend[key].value !== null) {
+                const item = trend[key];
+                let formattedValue;
+
+                if (key === 'jumlah') {
+                    formattedValue = formatJumlahOrang(item.value * 1000);
+                } else {
+                    formattedValue = `${formatGenericNumber(item.value)} ${item.unit}`;
+                }
+                
+                content += `<li>${item.name}: <strong>${formattedValue}</strong></li>`;
+            }
+        });
+
+        content += `</ul>`;
         dataAdded = true;
     }
-
+ 
+    // BAGIAN 2: DATA KOMODITAS (TAMPIL JIKA LAYER AKTIF)
     const categoriesToShow = {
         'Tanaman Hias': { layer: tanamanHiasLayer, key: 'Tanaman_Hias' },
         'Tanaman Pangan': { layer: tanamanPanganLayer, key: 'Tanaman_Pangan' },
@@ -155,83 +261,26 @@ function createPopupContent(properties) {
         'Perikanan Tangkap': { layer: perikananTangkapLayer, key: 'Perikanan_Tangkap' },
         'Perikanan Budidaya': { layer: perikananBudidayaLayer, key: 'Perikanan_Budidaya' }
     };
-
-    for (const categoryName in categoriesToShow) {
-        const catInfo = categoriesToShow[categoryName];
-        if (catInfo.layer && map.hasLayer(catInfo.layer)) {
-            content += `<hr style="margin: 8px 0;">`;
-            if (properties.categories && properties.categories[catInfo.key] && properties.categories[catInfo.key].length > 0) {
-                content += `Komoditas ${categoryName}:<ul style="padding-left: 20px;">`;
-                properties.categories[catInfo.key].forEach(item => {
-                    let displayValue = item.value;
-                    let peringkatLabelHtml = '';
-
-                    if (KATEGORI_DENGAN_PERINGKAT.includes(categoryName)) {
-                        const peringkatAngka = extractPeringkatFromValue(item.value);
-                        if (peringkatAngka !== null) {
-                            peringkatLabelHtml = getPeringkatProvinsiLabel(peringkatAngka);
-                            displayValue = getValueWithoutPeringkat(item.value);
-                        }
-                    }
-                    content += `<li>${item.name}: ${displayValue}${peringkatLabelHtml}</li>`;
-                });
-                content += `</ul>`;
-            } else {
-                content += `<strong>Komoditas ${categoryName}:</strong><br><em>Tidak ada data</em>`;
-            }
-            dataAdded = true;
-        }
-    }
-
-    // Logika untuk menampilkan data TKDD dari struktur baru
-    const tkddLabels = {
-        'dbh': 'Dana Bagi Hasil (DBH)',
-        'dau': 'Dana Alokasi Umum (DAU)',
-        'dak_fisik': 'DAK Fisik',
-        'dak_non_fisik': 'DAK Non-Fisik',
-        'hibah_ke_daerah': 'Hibah ke Daerah',
-        'dana_desa': 'Dana Desa',
-        'insentif_fiskal': 'Insentif Fiskal',
-        'jumlah_tkdd': 'Total TKDD'
-    };
-
-    if (tkddLayer && map.hasLayer(tkddLayer)) {
-        let tkddHtmlContent = '';
-        let hasValidTkddItem = false;
-        if (properties.Keuangan && Array.isArray(properties.Keuangan.tkdd) && properties.Keuangan.tkdd.length > 0) {
-            properties.Keuangan.tkdd.forEach(item => {
-                const label = tkddLabels[item.name] || item.name;
-                if (item.value && parseNumericString(item.value) !== 0) {
-                    tkddHtmlContent += `<li style="margin-bottom: 3px;">${label}: ${formatRupiah(item.value)}</li>`;
-                    hasValidTkddItem = true;
-                }
-            });
-        }
-
-        if (hasValidTkddItem) {
-            content += `<hr style="margin: 8px 0;"><strong>Data TKDD:</strong><ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 5px;">${tkddHtmlContent}</ul>`;
-        } else {
-            content += `<hr style="margin: 8px 0;"><strong>Data TKDD:</strong><br><em style="padding-left: 20px;">Tidak ada data TKDD signifikan untuk wilayah ini.</em>`;
-        }
-        dataAdded = true;
-    }
     
+    
+    // BAGIAN 3: PESAN JIKA TIDAK ADA DATA SAMA SEKALI
     if (!dataAdded) {
-        let noOtherLayerActive = true;
-         for (const categoryName in categoriesToShow) {
-            if (categoriesToShow[categoryName].layer && map.hasLayer(categoriesToShow[categoryName].layer)) {
-                noOtherLayerActive = false;
+        // Cek apakah ada layer lain yang aktif
+        let anyOtherLayerActive = false;
+        for (const catName in categoriesToShow) {
+            if (categoriesToShow[catName].layer && map.hasLayer(categoriesToShow[catName].layer)) {
+                anyOtherLayerActive = true;
                 break;
             }
         }
-        if (noOtherLayerActive && (!stuntingLayer || !map.hasLayer(stuntingLayer)) && (!tkddLayer || !map.hasLayer(tkddLayer))) {
-            content += `<p style="margin-top:10px; text-align:center;"><em>Pilih layer data untuk menampilkan informasi.</em></p>`;
+        if (!anyOtherLayerActive && (!tkddLayer || !map.hasLayer(tkddLayer))) {
+             content += `<p style="margin-top:10px; text-align:center;"><em>Pilih layer data pada "Daftar Layer" untuk menampilkan informasi.</em></p>`;
         }
     }
+
     content += `</div>`;
     return content;
 }
-
 // Fungsi style untuk layer Stunting
 const getColorStunting = (rate) => {
     if (rate === null || typeof rate === 'undefined' || rate === '-') return '#CCCCCC'; 
@@ -374,7 +423,7 @@ function onEachFeatureDefault(feature, layer) {
 
         if (!centerLatLng) { return; }
         const labelIcon = L.divIcon({ className: 'region-map-label-divicon', html: `<span>${namaWilayah}</span>`, iconSize: null });
-        const markerLabel = L.marker(centerLatLng, { icon: labelIcon, interactive: false });
+        const markerLabel = L.marker(centerLatLng, { icon: labelIcon, interactive: false }); 
         (namaWilayah.toLowerCase().startsWith("kota ") || ["surabaya", "batu"].includes(namaWilayah.toLowerCase())) ? markerLabel.addTo(kotaLabelLayerGroup) : markerLabel.addTo(kabupatenLabelLayerGroup);
     }
 }
@@ -670,7 +719,7 @@ function initializeApplication() {
     }
 
     const layerMapping = {
-        'stunting': stuntingLayer, 'tkdd': tkddLayer,
+        'stunting': stuntingLayer,'stunting': stuntingLayer, 'tkdd': tkddLayer,
         'tanamanHias': tanamanHiasLayer, 'tanamanPangan': tanamanPanganLayer,
         'tanamanSayuran': tanamanSayuranLayer, 'tanamanBiofarmaka': tanamanBiofarmakaLayer,
         'buah': buahLayer, 'perkebunan': perkebunanLayer,
@@ -977,71 +1026,79 @@ function initializeApplication() {
     if (defaultActiveBasemapItem) defaultActiveBasemapItem.classList.add('active');
 }
 
-fetch('data/coba.geojson')
-    .then(response => {
+// <<< GANTI SELURUH BLOK Promise.all ANDA DENGAN VERSI INI >>>
+Promise.all([
+    fetch('data/coba.geojson').then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+    }),
+    fetch('data/data-tren.json').then(response => {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return response.json();
     })
-    .then(data => {
-        console.log("GeoJSON data loaded successfully.");
-        geojsonData = data;
+]).then(([geojson, trendData]) => {
+    console.log("GeoJSON dan Data Tren berhasil dimuat.");
+    
+    // 1. (TETAP) Proses data kemiskinan untuk layer spesifik
+    const processedKemiskinanData = processTrendData(trendData);
+    
+    // 2. (TETAP) Proses SEMUA data indikator untuk tahun 2024
+    const allIndicators2024 = processAllIndicatorsForYear(trendData, 2024);
 
-        kabupatenLabelLayerGroup = L.layerGroup();
-        kotaLabelLayerGroup = L.layerGroup();
-        
-        kabupatenDataForSearch = geojsonData.features.map(feature => {
-            if (!feature.properties.Keuangan) {
-                feature.properties.Keuangan = { tkdd: [] };
-            } else if (!Array.isArray(feature.properties.Keuangan.tkdd)) {
-                feature.properties.Keuangan.tkdd = [];
-            }
-            let centroid;
-             try {
-                if (feature.properties.WADMKK === "Gresik") centroid = [-7.155, 112.565];
-                else if (feature.properties.WADMKK === "Situbondo") centroid = [-7.706, 114.009];
-                else if (feature.properties.WADMKK === "Sumenep") centroid = [-7.000, 113.875];
-                else if (feature.geometry && typeof turf !== 'undefined' && turf.pointOnFeature) {
-                    const point = turf.pointOnFeature(feature);
-                    centroid = [point.geometry.coordinates[1], point.geometry.coordinates[0]];
-                } else if (feature.geometry) {
-                    if (feature.geometry.type === "Point") centroid = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]];
-                    else if (feature.geometry.type === "MultiPolygon" && feature.geometry.coordinates[0][0][0]) centroid = [feature.geometry.coordinates[0][0][0][1], feature.geometry.coordinates[0][0][0][0]];
-                    else if (feature.geometry.type === "Polygon" && feature.geometry.coordinates[0][0]) centroid = [feature.geometry.coordinates[0][0][1],feature.geometry.coordinates[0][0][0]];
-                    else centroid = [-7.5, 111.5];
-                } else centroid = [-7.5, 111.5];
-            } catch(e) { centroid = [-7.5, 111.5]; }
+    // 3. (DIPERBAIKI) Gabungkan data ke dalam GeoJSON dengan pencocokan nama yang fleksibel
+    geojson.features.forEach(feature => {
+        const geojsonRegionName = feature.properties.WADMKK;
+        const normalizedGeojsonName = normalizeRegionName(geojsonRegionName);
 
-            return {
-                name: feature.properties.WADMKK,
-                province: feature.properties.WADMPR,
-                stunting_rate: feature.properties.stunting_rate,
-                main_commodity: feature.properties.main_commodity,
-                icon_image: feature.properties.icon_image,
-                coords: centroid,
-                originalProperties: feature.properties
-            };
-        });
+        // Gabungkan data kemiskinan (untuk layer)
+        const kemiskinanKey = Object.keys(processedKemiskinanData).find(key => normalizeRegionName(key) === normalizedGeojsonName);
+        if (kemiskinanKey) {
+            feature.properties.kemiskinan = processedKemiskinanData[kemiskinanKey];
+        }
 
-        stuntingLayer = L.geoJson(geojsonData, { style: styleStunting, onEachFeature: onEachFeatureDefault });
-        tkddLayer = L.geoJson(geojsonData, { style: styleTkdd, onEachFeature: onEachFeatureDefault });
-        tanamanHiasLayer = L.geoJson(geojsonData, { style: styleTanamanHias, onEachFeature: onEachFeatureDefault });
-        tanamanPanganLayer = L.geoJson(geojsonData, { style: styleTanamanPangan, onEachFeature: onEachFeatureDefault });
-        tanamanSayuranLayer = L.geoJson(geojsonData, { style: styleTanamanSayuran, onEachFeature: onEachFeatureDefault });
-        tanamanBiofarmakaLayer = L.geoJson(geojsonData, { style: styleTanamanBiofarmaka, onEachFeature: onEachFeatureDefault });
-        buahLayer = L.geoJson(geojsonData, { style: styleBuah, onEachFeature: onEachFeatureDefault });
-        perkebunanLayer = L.geoJson(geojsonData, { style: stylePerkebunan, onEachFeature: onEachFeatureDefault });
-        dagingTernakLayer = L.geoJson(geojsonData, { style: styleDagingTernak, onEachFeature: onEachFeatureDefault });
-        telurUnggasLayer = L.geoJson(geojsonData, { style: styleTelurUnggas, onEachFeature: onEachFeatureDefault });
-        perikananTangkapLayer = L.geoJson(geojsonData, { style: stylePerikananTangkap, onEachFeature: onEachFeatureDefault });
-        perikananBudidayaLayer = L.geoJson(geojsonData, { style: stylePerikananBudidaya, onEachFeature: onEachFeatureDefault });
-        
-        initializeApplication(); 
-    })
-    .catch(error => {
-        console.error('GAGAL MEMUAT GEOJSON:', error);
-        const mapDiv = document.getElementById('map');
-        if (mapDiv) mapDiv.innerHTML = '<p style="text-align:center; padding-top:50px; color:red;">Gagal memuat data peta.</p>';
+        // Gabungkan SEMUA data tren (untuk popup)
+        const trendKey = Object.keys(allIndicators2024).find(key => normalizeRegionName(key) === normalizedGeojsonName);
+        if (trendKey) {
+            feature.properties.trendIndicators2024 = allIndicators2024[trendKey];
+        } else {
+            // Ini akan memberitahu Anda di console jika ada wilayah yang tidak cocok
+            console.warn(`Tidak ada data tren yang cocok untuk: ${geojsonRegionName}`);
+        }
     });
+
+    geojsonData = geojson; // Simpan data yang sudah digabung
+    kabupatenDataForSearch = geojson.features.map(feature => {
+        // Ambil titik tengah poligon untuk zoom
+        const center = L.geoJSON(feature).getBounds().getCenter();
+        return {
+            name: feature.properties.WADMKK,
+            coords: [center.lat, center.lng],
+            originalProperties: feature.properties // Simpan semua properti untuk popup
+        };
+    });
+    console.log("Data untuk pencarian siap:", kabupatenDataForSearch.length, "wilayah.");
+
+    // Inisialisasi semua layer (Tidak ada perubahan di sini)
+    stuntingLayer = L.geoJson(geojsonData, { style: styleStunting, onEachFeature: onEachFeatureDefault });
+    tkddLayer = L.geoJson(geojsonData, { style: styleTkdd, onEachFeature: onEachFeatureDefault });
+    kemiskinanLayer = L.geoJson(geojsonData, { /* ... style ... */ onEachFeature: onEachFeatureDefault });
+    tanamanHiasLayer = L.geoJson(geojsonData, { style: styleTanamanHias, onEachFeature: onEachFeatureDefault });
+    // ... sisa inisialisasi layer Anda ...
+    tanamanPanganLayer = L.geoJson(geojsonData, { style: styleTanamanPangan, onEachFeature: onEachFeatureDefault });
+    tanamanSayuranLayer = L.geoJson(geojsonData, { style: styleTanamanSayuran, onEachFeature: onEachFeatureDefault });
+    tanamanBiofarmakaLayer = L.geoJson(geojsonData, { style: styleTanamanBiofarmaka, onEachFeature: onEachFeatureDefault });
+    buahLayer = L.geoJson(geojsonData, { style: styleBuah, onEachFeature: onEachFeatureDefault });
+    perkebunanLayer = L.geoJson(geojsonData, { style: stylePerkebunan, onEachFeature: onEachFeatureDefault });
+    dagingTernakLayer = L.geoJson(geojsonData, { style: styleDagingTernak, onEachFeature: onEachFeatureDefault });
+    telurUnggasLayer = L.geoJson(geojsonData, { style: styleTelurUnggas, onEachFeature: onEachFeatureDefault });
+    perikananTangkapLayer = L.geoJson(geojsonData, { style: stylePerikananTangkap, onEachFeature: onEachFeatureDefault });
+    perikananBudidayaLayer = L.geoJson(geojsonData, { style: stylePerikananBudidaya, onEachFeature: onEachFeatureDefault });
+    
+    initializeApplication(); 
+})
+.catch(error => {
+    console.error('GAGAL MEMUAT DATA:', error);
+});
 
 // Fungsi pencarian (search)
 const searchContainer = document.createElement('div');
@@ -1056,7 +1113,7 @@ clearButton.innerHTML = '×';
 clearButton.style = 'position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 20px; display: none; color: gray;';
 const resultContainer = document.createElement('ul');
 resultContainer.className = 'search-results';
-resultContainer.style = 'width: 600%; background: white; list-style: none; padding: 0; margin: 0; border: 1px solid #ccc; border-top: none; max-height: 200px; overflow-y: auto; border-radius: 0 0 4px 4px; display:none; box-sizing: border-box;';
+resultContainer.style = 'width: 100%; background: white; list-style: none; padding: 0; margin: 0; border: 1px solid #ccc; border-top: none; max-height: 200px; overflow-y: auto; border-radius: 0 0 4px 4px; display:none; box-sizing: border-box;';
 searchInputGroup.appendChild(searchInput); searchInputGroup.appendChild(clearButton);
 searchContainer.appendChild(searchInputGroup); searchContainer.appendChild(resultContainer);
 document.body.appendChild(searchContainer);

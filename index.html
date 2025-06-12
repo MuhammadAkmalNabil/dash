@@ -63,7 +63,7 @@
               <div class="card2" sty>
                 <img src="image/grafikdata.jpg" alt="Card Image" class="card-image"  />
                 <div class="card-content">
-                    <h3 class="card-title-d" style="font-size: 25px;">Data Terkait</h3>
+                    <h3 class="card-title-d" style="font-size: 22px;">Data Terkait</h3>
                     <p style="font-size: 13px;">Menyediakan akses ke berbagai <BR>indikator sosial-ekonomi penting suatu <BR> daerah yang divisualisasikan <BR> dalam bentuk grafik.</p>
                 </div>
             </div>
@@ -72,7 +72,7 @@
               <div class="card3">
                 <img src="image/petawebgis.jpg" alt="Card Image" class="card-image" />
                 <div class="card-content">
-                    <h3 class="card-title-w" style="font-size: 25px;">WebGIS Jatim</h3>
+                    <h3 class="card-title-w" style="font-size: 22px;">WebGIS Jatim</h3>
                     <p style="font-size: 13px;">Web Geograraphic Information System <BR> yang menyajikan peta dan <BR> data geografis secara interaktif.</p>
                 </div>
             </div>
@@ -81,11 +81,15 @@
       </section>
       <section id="section-dua" style="background-image: url(image/section2.png);height: 700px;">  <!-- INI SECTION BARU ANDA -->
         <div class="container-section-dua"> <!-- Opsional: container untuk konten di section baru -->
-            <div class="hero-video-wrapper">  
-            
+           <div class="hero-video-wrapper">
+    <!-- Tombol Mute/Unmute -->
+    <div id="mute-button" class="video-mute-button">
+        <!-- Ikon akan diisi oleh JavaScript -->
+    </div>
+    
     <iframe
         id="hero-video"
-        src="https://www.youtube.com/embed/keuXuJU6mOw?autoplay=1&controls=1&loop=1&playlist=keuXuJU6mOw&playsinline=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&autohide=1"
+        src="https://www.youtubecom/embed/keuXuJU6mOw?autoplay=1&controls=0&loop=1&playlist=keuXuJU6mOw&playsinline=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&autohide=1&enablejsapi=1&origin="
         title="Video Latar Belakang SAPA Jatim"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -117,134 +121,117 @@
   </script>
   <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const heroSection = document.querySelector('#hero-section');
-    const sectionPemicuKonten = document.querySelector('#section-dua');
+    
+    // --- Efek Scroll untuk Header ---
+    const header = document.querySelector('header');
+    const scrollThreshold = 50;
+
+    if (header) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > scrollThreshold) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    } else {
+        console.warn('Elemen <header> tidak ditemukan.');
+    }
+
+    // --- Tombol Hamburger untuk Menu ---
+    const tombol = document.querySelector('.tombol');
+    const menu = document.querySelector('.menu');
+
+    if (tombol && menu) {
+        tombol.addEventListener('click', () => {
+            menu.classList.toggle('aktif');
+        });
+    }
+
+    // --- PERBAIKAN: Logika Animasi Scroll ---
+    const sectionPemicu = document.querySelector('#section-dua');
     const cardsToAnimate = document.querySelectorAll('.card1, .card2, .card3');
     const deskripsiVideo = document.querySelector('.deskripsi-video');
     const videoWrapper = document.querySelector('.hero-video-wrapper');
 
-    // ... (Pemeriksaan elemen seperti sebelumnya) ...
-    if (!heroSection) console.warn('#hero-section tidak ditemukan.');
-    if (!sectionPemicuKonten) console.warn('#section-dua tidak ditemukan.');
-    if (cardsToAnimate.length === 0) console.warn('Tidak ada kartu ditemukan.');
-    if (!deskripsiVideo) console.warn('.deskripsi-video tidak ditemukan.');
-    if (!videoWrapper) console.warn('.hero-video-wrapper tidak ditemukan.');
-
-
+    // Pastikan semua elemen yang dibutuhkan ada
+    if (!sectionPemicu || cardsToAnimate.length === 0 || !deskripsiVideo || !videoWrapper) {
+        console.warn('Satu atau lebih elemen untuk animasi scroll tidak ditemukan. Animasi tidak akan berjalan.');
+        return; // Hentikan eksekusi jika ada elemen yang hilang
+    }
+    
+    // Opsi untuk Observer, trigger saat 20% elemen terlihat
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.1 // Trigger ketika 10% dari section terlihat.
-                       // Anda mungkin perlu menyesuaikan ini.
+        threshold: 0.2 // Anda bisa ubah nilai ini dari 0.1 sampai 1.0
     };
 
-    // Observer untuk #section-dua (Memicu animasi NAIK/MUNCUL)
-    if (sectionPemicuKonten && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
-        const contentObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Kartu naik
-                    cardsToAnimate.forEach(card => card.classList.add('animate-slide-up'));
-                    // Teks & Video muncul
-                    if (deskripsiVideo) deskripsiVideo.classList.add('slide-in-from-left');
-                    if (videoWrapper) videoWrapper.classList.add('slide-in-from-right');
-                }
-            });
-        }, observerOptions);
-        contentObserver.observe(sectionPemicuKonten);
-    }
+    // Buat SATU observer untuk semua animasi di section-dua
+    const animationObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            // entry.isIntersecting akan bernilai 'true' jika sectionPemicu terlihat,
+            // dan 'false' jika tidak terlihat.
+            if (entry.isIntersecting) {
+                // Jika section terlihat, TAMBAHKAN class untuk memicu animasi
+                cardsToAnimate.forEach(card => card.classList.add('animate-slide-up'));
+                deskripsiVideo.classList.add('slide-in-from-left');
+                videoWrapper.classList.add('slide-in-from-right');
+            } else {
+                // Jika section TIDAK terlihat, HAPUS class untuk mereset animasi
+                cardsToAnimate.forEach(card => card.classList.remove('animate-slide-up'));
+                deskripsiVideo.classList.remove('slide-in-from-left');
+                videoWrapper.classList.remove('slide-in-from-right');
+            }
+        });
+    }, observerOptions);
 
-    // Observer untuk #hero-section (Memicu animasi KEMBALI KE AWAL)
-    if (heroSection && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
-        const heroObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Kartu kembali
-                    cardsToAnimate.forEach(card => card.classList.remove('animate-slide-up'));
-                    // Teks & Video kembali (memicu transisi ke state awal)
-                    if (deskripsiVideo) deskripsiVideo.classList.remove('slide-in-from-left');
-                    if (videoWrapper) videoWrapper.classList.remove('slide-in-from-right');
-                }
-            });
-        }, observerOptions);
-        heroObserver.observe(heroSection);
-    }
+    // Mulai amati elemen pemicu
+    animationObserver.observe(sectionPemicu);
+    
 });
-document.addEventListener('DOMContentLoaded', function() {
-        const header = document.querySelector('header');
-        // Tentukan jarak scroll sebelum header berubah (misalnya, 50 piksel)
-        const scrollThreshold = 50;
+var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        if (header) { // Pastikan elemen header ada
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > scrollThreshold) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
+        // 2. Variabel global untuk player dan status mute
+        var player;
+        var isMuted = true; // Video dimulai dalam keadaan muted
+        var muteButton = document.getElementById('mute-button');
+        
+        // Ikon SVG untuk status mute dan unmute
+        const muteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>`;
+        const unmuteIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.28 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
+
+        // 3. Fungsi ini akan dipanggil otomatis setelah API siap.
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('hero-video', {
+                events: {
+                    'onReady': onPlayerReady
                 }
             });
-        } else {
-            console.warn('Elemen header tidak ditemukan untuk efek scroll.');
         }
 
-        // Script untuk tombol hamburger Anda (jika masih ada)
-        const tombol = document.querySelector('.tombol');
-        const menu = document.querySelector('.menu');
-
-        if (tombol && menu) { // Tambahkan pengecekan
-            tombol.addEventListener('click', () => {
-                menu.classList.toggle('aktif');
-            });
+        // 4. API akan memanggil fungsi ini saat video player siap.
+        function onPlayerReady(event) {
+            // Video dimulai dalam keadaan muted
+            event.target.mute();
+            isMuted = true;
+            muteButton.innerHTML = muteIcon;
         }
 
-        // Script untuk animasi hero dan section-dua (dari kode Anda sebelumnya)
-        // ... (kode IntersectionObserver Anda bisa diletakkan di sini juga
-        //      atau pastikan sudah ada di file js/script.js) ...
-        const heroSection = document.querySelector('#hero-section');
-        const sectionPemicuKonten = document.querySelector('#section-dua');
-        const cardsToAnimate = document.querySelectorAll('.card1, .card2, .card3');
-        const deskripsiVideo = document.querySelector('.deskripsi-video');
-        const videoWrapper = document.querySelector('.hero-video-wrapper');
-
-        if (!heroSection) console.warn('#hero-section tidak ditemukan.');
-        if (!sectionPemicuKonten) console.warn('#section-dua tidak ditemukan.');
-        if (cardsToAnimate.length === 0) console.warn('Tidak ada kartu ditemukan.');
-        if (!deskripsiVideo) console.warn('.deskripsi-video tidak ditemukan.');
-        if (!videoWrapper) console.warn('.hero-video-wrapper tidak ditemukan.');
-
-
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        if (sectionPemicuKonten && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
-            const contentObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        cardsToAnimate.forEach(card => card.classList.add('animate-slide-up'));
-                        if (deskripsiVideo) deskripsiVideo.classList.add('slide-in-from-left');
-                        if (videoWrapper) videoWrapper.classList.add('slide-in-from-right');
-                    }
-                });
-            }, observerOptions);
-            contentObserver.observe(sectionPemicuKonten);
-        }
-
-        if (heroSection && (cardsToAnimate.length > 0 || deskripsiVideo || videoWrapper) ) {
-            const heroObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        cardsToAnimate.forEach(card => card.classList.remove('animate-slide-up'));
-                        if (deskripsiVideo) deskripsiVideo.classList.remove('slide-in-from-left');
-                        if (videoWrapper) videoWrapper.classList.remove('slide-in-from-right');
-                    }
-                });
-            }, observerOptions);
-            heroObserver.observe(heroSection);
-        }
-    });
+        // 5. Tambahkan event listener ke tombol kita
+        muteButton.addEventListener('click', function() {
+            if (isMuted) {
+                player.unMute();
+                muteButton.innerHTML = unmuteIcon;
+            } else {
+                player.mute();
+                muteButton.innerHTML = muteIcon;
+            }
+            isMuted = !isMuted;
+        });
 </script>
   
 </body>

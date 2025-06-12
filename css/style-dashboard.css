@@ -423,78 +423,16 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
 /* Pastikan ini adalah CSS yang aktif untuk wrapper */
 /* CSS untuk membuat iframe YouTube responsif dan mengisi wrapper */
 /* Serta trik untuk memotong UI YouTube */
-.hero-video-wrapper {
-    /* Ukuran Asli: width: 670px; height: 300px; */
-    /* Kita perbesar sekitar 25% */
-    width: 838px;  /* 670 * 1.25 = 837.5 (dibulatkan) */
-    height: 375px; /* 300 * 1.25 = 375 */
-
-    border-radius: 12px; /* Bisa sedikit diperbesar juga jika mau */
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25); /* Bayangan bisa sedikit disesuaikan */
-    position: relative;
-
-    /* Posisi wrapper: Anda mungkin perlu menyesuaikan ini lagi
-       setelah ukurannya berubah agar tetap di tempat yang diinginkan. */
-    top: 90px;  /* Tetap, atau sesuaikan */
-    left: 380px; /* Tetap, atau sesuaikan */
-
-    overflow: hidden; /* SANGAT PENTING */
-    border: 3px solid white; /* Ketebalan border bisa disesuaikan jika mau */
-    box-sizing: border-box;
-    /* background-color: rgba(255, 0, 0, 0.2); /* Untuk debugging wrapper */
-}
-.deskripsi-video {
-  top: -300px;
-  font-family: sans-serif;
-  
-  /* Gaya Anda yang sudah ada: position, top, right, font-size, dll.
-     Pastikan 'position: relative' atau 'absolute' agar transform bekerja
-     relatif terhadap posisi normalnya atau parentnya. */
-  position: relative;
-  /* top: -300px; <-- Ini mungkin perlu disesuaikan atau dihapus jika animasi
-                       mengatur posisi vertikal akhir */
-  /* right: 580px; <-- Ini juga mungkin perlu disesuaikan atau dihapus */
-  right: 500px;
-
-  /* Keadaan Awal (Sebelum Animasi) */
-  opacity: 0;
-  transform: translateX(-100px); /* Awalnya di kiri dan transparan */
-  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  /* Anda bisa menambahkan transition-delay jika mau */
-}
-
-.deskripsi-video.slide-in-from-left {
-  /* Keadaan Akhir (Setelah Animasi) */
-  opacity: 1;
-  transform: translateX(0); /* Kembali ke posisi X normalnya */
-}
-
-/* CSS untuk <p> di dalam .deskripsi-video */
-.deskripsi-video p {
-  font-family: sans-serif;
-  /* Gaya Anda yang sudah ada: font-size, right, text-align, padding, dll. */
-  position: relative;
-  left: 510px;
-  top: -10px;
-  font-size: 15px;
-  /* right: -20px; <-- Sesuaikan atau hapus jika bentrok dengan animasi parent */
-  text-align: justify;
-  padding: 15px;
-}
-
-
 /* --- Untuk Wrapper Video (Muncul dari Kanan) --- */
 .hero-video-wrapper {
-  /* Gaya Anda yang sudah ada: width, height, border-radius, box-shadow,
-     position, top, left, overflow, border, box-sizing */
+  /* Gaya Visual & Posisi */
   width: 838px;
   height: 375px;
   border-radius: 12px;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
   position: relative;
-  /* top: 90px; <-- Sesuaikan atau hapus jika animasi mengatur posisi vertikal akhir */
-  /* left: 90px; <-- Sesuaikan atau hapus jika animasi mengatur posisi horizontal akhir */
+ top: 90px;  
+  left: 380px; 
   overflow: hidden;
   border: 3px solid white;
   box-sizing: border-box;
@@ -502,21 +440,44 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
   /* Keadaan Awal (Sebelum Animasi) */
   opacity: 0;
   transform: translateX(100px); /* Awalnya di kanan dan transparan */
+  
+  /* Transisi untuk animasi */
   transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
               transform 2s cubic-bezier(0.35, 0.56, 0.55, 0.94);
-  /* Tambahkan transition-delay jika ingin video muncul setelah teks, misal:
-     transition-delay: 0.2s;
-     atau
-     transition: opacity 0.8s ... 0.2s, transform 0.8s ... 0.2s;
-  */
 }
 
 .hero-video-wrapper.slide-in-from-right {
   /* Keadaan Akhir (Setelah Animasi) */
-   opacity: 1;
-  transform: translateX(0); /* Posisi akhir setelah muncul */
+  opacity: 1;
+  transform: translateX(0); /* Kembali ke posisi X normalnya */
 }
 
+/* Pastikan CSS untuk deskripsi-video tidak berubah */
+.deskripsi-video {
+  top: -300px;
+  font-family: sans-serif;
+  position: relative;
+  right: 500px;
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.deskripsi-video.slide-in-from-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.deskripsi-video p {
+  font-family: sans-serif;
+  position: relative;
+  left: 510px;
+  top: -10px;
+  font-size: 15px;
+  text-align: justify;
+  padding: 15px;
+}
 /* CSS untuk #hero-video (iframe) tetap sama seperti sebelumnya */
 #hero-video {
   position: absolute;
@@ -532,16 +493,31 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-.mute-button {
-  position: relative;
-  bottom: -10px;
-  right: -5px;
-  background: rgb(231, 238, 238);
-  border: none;
-  border-radius: 20%;
-  cursor: pointer;
-  font-size: 17px;
-  z-index: 10;
+.video-mute-button {
+    position: absolute;
+    bottom: 20px; /* Jarak dari bawah video */
+    right: 20px;  /* Jarak dari kanan video */
+    width: 40px;
+    height: 40px;
+    background-color: rgb(255, 255, 255); /* Latar belakang semi-transparan */
+    border-radius: 50%; /* Membuatnya bulat */
+    cursor: pointer;
+    z-index: 10; /* Pastikan di atas video */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.video-mute-button:hover {
+    background-color: rgba(255, 255, 255, 0.499);
+}
+
+/* Style untuk ikon SVG di dalam tombol */
+.video-mute-button svg {
+    width: 22px;
+    height: 22px;
+    fill: rgb(0, 0, 0); /* Warna ikon */
 }
 
 

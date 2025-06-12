@@ -1,135 +1,157 @@
- /* File: css/style.css */
+/* --- Mengatur Font dan Reset Dasar --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 html, body {
     margin: 0;
-    padding: 0; /* Lebih aman untuk mereset padding juga */
-}
-/* Lalu atur padding-top yang Anda butuhkan hanya pada body */
-body {
-    padding-top: 70px; /* Ganti dengan tinggi header Anda */
+    padding: 0;
+    font-family: "	Montserrat", sans-serif;
 }
 
+/* === HEADER UTAMA (MENGGUNAKAN STICKY) === */
+header {
+  /* KUNCI UTAMA: Mengubah posisi menjadi sticky */
+  position: -webkit-sticky; /* Untuk kompatibilitas browser lama (Safari) */
+  position: sticky;
+  
+  /* Menentukan titik 'menempel' di paling atas layar */
+  top: 0;
+  
+  /* Properti penting lainnya */
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Pastikan selalu di atas konten lain */
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-.montserrat{
-    font-family: "Montserrat", sans-serif;
+  /* Gaya Visual untuk Header */
+  background-color: #ffffff; /* Warna latar belakang dari gambar Anda */
+  padding: 10px 1rem; /* Padding yang sudah diperkecil */
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* 
+   CATATAN: 
+   - Class 'header.scrolled' tidak diperlukan dan bisa dihapus dari CSS dan JavaScript.
+   - Aturan 'body { padding-top: ... }' juga tidak diperlukan karena 'sticky'
+     tidak mengeluarkan header dari alur layout normal.
+*/
 
-/* Container Header */
+
+/* === LOGO DAN JUDUL === */
 .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 2rem; /*jarak menu semua */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .non-bold {
-    font-weight: normal; /* Hilangkan bold */
-    font-size: 1.2rem; /* Ukuran font lebih kecil */
+    font-weight: normal;
+    font-size: 1.2rem;
+    color: #000000; /* Sesuaikan warna agar kontras dengan hero */
 }
 
-/* Logo dan Judul */
 .logo-title {
     display: flex;
     align-items: center;
+	position: relative;
+	left: -129px;
     gap: 1rem;
 }
-
 .logo {
-    width: 50px; /* Ukuran logo */
-    height: 50px;
-    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    margin-right: 15px;
 }
 
 .logo-title h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 0;
+	position: relative;
+	right: 16px;
     font-weight: bold;
+    color: #000000;
 }
 
-/* Navigasi */
+.non-bold {
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+
+/* === MENU NAVIGASI === */
 nav {
-    flex-grow: 1;
-    text-align: right;
-    display: flex;  /* Ensure the nav is a flex container */
-    justify-content: flex-end;  /* Align the items to the right */
-      /* Optional: Add some padding to the right edge */
+    display: flex;
+    align-items: center;
 }
 
 .menu {
-    background: #ffffff;
-	margin: 0;
-	padding: 20px 30px;
+    /* background: #ffffff; HAPUS BACKGROUND PUTIH AWAL */
+    margin: 0;
+    display: flex;
+    list-style: none;
+    padding: 0;
 }
 
-.tombol{
-	display: none;
-	color: rgb(0, 0, 0);
-	font-size: 19pt;			
+.tombol {
+    display: none;
+    color: #000000; /* WARNA TOMBOL HAMBURGER AWAL PUTIH */
+    font-size: 19pt;
 }
- 
-.tombol:hover{
-	cursor: pointer;
-}
- 
- 
-.menu{
-	margin: 0;
-	display: flex;
-	list-style: none;
-	padding: 0;			
-}
-.menu li{
-    position: relative;
-right:-90px;
-	padding-left: 1px;
-	margin-right: 10px;
-}
- 
-.menu li a{
-	padding:10px;
-	color: rgb(0, 0, 0);
-	text-decoration: none;
-	display: inline-block;
-}
- 
 
-/* Animasi Hover */
+.menu li {
+     position: relative;
+    right: -79px;
+	font-size: 15px;
+    /* padding-left: 0; */ /* Sudah di-handle oleh margin-right */
+    margin-right: 20px; /* Sesuaikan jarak antar menu */
+}
+.menu li:last-child {
+    margin-right: 0; /* Hapus margin kanan pada item terakhir */
+}
+
+.menu li a {
+    /* padding:10px; */ /* Padding bisa diatur di sini atau di .menu a */
+    color: #000000; /* WARNA LINK MENU AWAL PUTIH */
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    padding: 8px 10px; /* Tambahkan padding agar lebih mudah diklik */
+    transition: color 0.3s ease, font-weight 0.3s ease, transform 0.3s ease; /* Tambahkan transisi */
+}
+
 .menu a:hover {
-    /* background-color: #007bff; */
-    color: #000000;
-    font-weight: bold; /* Jadikan teks bold */
-    transform: scale(1.1); /* Membesar sedikit */
+    color: #000000; /* Warna hover tetap bisa lebih terang atau beda */
+    font-weight: bold;
+    transform: scale(1.05); /* Sedikit lebih halus */
 }
- /* Responsivitas */
- @media screen and (max-width: 768px) {
+ 
+@media screen and (max-width: 768px) {
 	.menu {
 		display: none;
-	}
-    .menu li {
-		padding: 2px;
-	}
- 
-	.menu.aktif{
-		display:inline-block;
-		position: absolute;
-		top: 64px;
-		background: #ffffff;
-		padding: 10px 20px;
-		right: 0;
-		left: 0;
+        position: absolute;
+		top: 100%;
+        left: 0;
+        right: 0;
+		background: #b39797;
+		box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+        padding: 10px 0;
 	}
  
-	.menu.aktif li a{
-		padding: 9px;
-		display: inline-block !important;
+	.menu.aktif {
+		display:flex;
+        flex-direction: column;
+        align-items: center;
+	}
+ 
+	.menu.aktif li a {
+		padding: 15px;
+        width: 100%;
+        text-align: center;
 	}
  
 	.tombol {
 		display: block;
 	}
-    .menu.aktif li {
-        text-align: left; /* Memastikan <a> yang inline-block rata kiri di dalam <li> */
-    }
 }
