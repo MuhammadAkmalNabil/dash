@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,46 +13,51 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-   <header>
+    <header>
         <div class="header-container">
             <div class="logo-title">
                 <img src="image/orginalpob.png" alt="Logo" class="logo">
                 <h1>Direktorat Pembangunan Indonesia Barat | <span class="non-bold">Kementerian PPN/Bappenas</span></h1>
             </div>
             <nav>
-                <ul class="menu" >
-                    <li ><a href="index.html">Beranda</a></li>
+                <ul class="menu">
+                    <li><a href="index.html">Beranda</a></li>
                     <li><a href="tentang.html">Tentang</a></li>
                     <li><a href="kontak.html">Kontak</a></li>
-              </ul>
-              <div class="tombol">
-                ☰
-            </div>
-          </nav>
+                </ul>
+                <div class="tombol">
+                    ☰
+                </div>
+            </nav>
         </div>
     </header>
-    
+
     <div id="layerPanel" class="layer-panel">
         <div id="layerContent"></div>
     </div>
 
     <div id="toggleLayerControlButtonContainer">
         <div id="toggleLayerControlButton" class="toggle-layer-control-button" title="Daftar Layer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-layers">
                 <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                 <polyline points="2 17 12 22 22 17"></polyline>
                 <polyline points="2 12 12 17 22 12"></polyline>
             </svg>
         </div>
-        <div id="toggleBasemapGalleryButton" class="custom-map-button" title="Galeri Peta Dasar" style="position:absolute;left: 116px;top: 81px;">
+        <div id="toggleBasemapGalleryButton" class="custom-map-button" title="Galeri Peta Dasar"
+            style="position:absolute;left: 116px;top: 81px;">
             <i class="fas fa-map"></i>
         </div>
-        <div id="toggleWilayahLabelControlButton" class="custom-map-button" title="Kontrol Label Wilayah" style="position:absolute;left: 170px;top: 81px;">
+        <div id="toggleWilayahLabelControlButton" class="custom-map-button" title="Kontrol Label Wilayah"
+            style="position:absolute;left: 170px;top: 81px;">
             <i class="fas fa-tags"></i>
         </div>
     </div>
-    
+
     <div id="customLayerControl" class="custom-layer-control" style="display: none;">
         <div class="custom-layer-control-header">
             <strong>Daftar Layer</strong>
@@ -61,11 +67,13 @@
             <!-- Data Stunting -->
             <div class="layer-item-with-legend">
                 <div class="layer-control-row">
-                    <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-stunting" title="Toggle Legenda">
+                    <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-stunting"
+                        title="Toggle Legenda">
                         <span class="toggle-arrow">▸</span>
                     </button>
                     <label class="layer-label-text">
-                        <input type="checkbox" data-layer-name="stunting" data-legend-group-id="legendaGroupStunting"> Data Stunting
+                        <input type="checkbox" data-layer-name="stunting" data-legend-group-id="legendaGroupStunting">
+                        Data Stunting
                     </label>
                 </div>
                 <div class="legend-content-panel" id="legend-content-stunting" style="display: none;">
@@ -76,7 +84,8 @@
             <!-- Grup untuk Data Komoditas -->
             <div class="layer-group-item">
                 <div class="layer-group-header">
-                    <button class="group-toggle-btn" aria-expanded="false" aria-controls="group-content-komoditas" title="Toggle Grup Komoditas">
+                    <button class="group-toggle-btn" aria-expanded="false" aria-controls="group-content-komoditas"
+                        title="Toggle Grup Komoditas">
                         <span class="toggle-arrow">▸</span>
                     </button>
                     <label class="layer-label-text group-master-label">
@@ -88,82 +97,126 @@
                     <!-- Layer Tanaman Pangan -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanPangan" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanPangan" data-legend-group-id="legendaGroupTanamanPangan" class="komoditas-child-checkbox">Tanaman Pangan</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-tanamanPangan" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanPangan"
+                                    data-legend-group-id="legendaGroupTanamanPangan"
+                                    class="komoditas-child-checkbox">Tanaman Pangan</label>
                         </div>
-                        <div class="legend-content-panel" id="legend-content-tanamanPangan" style="display: none;"></div>
+                        <div class="legend-content-panel" id="legend-content-tanamanPangan" style="display: none;">
+                        </div>
                     </div>
                     <!-- Layer Tanaman Sayuran -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanSayuran" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanSayuran" data-legend-group-id="legendaGroupTanamanSayuran" class="komoditas-child-checkbox">Tanaman Sayuran</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-tanamanSayuran" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanSayuran"
+                                    data-legend-group-id="legendaGroupTanamanSayuran"
+                                    class="komoditas-child-checkbox">Tanaman Sayuran</label>
                         </div>
-                        <div class="legend-content-panel" id="legend-content-tanamanSayuran" style="display: none;"></div>
+                        <div class="legend-content-panel" id="legend-content-tanamanSayuran" style="display: none;">
+                        </div>
                     </div>
-                     <!-- Layer Tanaman Biofarma -->
-                     <div class="layer-item-with-legend child-layer-item">
+                    <!-- Layer Tanaman Biofarma -->
+                    <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanBiofarmaka" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanBiofarmaka" data-legend-group-id="legendaGroupTanamanBiofarmaka" class="komoditas-child-checkbox">Tanaman Biofarmaka</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-tanamanBiofarmaka" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanBiofarmaka"
+                                    data-legend-group-id="legendaGroupTanamanBiofarmaka"
+                                    class="komoditas-child-checkbox">Tanaman Biofarmaka</label>
                         </div>
-                        <div class="legend-content-panel" id="legend-content-tanamanBiofarmaka" style="display: none;"></div>
+                        <div class="legend-content-panel" id="legend-content-tanamanBiofarmaka" style="display: none;">
+                        </div>
                     </div>
                     <!-- Layer Buah -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-buah" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="buah" data-legend-group-id="legendaGroupBuah" class="komoditas-child-checkbox">Buah</label>
+                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-buah"
+                                title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="buah"
+                                    data-legend-group-id="legendaGroupBuah"
+                                    class="komoditas-child-checkbox">Buah</label>
                         </div>
                         <div class="legend-content-panel" id="legend-content-buah" style="display: none;"></div>
                     </div>
                     <!-- Layer Perkebunan -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-perkebunan" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="perkebunan" data-legend-group-id="legendaGroupPerkebunan" class="komoditas-child-checkbox">Perkebunan</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-perkebunan" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="perkebunan"
+                                    data-legend-group-id="legendaGroupPerkebunan"
+                                    class="komoditas-child-checkbox">Perkebunan</label>
                         </div>
                         <div class="legend-content-panel" id="legend-content-perkebunan" style="display: none;"></div>
                     </div>
                     <!-- Layer Tanaman Hias -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-tanamanHias" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanHias" data-legend-group-id="legendaGroupTanamanHias" class="komoditas-child-checkbox">Tanaman Hias</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-tanamanHias" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="tanamanHias"
+                                    data-legend-group-id="legendaGroupTanamanHias"
+                                    class="komoditas-child-checkbox">Tanaman Hias</label>
                         </div>
                         <div class="legend-content-panel" id="legend-content-tanamanHias" style="display: none;"></div>
                     </div>
                     <!-- Layer Daging Ternak -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-dagingTernak" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="dagingTernak" data-legend-group-id="legendaGroupDagingTernak" class="komoditas-child-checkbox">Daging Ternak</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-dagingTernak" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="dagingTernak"
+                                    data-legend-group-id="legendaGroupDagingTernak"
+                                    class="komoditas-child-checkbox">Daging Ternak</label>
                         </div>
                         <div class="legend-content-panel" id="legend-content-dagingTernak" style="display: none;"></div>
                     </div>
                     <!-- Layer Telur Unggas -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-telurUnggas" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="telurUnggas" data-legend-group-id="legendaGroupTelurUnggas" class="komoditas-child-checkbox">Telur Unggas & Susu</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-telurUnggas" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="telurUnggas"
+                                    data-legend-group-id="legendaGroupTelurUnggas"
+                                    class="komoditas-child-checkbox">Telur Unggas & Susu</label>
                         </div>
                         <div class="legend-content-panel" id="legend-content-telurUnggas" style="display: none;"></div>
                     </div>
                     <!-- Layer Perikanan Tangkap -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-perikananTangkap" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="perikananTangkap" data-legend-group-id="legendaGroupPerikananTangkap" class="komoditas-child-checkbox">Perikanan Tangkap</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-perikananTangkap" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="perikananTangkap"
+                                    data-legend-group-id="legendaGroupPerikananTangkap"
+                                    class="komoditas-child-checkbox">Perikanan Tangkap</label>
                         </div>
-                        <div class="legend-content-panel" id="legend-content-perikananTangkap" style="display: none;"></div>
+                        <div class="legend-content-panel" id="legend-content-perikananTangkap" style="display: none;">
+                        </div>
                     </div>
                     <!-- Layer Perikanan Budidaya -->
                     <div class="layer-item-with-legend child-layer-item">
                         <div class="layer-control-row">
-                            <button class="legend-toggle-btn" aria-expanded="false" aria-controls="legend-content-perikananBudidaya" title="Toggle Legenda"><span class="toggle-arrow">▸</span></button>
-                            <label class="layer-label-text"><input type="checkbox" data-layer-name="perikananBudidaya" data-legend-group-id="legendaGroupPerikananBudidaya" class="komoditas-child-checkbox">Perikanan Budidaya</label>
+                            <button class="legend-toggle-btn" aria-expanded="false"
+                                aria-controls="legend-content-perikananBudidaya" title="Toggle Legenda"><span
+                                    class="toggle-arrow">▸</span></button>
+                            <label class="layer-label-text"><input type="checkbox" data-layer-name="perikananBudidaya"
+                                    data-legend-group-id="legendaGroupPerikananBudidaya"
+                                    class="komoditas-child-checkbox">Perikanan Budidaya</label>
                         </div>
-                        <div class="legend-content-panel" id="legend-content-perikananBudidaya" style="display: none;"></div>
+                        <div class="legend-content-panel" id="legend-content-perikananBudidaya" style="display: none;">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -177,11 +230,9 @@
                         <span class="toggle-arrow">▸</span>
                     </button>
                     <label class="layer-label-text">
-                        <input type="checkbox"
-                               id="dataKeuanganTkddMasterCheckbox"
-                               data-layer-name="tkdd" 
-                               data-legend-group-id="legendaGroupTkdd"> <!-- Merujuk ke ID legenda di Langkah 1 -->
-                        Data TKDD
+                        <input type="checkbox" id="dataKeuanganTkddMasterCheckbox" data-layer-name="tkdd"
+                            data-legend-group-id="legendaGroupTkdd"> <!-- Merujuk ke ID legenda di Langkah 1 -->
+                        Data Fisikal Daerah
                     </label>
                 </div>
                 <div class="legend-content-panel" style="display: none;">
@@ -212,7 +263,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="basemapGalleryPanel" class="basemap-gallery-panel" style="display: none;">
         <div class="basemap-gallery-header">
             <span>Galeri Peta Dasar</span>
@@ -232,135 +283,316 @@
         </div>
     </div>
     <div id="map">
-        <div class="legend" style="display: none;"> 
+        <div class="legend" style="display: none;">
             <h4>Legenda Peta (Sumber)</h4>
 
             <!-- Stunting -->
             <div id="legendaGroupStunting">
-                <div class="legend-item"><span class="color-box" style="background-color: #009307;"></span> < 20% (Baik)</div>
-                <div class="legend-item"><span class="color-box" style="background-color: #fff700;"></span> 20% - 29,9% (Sedang)</div>
-                <div class="legend-item"><span class="color-box" style="background-color: #fdae61;"></span> 30% - 40% (Tinggi)</div>
-                <div class="legend-item"><span class="color-box" style="background-color: #d73027;"></span> > 40%     (Sangat Tinggi)</div>
-                <div class="legend-item"><span class="color-box" style="background-color: #CCCCCC;"></span> Data Tidak Tersedia</div>
-                <p style="font-size: 11px; ">Klasifikasi Berdasarkan WHO (1995)</p> 
-            </div>
-                        <!-- ... legenda stunting, komoditas ... -->
-            <div id="legendaGroupTkdd"> <!-- ID DIUBAH dan KONTEN DIUBAH -->
-                <div class="legend-item">
-                    <span class="color-box" style="background-color: #6BAED6;"></span>
-                    < 800 Juta 
+                <div class="legend-item"><span class="color-box" style="background-color: #009307;"></span>
+                    < 20% (Baik)</div>
+                        <div class="legend-item"><span class="color-box" style="background-color: #fff700;"></span> 20%
+                            - 29,9% (Sedang)</div>
+                        <div class="legend-item"><span class="color-box" style="background-color: #fdae61;"></span> 30%
+                            - 40% (Tinggi)</div>
+                        <div class="legend-item"><span class="color-box" style="background-color: #d73027;"></span> >
+                            40% (Sangat Tinggi)</div>
+                        <div class="legend-item"><span class="color-box" style="background-color: #CCCCCC;"></span> Data
+                            Tidak Tersedia</div>
+                        <p style="font-size: 11px; ">Klasifikasi Berdasarkan WHO (1995)</p>
                 </div>
-                <div class="legend-item">
-                    <span class="color-box" style="background-color: #08519C;"></span>
-                    800 Juta - 1.6 Miliar
+                <!-- ... legenda stunting, komoditas ... -->
+                <div id="legendaGroupTkdd" style="font-size: 12px; margin-bottom: 15px;"> <!-- ID DIUBAH dan KONTEN DIUBAH -->
+                            <div class="legend-item" style="margin-bottom: 11px;">
+                                <span class="color-box" style="background-color: #fce893;"></span>
+                                RKFD < 0,905 <br> (Sangat Rendah)
+                            </div> 
+                            <div class="legend-item" style="margin-bottom: 11px;">
+                                <span class="color-box" style="background-color: rgb(209, 196, 82);"></span>
+                                0,905 ≤ RKFD < 1,141 <br> (Rendah)
+                            </div>
+                            <div class="legend-item" style="margin-bottom: 11px;">
+                                <span class="color-box" style="background-color: #cebb10;"></span>
+                                1,141 ≤ RKFD < 1,378 <br> (Sedang) 
+                            </div> 
+                            <div class="legend-item" style="margin-bottom: 11px;">
+                                <span class="color-box" style="background-color: #a1920b;"></span>
+                                1,378 ≤ RKFD < 1,615 <br> (Tinggi)
+                            </div> 
+                            <div class="legend-item" style="margin-bottom: 11px;">
+                                <span class="color-box" style="background-color: #6d6607;"></span>
+                                RKFD ≥ 1,615 <br> (Sangat Tinggi)
+                            </div> 
+                            <div class="legend-item" style="margin-bottom: 11px;">
+                                <span class="color-box" style="background-color: #E0E0E0;"></span>
+                                Tidak Ada Data / Rp 0
+                            </div> 
+                            <p style="font-size: 11px;"> Klasifikasi Berdasarkan Jumlah TKD</p>
                 </div>
-                <div class="legend-item">
-                    <span class="color-box" style="background-color: #ff9500;"></span>
-                    > 1.6 Miliar- 3.6 Miliar
-                </div>
-                <div class="legend-item">
-                    <span class="color-box" style="background-color: #ff0000;"></span>
-                    > 3.6 Miliar
-                </div>
-                <div class="legend-item">
-                    <span class="color-box" style="background-color: #E0E0E0;"></span>
-                    Tidak Ada Data / Rp 0
-                </div>
-                <p style="font-size: 11px;"> Klasifikasi Berdasarkan Jumlah TKD</p>
-            </div>
-            <!-- ... legenda lainnya seperti DBH, DAU, dll. -->
+                    <!-- ... legenda lainnya seperti DBH, DAU, dll. -->
 
-            <!-- Tanaman Hias (saya ganti IDnya agar konsisten dengan JS) -->
-            <div id="legendaGroupTanamanHias"> <!-- ID diubah dari legendaGroupHias -->
-                <div class="legend-item"><span class="color-box" style="background-color: #FF69B4;"></span> Data Tersedia</div>
-                <div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div>
-            </div>
-            <div id="legendaGroupTanamanPangan"><div class="legend-item"><span class="color-box" style="background-color: #90EE90;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupTanamanSayuran"><div class="legend-item"><span class="color-box" style="background-color: #32CD32;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupTanamanBiofarmaka"><div class="legend-item"><span class="color-box" style="background-color: #FFD700;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupBuah"><div class="legend-item"><span class="color-box" style="background-color: #FFA500;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupPerkebunan"><div class="legend-item"><span class="color-box" style="background-color: #D2691E;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupDagingTernak"><div class="legend-item"><span class="color-box" style="background-color: #A52A2A;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupTelurUnggas"><div class="legend-item"><span class="color-box" style="background-color: #F5F5DC;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupPerikananTangkap"><div class="legend-item"><span class="color-box" style="background-color: #4682B4;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
-            <div id="legendaGroupPerikananBudidaya"><div class="legend-item"><span class="color-box" style="background-color: #ADD8E6;"></span> Data Tersedia</div><div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data Tidak Tersedia</div></div>
+                    <!-- Tanaman Hias (saya ganti IDnya agar konsisten dengan JS) -->
+                    <div id="legendaGroupTanamanHias"> <!-- ID diubah dari legendaGroupHias -->
+                        <div class="legend-item"><span class="color-box" style="background-color: #FF69B4;"></span> Data
+                            Tersedia</div>
+                        <div class="legend-item"><span class="color-box" style="background-color: #E0E0E0;"></span> Data
+                            Tidak Tersedia</div>
+                    </div>
+                    <!-- GANTI DENGAN VERSI BARU INI -->
+                    <div id="legendaGroupTanamanPangan" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupTanamanSayuran" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupTanamanBiofarmaka" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupBuah" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupPerkebunan" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupDagingTernak" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupTelurUnggas" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupPerikananTangkap" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
+                    <div id="legendaGroupPerikananBudidaya" class="legend-content-panel" style="display: none;">
+                        <div style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Jumlah Jenis Komoditas:
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #006d2c;"></i> > 6 Jenis
+                        </div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #31a354;"></i> 5 - 6
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #74c476;"></i> 3 - 4
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #bae4b3;"></i> 1 - 2
+                            Jenis</div>
+                        <div class="legend-item"><i class="color-box" style="background-color: #E0E0E0;"></i> Tidak Ada
+                            Data</div>
+                    </div>
 
-            <!-- START: Sumber Legenda untuk TKDD -->
-            <!-- Anda HARUS menyesuaikan rentang nilai dan teksnya agar sesuai dengan data dan fungsi styling di JS -->
-            <div id="legendaGroupDbh">
-                <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span> < 50 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#c7e9b4;"></span> 50 - 100 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#7fcdbb;"></span> 100 - 200 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#41b6c4;"></span> 200 - 500 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#1d91c0;"></span> > 500 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
-            </div>
-            <div id="legendaGroupDau">
-                <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span> < 500 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#c7e9b4;"></span> 500 M - 1 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#7fcdbb;"></span> 1 T - 1.5 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#41b6c4;"></span> 1.5 T - 2 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#1d91c0;"></span> > 2 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
-            </div>
-            <div id="legendaGroupDakFisik">
-                <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span> < 50 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#c7e9b4;"></span> 50 - 100 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#7fcdbb;"></span> 100 - 200 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#41b6c4;"></span> 200 - 400 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#1d91c0;"></span> > 400 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
-            </div>
-            <div id="legendaGroupDakNonFisik">
-                <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span> < 100 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#c7e9b4;"></span> 100 - 200 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#7fcdbb;"></span> 200 - 300 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#41b6c4;"></span> 300 - 500 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#1d91c0;"></span> > 500 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
-            </div>
-            <div id="legendaGroupHibahDaerah">
-                <div class="legend-item"><span class="color-box" style="background-color:#7fcdbb;"></span> Ada Hibah (> 0)</div> <!-- Contoh warna dari tkddColors[2] -->
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Hibah / Nol</div>
-            </div>
-            <div id="legendaGroupDanaDesa">
-                <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span> < 100 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#c7e9b4;"></span> 100 - 200 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#7fcdbb;"></span> 200 - 300 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#41b6c4;"></span> 300 - 500 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#1d91c0;"></span> > 500 M</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
-            </div>
-            <div id="legendaGroupInsentifFiskal">
-                <div class="legend-item"><span class="color-box" style="background-color:#c7e9b4;"></span> Ada Insentif (> 0)</div> <!-- Contoh warna dari tkddColors[1] -->
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Insentif / Nol</div>
-            </div>
-            <div id="legendaGroupJumlahTkdd">
-                <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span> < 1 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#c7e9b4;"></span> 1 T - 2 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#7fcdbb;"></span> 2 T - 3 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#41b6c4;"></span> 3 T - 5 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#1d91c0;"></span> > 5 T</div>
-                <div class="legend-item"><span class="color-box" style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
-            </div>
-            <!-- END: Sumber Legenda untuk TKDD -->
+                    <!-- START: Sumber Legenda untuk TKDD -->
+                    <!-- Anda HARUS menyesuaikan rentang nilai dan teksnya agar sesuai dengan data dan fungsi styling di JS -->
+                    <div id="legendaGroupDbh">
+                        <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span>
+                            < 50 M</div>
+                                <div class="legend-item"><span class="color-box"
+                                        style="background-color:#c7e9b4;"></span> 50 - 100 M</div>
+                                <div class="legend-item"><span class="color-box"
+                                        style="background-color:#7fcdbb;"></span> 100 - 200 M</div>
+                                <div class="legend-item"><span class="color-box"
+                                        style="background-color:#41b6c4;"></span> 200 - 500 M</div>
+                                <div class="legend-item"><span class="color-box"
+                                        style="background-color:#1d91c0;"></span> > 500 M</div>
+                                <div class="legend-item"><span class="color-box"
+                                        style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
+                        </div>
+                        <div id="legendaGroupDau">
+                            <div class="legend-item"><span class="color-box" style="background-color:#ffffcc;"></span>
+                                < 500 M</div>
+                                    <div class="legend-item"><span class="color-box"
+                                            style="background-color:#c7e9b4;"></span> 500 M - 1 T</div>
+                                    <div class="legend-item"><span class="color-box"
+                                            style="background-color:#7fcdbb;"></span> 1 T - 1.5 T</div>
+                                    <div class="legend-item"><span class="color-box"
+                                            style="background-color:#41b6c4;"></span> 1.5 T - 2 T</div>
+                                    <div class="legend-item"><span class="color-box"
+                                            style="background-color:#1d91c0;"></span> > 2 T</div>
+                                    <div class="legend-item"><span class="color-box"
+                                            style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
+                            </div>
+                            <div id="legendaGroupDakFisik">
+                                <div class="legend-item"><span class="color-box"
+                                        style="background-color:#ffffcc;"></span>
+                                    < 50 M</div>
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#c7e9b4;"></span> 50 - 100 M</div>
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#7fcdbb;"></span> 100 - 200 M</div>
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#41b6c4;"></span> 200 - 400 M</div>
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#1d91c0;"></span> > 400 M</div>
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
+                                </div>
+                                <div id="legendaGroupDakNonFisik">
+                                    <div class="legend-item"><span class="color-box"
+                                            style="background-color:#ffffcc;"></span>
+                                        < 100 M</div>
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#c7e9b4;"></span> 100 - 200 M</div>
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#7fcdbb;"></span> 200 - 300 M</div>
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#41b6c4;"></span> 300 - 500 M</div>
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#1d91c0;"></span> > 500 M</div>
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol</div>
+                                    </div>
+                                    <div id="legendaGroupHibahDaerah">
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#7fcdbb;"></span> Ada Hibah (> 0)</div>
+                                        <!-- Contoh warna dari tkddColors[2] -->
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#E0E0E0;"></span> Tidak Ada Hibah / Nol</div>
+                                    </div>
+                                    <div id="legendaGroupDanaDesa">
+                                        <div class="legend-item"><span class="color-box"
+                                                style="background-color:#ffffcc;"></span>
+                                            < 100 M</div>
+                                                <div class="legend-item"><span class="color-box"
+                                                        style="background-color:#c7e9b4;"></span> 100 - 200 M</div>
+                                                <div class="legend-item"><span class="color-box"
+                                                        style="background-color:#7fcdbb;"></span> 200 - 300 M</div>
+                                                <div class="legend-item"><span class="color-box"
+                                                        style="background-color:#41b6c4;"></span> 300 - 500 M</div>
+                                                <div class="legend-item"><span class="color-box"
+                                                        style="background-color:#1d91c0;"></span> > 500 M</div>
+                                                <div class="legend-item"><span class="color-box"
+                                                        style="background-color:#E0E0E0;"></span> Tidak Ada Data / Nol
+                                                </div>
+                                        </div>
+                                        <div id="legendaGroupInsentifFiskal">
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#c7e9b4;"></span> Ada Insentif (> 0)</div>
+                                            <!-- Contoh warna dari tkddColors[1] -->
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#E0E0E0;"></span> Tidak Ada Insentif / Nol
+                                            </div>
+                                        </div>
+                                        <div id="legendaGroupJumlahTkdd">
+                                            <div class="legend-item"><span class="color-box"
+                                                    style="background-color:#ffffcc;"></span>
+                                                < 1 T</div>
+                                                    <div class="legend-item"><span class="color-box"
+                                                            style="background-color:#c7e9b4;"></span> 1 T - 2 T</div>
+                                                    <div class="legend-item"><span class="color-box"
+                                                            style="background-color:#7fcdbb;"></span> 2 T - 3 T</div>
+                                                    <div class="legend-item"><span class="color-box"
+                                                            style="background-color:#41b6c4;"></span> 3 T - 5 T</div>
+                                                    <div class="legend-item"><span class="color-box"
+                                                            style="background-color:#1d91c0;"></span> > 5 T</div>
+                                                    <div class="legend-item"><span class="color-box"
+                                                            style="background-color:#E0E0E0;"></span> Tidak Ada Data /
+                                                        Nol</div>
+                                            </div>
+                                            <!-- END: Sumber Legenda untuk TKDD -->
 
-        </div>
-    </div>
+                                        </div>
+                                    </div>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
-    <script src="js/peta.js"></script>
-    
-    <script type="text/javascript">
-		const tombol = document.querySelector('.tombol');
-		const menu = document.querySelector('.menu');
-		if (tombol && menu) {
-            tombol.addEventListener('click', () => {
-                menu.classList.toggle('aktif');
-            });
-        }
-	</script>
+                                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+                                    <script
+                                        src="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.js"></script>
+                                    <script
+                                        src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+                                    <script src="js/peta.js"></script>
+
+                                    <script type="text/javascript">
+                                        const tombol = document.querySelector('.tombol');
+                                        const menu = document.querySelector('.menu');
+                                        if (tombol && menu) {
+                                            tombol.addEventListener('click', () => {
+                                                menu.classList.toggle('aktif');
+                                            });
+                                        }
+                                    </script>
 </body>
+
 </html>

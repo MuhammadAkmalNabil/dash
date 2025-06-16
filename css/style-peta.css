@@ -440,7 +440,14 @@ hr.panel-section-separator {
                                 /* (lebar tombol toggle anak + marginnya) */
     font-size: 0.85em; /* Lebih kecil lagi untuk legenda anak */
 }
-
+.chart-source {
+    font-style: italic; /* <-- TAMBAHKAN BARIS INI */
+    font-size: 11px;
+    color: #000000;
+    text-align: left;
+    margin-top: 20px;
+    margin-right: 10px;
+}
 
 /* === LABEL WILAYAH DI PETA (L.DivIcon) === */
 /* === LABEL WILAYAH DI PETA (L.DivIcon) === */

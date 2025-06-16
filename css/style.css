@@ -128,6 +128,38 @@ nav {
 }
  
 @media screen and (max-width: 768px) {
+    .non-bold {
+    font-weight: normal;
+    font-size: 1.2rem;
+    color: #000000; /* Sesuaikan warna agar kontras dengan hero */
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+	position: relative;
+	left: -19px;
+    gap: 1rem;
+}
+.logo {
+    width: 55px;
+    height: 55px;
+    margin-right: 15px;
+}
+
+.logo-title h1 {
+    font-size: 1.3rem;
+    margin: 0;
+	position: relative;
+	right: 16px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.non-bold {
+    font-weight: normal;
+    font-size: 1rem;
+}
 	.menu {
 		display: none;
         position: absolute;

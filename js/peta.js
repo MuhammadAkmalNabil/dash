@@ -51,7 +51,7 @@ function parseNumericString(value) {
 function formatJumlahOrang(value) {
     const number = parseInt(value, 10);
     if (isNaN(number)) return 'N/A';
-    return number.toLocaleString('id-ID') + ' jiwa';
+    return number.toLocaleString('id-ID') + ' Jiwa';
 }
 
 // <<< TAMBAHKAN FUNGSI BARU INI >>>
@@ -125,11 +125,32 @@ function processTrendData(trendData) {
     return kemiskinanData;
 }
 // Fungsi untuk memformat angka menjadi format Rupiah
-function formatRupiah(value) {
+function formatRupiah(value, name) {
+    
+if (name === 'rasio_fisikal') {
+    if (value === '-' || value === null || typeof value === 'undefined') return '-';
+    // Mengganti titik desimal dengan koma, khusus untuk rasio
+    return value.replace('.', ',');
+}
+
+    // Untuk semua data lain, lanjutkan dengan proses normal
+    if (value === '-' || value === null || typeof value === 'undefined') return '-';
+    
     const number = parseNumericString(value);
-    if (number === 0 && (value === '-' || value === null || typeof value === 'undefined')) return '-';
     if (isNaN(number)) return 'N/A';
-    return 'Rp ' + number.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    if (number === 0 && value === '-') return '-';
+
+    return 'Rp' + number.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+// <<< TAMBAHKAN FUNGSI BARU INI DI PETA.JS >>>
+
+// Fungsi untuk mendapatkan warna berdasarkan jumlah komoditas
+function getCommodityColor(count) {
+    if (count > 6) return '#006d2c';      // Sangat Gelap (lebih dari 6 komoditas)
+    else if (count > 4) return '#31a354'; // Gelap (5-6 komoditas)
+    else if (count > 2) return '#74c476'; // Sedang (3-4 komoditas)
+    else if (count > 0) return '#bae4b3'; // Terang (1-2 komoditas)
+    else return '#E0E0E0';                // Abu-abu (Tidak ada data)
 }
 
 // <<< GANTI FUNGSI LAMA ANDA DENGAN VERSI BARU INI >>>
@@ -214,7 +235,7 @@ function createPopupContent(properties) {
     let content = `
         <div style="text-align: left; max-height: 350px; overflow-y: auto; padding-right:10px;">
             <div style="text-align: center;">
-                <img src="${properties.icon_image || 'image/default.jpg'}" style="width:80px; height:80px; border-radius:5px; margin-bottom:10px;"><br>
+                <img src="${properties.icon_image || 'image/default.jpg'}" style="width:60px; height:60px; border-radius:5px; margin-bottom:10px;"><br>
                 <b style="font-size: 17px;">${properties.WADMKK}</b><br>
                 Provinsi: ${properties.WADMPR}<br>
             </div>`;
@@ -237,8 +258,21 @@ function createPopupContent(properties) {
                 if (key === 'jumlah') {
                     formattedValue = formatJumlahOrang(item.value * 1000);
                 } else {
-                    formattedValue = `${formatGenericNumber(item.value)} ${item.unit}`;
+                    // Buat variabel baru untuk unit yang akan ditampilkan
+                    let displayUnit = item.unit;
+                    
+                    // Cek jika unitnya adalah 'Indeks' atau 'Rasio' (case-insensitive)
+                    if (displayUnit.toLowerCase() === 'indeks' || displayUnit.toLowerCase() === 'rasio') {
+                        displayUnit = ''; // Jika ya, kosongkan unitnya
+                    }else if (displayUnit.toLowerCase() === 'persen') {
+                        displayUnit = '%'; // Jika ya, kosongkan unitnya
+                    }
+                    
+                    // Gabungkan nilai dengan unit yang sudah dimodifikasi
+                    formattedValue = `${formatGenericNumber(item.value)} ${displayUnit}`.trim(); // .trim() untuk hapus spasi jika unit kosong
                 }
+                
+                // --- AKHIR MODIFIKASI ---
                 
                 content += `<li>${item.name}: <strong>${formattedValue}</strong></li>`;
             }
@@ -301,35 +335,43 @@ const WARNA_TKDD_ADA = '#FFDEAD'; // Contoh: Navajo White
 const WARNA_TKDD_TIDAK_ADA = '#E0E0E0'; // Abu-abu muda
 
 // Fungsi style untuk layer TKDD tunggal berdasarkan jumlah_tkdd
+// GANTI FUNGSI LAMA DENGAN FUNGSI BARU INI
 function styleTkdd(feature) {
-    let jumlahTkddValue = 0;
+    let rasioValue = null;
+
+    // 1. Logika diubah untuk mencari 'rasio_fisikal'
     if (feature.properties.Keuangan && Array.isArray(feature.properties.Keuangan.tkdd)) {
-        const jumlahTkddItem = feature.properties.Keuangan.tkdd.find(item => item.name === 'jumlah_tkdd');
-        if (jumlahTkddItem && jumlahTkddItem.value) {
-            jumlahTkddValue = parseNumericString(jumlahTkddItem.value);
+        const rasioItem = feature.properties.Keuangan.tkdd.find(item => item.name === 'rasio_fisikal');
+        if (rasioItem && rasioItem.value && rasioItem.value !== '-') {
+            // Mengubah string "1.031" menjadi angka 1.031
+            rasioValue = parseNumericString(rasioItem.value);
         }
     }
 
-    let fillColor;
-    if (jumlahTkddValue <= 0) { 
-        fillColor = '#CCCCCC';
-    } else if (jumlahTkddValue < 800000000 ) { 
-        fillColor = '#6BAED6';
-    } else if (jumlahTkddValue <= 1600000000) { 
-        fillColor = '#08519C';
-    } else if (jumlahTkddValue < 3600000000) { 
-        fillColor = '#ff9500';
-    } else if (jumlahTkddValue > 3600000000) { 
-        fillColor = '#ff0000';
+    // 2. Rentang nilai dan warna disesuaikan dengan legenda RKFD
+     let fillColor;
+    if (rasioValue === null) {
+        fillColor = '#E0E0E0'; // Tidak Ada Data (sesuai legenda)
+    } else if (rasioValue < 0.905) {
+        fillColor = '#fce893';       // Sangat Rendah
+    } else if (rasioValue < 1.141) {
+        fillColor = '#d1c452';       
+    } else if (rasioValue < 1.378) {
+        fillColor = '#cebb10';       // Sedang
+    } else if (rasioValue < 1.615) {
+        fillColor = '#a1920c';       // Tinggi
+    } else { // >= 1.615
+        fillColor = '#6d6607';       // Sangat Tinggi
     }
 
+    // 3. Objek style yang dikembalikan tetap sama
     return {
         fillColor: fillColor,
         weight: 1.5,
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.75
+        fillOpacity: 0.8
     };
 }
 
@@ -429,13 +471,24 @@ function onEachFeatureDefault(feature, layer) {
 }
 
 // Fungsi style untuk layer komoditas
-function styleKomoditasDefault(feature, categoryKey, colorIfData, colorIfNoData = '#E0E0E0') {
-    const hasData = feature.properties.categories &&
-                    feature.properties.categories[categoryKey] &&
-                    feature.properties.categories[categoryKey].length > 0;
+// <<< GANTI FUNGSI styleKomoditasDefault LAMA ANDA DENGAN YANG BARU INI >>>
+
+function styleKomoditasDefault(feature, categoryKey) {
+    let count = 0; // Mulai dengan hitungan 0
+    if (feature.properties.categories && 
+        Array.isArray(feature.properties.categories[categoryKey])) {
+        // Hitung jumlah item dalam array komoditas
+        count = feature.properties.categories[categoryKey].length;
+    }
+
     return {
-        fillColor: hasData ? colorIfData : colorIfNoData,
-        weight: 2, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 0.65
+        // Gunakan fungsi skala warna kita untuk mengisi warna
+        fillColor: getCommodityColor(count), 
+        weight: 1.5, // Sedikit lebih tebal agar batas terlihat jelas
+        opacity: 1, 
+        color: 'white', 
+        dashArray: '3', 
+        fillOpacity: 0.8 // Sedikit lebih pekat
     };
 }
 function styleTanamanHias(feature) { return styleKomoditasDefault(feature, 'Tanaman_Hias', '#FF69B4'); }
@@ -528,7 +581,10 @@ function showLayerPanel(properties) {
         'Perikanan Tangkap': { layer: perikananTangkapLayer, key: 'Perikanan_Tangkap' },
         'Perikanan Budidaya': { layer: perikananBudidayaLayer, key: 'Perikanan_Budidaya' }
     };
-
+const legendHtml = `<div style="font-size: 11px; font-style: italic; color: #555; margin-top: 4px; margin-bottom: 10px;line-height: 1.6;">
+                        <div><img src="image/tandatanya.png" style="width: 21px; height: 21px; vertical-align: middle; margin-right: 4px;margin-bottom:5px;"> = Peringkat Jawa Timur</div>
+                        <div><img src="image/legendindo.png" style="width: 21px; height: 20px; vertical-align: middle; margin-right: 4px;"> = Peringkat Nasional</div>
+                    </div>`;
     for (const categoryName in categoriesToShowInPanel) {
         const catInfo = categoriesToShowInPanel[categoryName];
         if (catInfo.layer && map.hasLayer(catInfo.layer)) {
@@ -536,10 +592,7 @@ function showLayerPanel(properties) {
             panelHtml += `<div class="panel-section commodity-section">
                             <h4 class="panel-section-title">Komoditas ${categoryName}:</h4>`;
              // <<< GANTI DENGAN KODE LEGENDA BARU INI >>>
-const legendHtml = `<div style="font-size: 11px; font-style: italic; color: #555; margin-top: 4px; margin-bottom: 10px;line-height: 1.6;">
-                        <div><img src="image/tandatanya.png" style="width: 21px; height: 21px; vertical-align: middle; margin-right: 4px;margin-bottom:5px;"> = Peringkat Jawa Timur</div>
-                        <div><img src="image/legendindo.png" style="width: 21px; height: 20px; vertical-align: middle; margin-right: 4px;"> = Peringkat Nasional</div>
-                    </div>`;
+
                                 
             panelHtml += legendHtml;
             if (properties.categories && properties.categories[catInfo.key] && properties.categories[catInfo.key].length > 0) {
@@ -588,7 +641,7 @@ properties.categories[catInfo.key].forEach(item => {
     const tkddLabels = {
         'dbh': 'Dana Bagi Hasil (DBH)', 'dau': 'Dana Alokasi Umum (DAU)', 'dak_fisik': 'DAK Fisik',
         'dak_non_fisik': 'DAK Non-Fisik', 'hibah_ke_daerah': 'Hibah ke Daerah', 'dana_desa': 'Dana Desa',
-        'insentif_fiskal': 'Insentif Fiskal', 'jumlah_tkdd': 'Total TKDD'
+        'insentif_fiskal': 'Insentif Fiskal', 'jumlah_tkdd': 'Total TKDD', 'rasio_fisikal': 'Rasio Kapasital Fisikal Daerah'
     };
 
     if (tkddLayer && map.hasLayer(tkddLayer)) {
@@ -597,14 +650,28 @@ properties.categories[catInfo.key].forEach(item => {
         let tkddHtmlList = '';
         let hasValidTkddItemPanel = false;
         if (properties.Keuangan && Array.isArray(properties.Keuangan.tkdd) && properties.Keuangan.tkdd.length > 0) {
-            properties.Keuangan.tkdd.forEach(item => {
-                const label = tkddLabels[item.name] || item.name;
-                if (item.value && parseNumericString(item.value) !== 0) {
-                    tkddHtmlList += `<li class="panel-data-item" style="margin-bottom: 7px;">${label}: ${formatRupiah(item.value)}</li>`;
-                    hasValidTkddItemPanel = true;
-                }
-            });
+    
+    // (Opsional tapi direkomendasikan) Mengurutkan data agar rapi
+    const sortedTkdd = [...properties.Keuangan.tkdd].sort((a, b) => {
+        if (a.name === 'rasio_fisikal') return -1;
+        if (b.name === 'rasio_fisikal') return 1;
+        if (a.name === 'jumlah_tkdd') return 1;
+        if (b.name === 'jumlah_tkdd') return -1;
+        return 0;
+    });
+
+    sortedTkdd.forEach(item => {
+        const label = tkddLabels[item.name] || item.name;
+        if (item.value && item.value.trim() !== '-') {
+            // INI PERBAIKANNYA: Kirim 'item.name' sebagai parameter kedua
+            const formattedValue = formatRupiah(item.value, item.name);
+            
+            // Tambahkan <strong> agar nilainya tebal dan rapi
+            tkddHtmlList += `<li class="panel-data-item" style="margin-bottom: 7px;">${label}: <strong>${formattedValue}</strong></li>`;
+            hasValidTkddItemPanel = true;
         }
+    });
+}
         if (hasValidTkddItemPanel) {
             panelHtml += `<ul class="panel-data-list" style="padding-left: 20px;">${tkddHtmlList}</ul>`;
         } else {
@@ -628,15 +695,22 @@ properties.categories[catInfo.key].forEach(item => {
 
     let chartContainer = panel.querySelector('#chartContainer');
     if (stuntingLayer && map.hasLayer(stuntingLayer)) {
-        if (!chartContainer) {
-            chartContainer = document.createElement('div');
-            chartContainer.id = 'chartContainer';
-            chartContainer.className = 'panel-section chart-section';
-            if (dataDisplayedInPanel && !isFirstSection) chartContainer.innerHTML = `<hr class="panel-section-separator">`;
-            chartContainer.innerHTML += `<h4 class="panel-section-title">Grafik Stunting</h4>
-                                         <div class="chart-canvas-wrapper"><canvas id="stuntingChart"></canvas></div>`;
-            contentDiv.appendChild(chartContainer);
-        }
+        // ===== KODE BARU (DENGAN TAMBAHAN SUMBER) =====
+if (!chartContainer) {
+    chartContainer = document.createElement('div');
+    chartContainer.id = 'chartContainer';
+    chartContainer.className = 'panel-section chart-section';
+    if (dataDisplayedInPanel && !isFirstSection) chartContainer.innerHTML = `<hr class="panel-section-separator">`;
+    
+    // Modifikasi ada di sini
+    chartContainer.innerHTML += `
+        <h4 class="panel-section-title" ">Grafik Stunting</h4>
+        <div class="chart-canvas-wrapper"><canvas id="stuntingChart"></canvas></div>
+        <p class="chart-source" style="font-size:15px;font-family:italic;">Sumber Data: SSGI 2024</p> 
+    `; // <-- TAMBAHKAN BARIS INI
+    
+    contentDiv.appendChild(chartContainer);
+}
         chartContainer.style.display = 'block';
         const stuntingRateForChart = parseFloat(properties.stunting_rate);
         if (properties.stunting_rate !== undefined && !isNaN(stuntingRateForChart)) {
@@ -764,68 +838,85 @@ function initializeApplication() {
 
     function syncAllMasterCheckboxesStates() {
         if (komoditasMasterCheckbox) {
-            komoditasMasterCheckbox.checked = Array.from(komoditasChildCheckboxes).some(cb => cb.checked);
+            const childArray = Array.from(komoditasChildCheckboxes);
+            const allChecked = childArray.every(cb => cb.checked);
+            const someChecked = childArray.some(cb => cb.checked);
+
+            if (allChecked) {
+                komoditasMasterCheckbox.checked = true;
+                komoditasMasterCheckbox.indeterminate = false;
+            } else if (someChecked) {
+                komoditasMasterCheckbox.checked = false;
+                komoditasMasterCheckbox.indeterminate = true; // Status "setengah tercentang"
+            } else {
+                komoditasMasterCheckbox.checked = false;
+                komoditasMasterCheckbox.indeterminate = false;
+            }
         }
     }
     
+    // Event listener untuk checkbox "Stunting" (sekarang bisa berdampingan dengan komoditas)
+    // Listener untuk Stunting
     if (stuntingCheckbox) {
         stuntingCheckbox.addEventListener('change', function() {
-            if (masterActionInProgress) return;
-            masterActionInProgress = true;
-            if (this.checked) { 
-                if (komoditasMasterCheckbox) komoditasMasterCheckbox.checked = false;
+            if (this.checked) {
+                // Matikan yang lain
+                komoditasMasterCheckbox.checked = false;
                 komoditasChildCheckboxes.forEach(cb => cb.checked = false);
-                if (dataKeuanganTkddMasterCheckbox) dataKeuanganTkddMasterCheckbox.checked = false;
+                dataKeuanganTkddMasterCheckbox.checked = false;
             }
-            masterActionInProgress = false;
+            updateMapLayersAndLegends();
+        });
+    }
+    
+    // Listener untuk TKDD
+    if (dataKeuanganTkddMasterCheckbox) {
+        dataKeuanganTkddMasterCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Matikan yang lain
+                stuntingCheckbox.checked = false;
+                komoditasMasterCheckbox.checked = false;
+                komoditasChildCheckboxes.forEach(cb => cb.checked = false);
+            }
             updateMapLayersAndLegends();
         });
     }
 
+    // Listener untuk Master Komoditas
     if (komoditasMasterCheckbox) {
         komoditasMasterCheckbox.addEventListener('change', function() {
-            if (masterActionInProgress) return;
-            masterActionInProgress = true;
-            const isChecked = this.checked;
-            if (isChecked) {
-                if (stuntingCheckbox) stuntingCheckbox.checked = false; 
-                if (dataKeuanganTkddMasterCheckbox) dataKeuanganTkddMasterCheckbox.checked = false;
-                komoditasChildCheckboxes.forEach(cb => cb.checked = true); 
-            } else {
-                komoditasChildCheckboxes.forEach(cb => cb.checked = false);
+            if (this.checked) {
+                // Matikan yang lain
+                stuntingCheckbox.checked = false;
+                dataKeuanganTkddMasterCheckbox.checked = false;
             }
-            masterActionInProgress = false;
+            // Atur semua anak berdasarkan status master
+            komoditasChildCheckboxes.forEach(cb => cb.checked = this.checked);
             updateMapLayersAndLegends();
         });
     }
+
+    // Listener untuk setiap anak komoditas
     komoditasChildCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            if (masterActionInProgress) return;
-            masterActionInProgress = true;
             if (this.checked) {
-                if (stuntingCheckbox) stuntingCheckbox.checked = false; 
-                if (dataKeuanganTkddMasterCheckbox) dataKeuanganTkddMasterCheckbox.checked = false;
-                komoditasChildCheckboxes.forEach(otherCb => { if (otherCb !== this) otherCb.checked = false; });
+                // Jika salah satu anak dicentang, matikan kategori utama lainnya
+                stuntingCheckbox.checked = false;
+                dataKeuanganTkddMasterCheckbox.checked = false;
             }
-            masterActionInProgress = false;
             updateMapLayersAndLegends();
         });
     });
     
+    // Event listener untuk checkbox "TKDD" (sekarang bisa berdampingan dengan komoditas)
     if (dataKeuanganTkddMasterCheckbox) {
         dataKeuanganTkddMasterCheckbox.addEventListener('change', function() {
-            if (masterActionInProgress) return;
-            masterActionInProgress = true;
-            if (this.checked) { 
-                if (komoditasMasterCheckbox) komoditasMasterCheckbox.checked = false;
-                komoditasChildCheckboxes.forEach(cb => cb.checked = false);
-                if (stuntingCheckbox) stuntingCheckbox.checked = false; 
-            }
-            masterActionInProgress = false;
+            // Logika untuk mematikan layer lain sudah dihapus
             updateMapLayersAndLegends();
         });
     }
     
+    // Inisialisasi status awal (misalnya Stunting aktif, yang lain tidak)
     masterActionInProgress = true; 
     if (stuntingCheckbox) stuntingCheckbox.checked = true; 
     if (komoditasMasterCheckbox) komoditasMasterCheckbox.checked = false;
@@ -833,7 +924,6 @@ function initializeApplication() {
     if (dataKeuanganTkddMasterCheckbox) dataKeuanganTkddMasterCheckbox.checked = false; 
     masterActionInProgress = false;
     updateMapLayersAndLegends();
-
     const toggleKabLabelsCheckbox = document.getElementById('toggleKabupatenLabelsCheckbox');
     const toggleKotaLabelsCheckbox = document.getElementById('toggleKotaLabelsCheckbox');
     if (toggleKabLabelsCheckbox) {
@@ -1102,7 +1192,7 @@ Promise.all([
 
 // Fungsi pencarian (search)
 const searchContainer = document.createElement('div');
-searchContainer.style = 'position: fixed; top: 85px; right: 20px; z-index: 1000; width: 330px;display: flex; flex-direction: column; align-items: center;';
+searchContainer.style = 'position: fixed; top: 85px; right: 20px; z-index: 1000; width: 390px;display: flex; flex-direction: column; align-items: center;';
 const searchInputGroup = document.createElement('div');
 searchInputGroup.style = 'position: relative; width: 100%;';
 const searchInput = document.createElement('input');
