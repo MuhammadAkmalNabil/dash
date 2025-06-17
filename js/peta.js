@@ -589,8 +589,8 @@ function showLayerPanel(properties) {
         'Perikanan Budidaya': { layer: perikananBudidayaLayer, key: 'Perikanan_Budidaya' }
     };
 const legendHtml = `<div style="font-size: 11px; font-style: italic; color: #555; margin-top: 4px; margin-bottom: 10px;line-height: 1.6;">
-                        <div><img src="image/tandatanya.png" style="width: 21px; height: 21px; vertical-align: middle; margin-right: 4px;margin-bottom:5px;"> = Peringkat Jawa Timur</div>
-                        <div><img src="image/legendindo.png" style="width: 21px; height: 20px; vertical-align: middle; margin-right: 4px;"> = Peringkat Nasional</div>
+                        <div><img src="image/prov.png" style="width: 21px; height: 21px; vertical-align: middle; margin-right: 4px;margin-bottom:5px;"> = Peringkat Jawa Timur</div>
+                        <div><img src="image/nas.png" style="width: 21px; height: 20px; vertical-align: middle; margin-right: 4px;"> = Peringkat Nasional</div>
                     </div>`;
     for (const categoryName in categoriesToShowInPanel) {
         const catInfo = categoriesToShowInPanel[categoryName];
@@ -648,7 +648,7 @@ properties.categories[catInfo.key].forEach(item => {
     const tkddLabels = {
         'dbh': 'Dana Bagi Hasil (DBH)', 'dau': 'Dana Alokasi Umum (DAU)', 'dak_fisik': 'DAK Fisik',
         'dak_non_fisik': 'DAK Non-Fisik', 'hibah_ke_daerah': 'Hibah ke Daerah', 'dana_desa': 'Dana Desa',
-        'insentif_fiskal': 'Insentif Fiskal', 'jumlah_tkdd': 'Total TKDD', 'rasio_fisikal': 'Rasio Kapasital Fisikal Daerah'
+        'insentif_fiskal': 'Insentif Fiskal', 'jumlah_tkdd': 'Total TKDD', 'rasio_fisikal': 'Rasio Kapasital Fiskal Daerah'
     };
 
     if (tkddLayer && map.hasLayer(tkddLayer)) {
