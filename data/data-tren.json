@@ -287,7 +287,7 @@
       "unit": "Indeks",
       "labels": [2020, 2021, 2022, 2023, 2024],
       "data": {
-        "Rata-Rata Nasional": [0, 0, 0, 0, 0],
+        
         "Provinsi Jawa Timur": [79.9, 79.7, 79.85, 82.46, 83.86],
         "Kabupaten Bangkalan": [74.21, 74.04, 70.59, 73.23, 76.02],
         "Kabupaten Banyuwangi": [82.4, 82.8, 83.82, 84.91, 85.77],
@@ -334,6 +334,7 @@
       "unit": "Persen",
       "labels": [2021, 2022, 2024],
       "data": {
+        "Rata-Rata Nasional": [24.4, 21.6, 15.6],
         "Provinsi Jawa Timur": [23.5, 19.2, 12.1],
         "Kabupaten Bangkalan": [38.9, 26.2, 16],
         "Kabupaten Banyuwangi": [20.1, 18.1, 14.4],

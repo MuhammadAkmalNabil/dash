@@ -80,7 +80,7 @@ function processAllIndicatorsForYear(trendData, year) {
             // Jika tahun ditemukan dan ada data untuk wilayah ini
             if (yearIndex !== -1 && indicator.data[regionName] !== undefined) {
                 const value = indicator.data[regionName][yearIndex];
-                
+
                 // Simpan data dengan format yang rapi
                 allDataByRegion[regionName][indicatorKey] = {
                     name: indicator.name,
@@ -126,16 +126,16 @@ function processTrendData(trendData) {
 }
 // Fungsi untuk memformat angka menjadi format Rupiah
 function formatRupiah(value, name) {
-    
-if (name === 'rasio_fisikal') {
-    if (value === '-' || value === null || typeof value === 'undefined') return '-';
-    // Mengganti titik desimal dengan koma, khusus untuk rasio
-    return value.replace('.', ',');
-}
+
+    if (name === 'rasio_fisikal') {
+        if (value === '-' || value === null || typeof value === 'undefined') return '-';
+        // Mengganti titik desimal dengan koma, khusus untuk rasio
+        return value.replace('.', ',');
+    }
 
     // Untuk semua data lain, lanjutkan dengan proses normal
     if (value === '-' || value === null || typeof value === 'undefined') return '-';
-    
+
     const number = parseNumericString(value);
     if (isNaN(number)) return 'N/A';
     if (number === 0 && value === '-') return '-';
@@ -159,7 +159,7 @@ function extractPeringkatFromValue(valueString) {
     if (typeof valueString !== 'string') return null;
     // Regex ini mencari: (#) lalu (angka) lalu (tanda bintang opsional)
     const match = valueString.match(/\(#(\d+)(\*?)\)/);
-    
+
     if (match) {
         return {
             peringkat: parseInt(match[1]), // Angka ada di grup pertama
@@ -191,7 +191,7 @@ function getPeringkatProvinsiLabel(peringkatAngka) {
     if (peringkatAngka >= 1 && peringkatAngka <= 5) {
         return `<span class="peringkat-provinsi-label" style="margin-left: 5px; white-space: nowrap;"><img src="${imagePath}${iconPrefix}${peringkatAngka}.png" alt="Peringkat Provinsi ${peringkatAngka}" style="width: 21px; height: 21px; vertical-align: middle;"></span>`;
     }
-    
+
     return `<span class="peringkat-provinsi-label" style="margin-left: 5px; white-space: nowrap;">(#${peringkatAngka})</span>`;
 }
 // <<< TAMBAHKAN FUNGSI BARU INI >>>
@@ -206,7 +206,7 @@ function getPeringkatNasionalLabel(peringkatAngka) {
     if (peringkatAngka >= 1 && peringkatAngka <= 5) {
         return `<span class="peringkat-provinsi-label" style="margin-left: 5px; white-space: nowrap;"><img src="${imagePath}${iconPrefix}${peringkatAngka}.png" alt="Peringkat Nasional ${peringkatAngka}" style="width: 21px; height: 21px; vertical-align: middle;"></span>`;
     }
-    
+
     return `<span class="peringkat-provinsi-label" style="margin-left: 5px; white-space: nowrap;">(#${peringkatAngka}*)</span>`;
 }
 // Kategori komoditas yang mungkin memiliki data peringkat
@@ -233,20 +233,67 @@ function normalizeRegionName(name) {
 // <<< GANTI FUNGSI createPopupContent ANDA DENGAN VERSI LENGKAP INI >>>
 function createPopupContent(properties) {
     let content = `
-        <div style="text-align: left; max-height: 350px; overflow-y: auto; padding-right:10px;">
+       <div style="text-align: left; max-height: 300px; overflow-y: auto; padding-right:10px;">
             <div style="text-align: center;">
                 <img src="${properties.icon_image || 'image/default.jpg'}" style="width:60px; height:60px; border-radius:5px; margin-bottom:10px;"><br>
                 <b style="font-size: 17px;">${properties.WADMKK}</b><br>
                 Provinsi: ${properties.WADMPR}<br>
             </div>`;
-            
+
     let dataAdded = false;
+    if (properties.sektor && properties.sektor.basis && Array.isArray(properties.sektor.basis) && properties.sektor.basis.length > 0) {
+        content += `<hr style="margin: 8px 0;">
+                <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 0;font-size:11px;">`;
+
+        // Langkah 1: Ekstrak data Luas Wilayah terlebih dahulu
+        const luasWilayahItem = properties.sektor.basis.find(item => item.name.trim() === 'Luas Wilayah');
+        const luasPersenItem = properties.sektor.basis.find(item => item.name.trim() === 'Luas Wilayah %');
+        const luasWilayahValue = luasWilayahItem ? luasWilayahItem.value : null;
+        const luasPersenValue = luasPersenItem ? luasPersenItem.value : null;
+
+        // Langkah 2: Loop melalui item lain dan lewati item Luas Wilayah
+        properties.sektor.basis.forEach(item => {
+            const itemName = item.name.trim();
+            const itemValue = item.value;
+
+            // Lewati item individual Luas Wilayah karena akan digabung nanti
+            if (itemName === 'Luas Wilayah' || itemName === 'Luas Wilayah %') {
+                return; // Lanjut ke item berikutnya
+            }
+
+            // Tampilkan "Sektor Basis" dengan format daftar bertingkat
+            if (itemName === 'Sektor Basis' && typeof itemValue === 'string') {
+                const basisSectors = itemValue.split(';').map(s => s.trim());
+                content += `<li style="list-style-type: none; margin-left: -20px;"><strong>${itemName}:</strong>
+                            <ul style="padding-left: 15px; margin-top: 3px; list-style-type: disc;">`;
+                basisSectors.forEach(sector => {
+                    if (sector) {
+                        // <<< TAMBAHKAN STYLE "white-space: normal;" DI SINI >>>
+                        content += `<li style="white-space: normal;">${sector}</li>`;
+                    }
+                });
+                content += `</ul>
+                        </li>`;
+            } else {
+                // Untuk item lain yang mungkin ada di masa depan
+                content += `<li><strong>${itemName}:</strong> ${itemValue}</li>`;
+            }
+        });
+
+        // Langkah 3: Gabungkan dan tampilkan data Luas Wilayah jika ada
+        if (luasWilayahValue && luasPersenValue) {
+            content += `<li style="list-style-type: none; margin-left: -20px;"><strong>Luas Wilayah:</strong> ${luasWilayahValue} (${luasPersenValue} %)</li>`;
+        }
+
+        content += `</ul>`;
+        dataAdded = true;
+    }
 
     // BAGIAN 1: DATA TREN (SELALU TAMPIL)
     if (properties.trendIndicators2024 && Object.keys(properties.trendIndicators2024).length > 0) {
         content += `<hr style="margin: 8px 0;"><strong>Indikator Utama (2024):</strong>
                     <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 0;font-size:11px;">`;
-        
+
         const trend = properties.trendIndicators2024;
         const displayOrder = ['persentase', 'jumlah', 'manusia', 'ekonomi', 'terbuka', 'gini', 'pangan', 'stunting'];
 
@@ -255,25 +302,32 @@ function createPopupContent(properties) {
                 const item = trend[key];
                 let formattedValue;
 
+                // <<< GANTI DENGAN BLOK LOGIKA BARU INI >>>
                 if (key === 'jumlah') {
                     formattedValue = formatJumlahOrang(item.value * 1000);
                 } else {
-                    // Buat variabel baru untuk unit yang akan ditampilkan
+                    // Penanganan unit tetap sama
                     let displayUnit = item.unit;
-                    
-                    // Cek jika unitnya adalah 'Indeks' atau 'Rasio' (case-insensitive)
                     if (displayUnit.toLowerCase() === 'indeks' || displayUnit.toLowerCase() === 'rasio') {
-                        displayUnit = ''; // Jika ya, kosongkan unitnya
-                    }else if (displayUnit.toLowerCase() === 'persen') {
-                        displayUnit = '%'; // Jika ya, kosongkan unitnya
+                        displayUnit = '';
+                    } else if (displayUnit.toLowerCase() === 'persen') {
+                        displayUnit = '%';
                     }
-                    
-                    // Gabungkan nilai dengan unit yang sudah dimodifikasi
-                    formattedValue = `${formatGenericNumber(item.value)} ${displayUnit}`.trim(); // .trim() untuk hapus spasi jika unit kosong
+
+                    // Penanganan nilai berdasarkan KEY
+                    if (key === 'stunting') {
+                        // KHUSUS STUNTING: Ubah ke angka, lalu string, lalu ganti titik dengan koma
+                        // Ini akan secara otomatis menghilangkan nol di belakang
+                        const stuntingValue = parseFloat(item.value).toString().replace('.', ',');
+                        formattedValue = `${stuntingValue} ${displayUnit}`.trim();
+                    } else {
+                        // Untuk indikator lainnya, gunakan format generik yang lama
+                        formattedValue = `${formatGenericNumber(item.value)} ${displayUnit}`.trim();
+                    }
                 }
-                
+
                 // --- AKHIR MODIFIKASI ---
-                
+
                 content += `<li>${item.name}: <strong>${formattedValue}</strong></li>`;
             }
         });
@@ -281,7 +335,11 @@ function createPopupContent(properties) {
         content += `</ul>`;
         dataAdded = true;
     }
- 
+    // <<< TAMBAHKAN BLOK KODE BARU DI SINI >>>
+    // <<< GANTI DENGAN BLOK LOGIKA BARU INI >>>
+
+    // <<< AKHIR DARI BLOK KODE BARU >>>
+
     // BAGIAN 2: DATA KOMODITAS (TAMPIL JIKA LAYER AKTIF)
     const categoriesToShow = {
         'Tanaman Hias': { layer: tanamanHiasLayer, key: 'Tanaman_Hias' },
@@ -295,8 +353,8 @@ function createPopupContent(properties) {
         'Perikanan Tangkap': { layer: perikananTangkapLayer, key: 'Perikanan_Tangkap' },
         'Perikanan Budidaya': { layer: perikananBudidayaLayer, key: 'Perikanan_Budidaya' }
     };
-    
-    
+
+
     // BAGIAN 3: PESAN JIKA TIDAK ADA DATA SAMA SEKALI
     if (!dataAdded) {
         // Cek apakah ada layer lain yang aktif
@@ -308,7 +366,7 @@ function createPopupContent(properties) {
             }
         }
         if (!anyOtherLayerActive && (!tkddLayer || !map.hasLayer(tkddLayer))) {
-             content += `<p style="margin-top:10px; text-align:center;"><em>Pilih layer data pada "Daftar Layer" untuk menampilkan informasi.</em></p>`;
+            content += `<p style="margin-top:10px; text-align:center;"><em>Pilih layer data pada "Daftar Layer" untuk menampilkan informasi.</em></p>`;
         }
     }
 
@@ -317,14 +375,14 @@ function createPopupContent(properties) {
 }
 // Fungsi style untuk layer Stunting
 const getColorStunting = (rate) => {
-    if (rate === null || typeof rate === 'undefined' || rate === '-') return '#CCCCCC'; 
-    const numericRate = parseFloat(rate); 
-    if (isNaN(numericRate)) return '#CCCCCC'; 
-    if (numericRate < 20) return 'green';       
-    else if (numericRate >= 20 && numericRate <= 29.9) return '#fff700'; 
-    else if (numericRate >= 30 && numericRate <= 40) return 'orange';   
-    else if (numericRate > 40) return 'red';        
-    else return '#CCCCCC'; 
+    if (rate === null || typeof rate === 'undefined' || rate === '-') return '#CCCCCC';
+    const numericRate = parseFloat(rate);
+    if (isNaN(numericRate)) return '#CCCCCC';
+    if (numericRate < 20) return 'green';
+    else if (numericRate >= 20 && numericRate <= 29.9) return '#fff700';
+    else if (numericRate >= 30 && numericRate <= 40) return 'orange';
+    else if (numericRate > 40) return 'red';
+    else return '#CCCCCC';
 };
 function styleStunting(feature) {
     return { fillColor: getColorStunting(feature.properties.stunting_rate), weight: 2, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 0.7 };
@@ -377,8 +435,8 @@ function styleTkdd(feature) {
 // Fungsi onEachFeature (interaksi hover, klik)
 function onEachFeatureDefault(feature, layer) {
     let popupInstance = null;
-    let originalStyle = layer.options.style ? (typeof layer.options.style === 'function' ? layer.options.style(feature) : { ...layer.options.style }) : 
-                        (layer.options.fillColor ? { ...layer.options } : { weight: 2, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 0.7, fillColor: '#CCCCCC' });
+    let originalStyle = layer.options.style ? (typeof layer.options.style === 'function' ? layer.options.style(feature) : { ...layer.options.style }) :
+        (layer.options.fillColor ? { ...layer.options } : { weight: 2, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 0.7, fillColor: '#CCCCCC' });
 
 
     layer.on('mouseover', function (e) {
@@ -404,8 +462,8 @@ function onEachFeatureDefault(feature, layer) {
         }
     });
 
-    layer.on('click', function(e) {
-        showLayerPanel(feature.properties); 
+    layer.on('click', function (e) {
+        showLayerPanel(feature.properties);
         if (popupInstance && map.hasLayer(popupInstance)) {
             map.closePopup(popupInstance);
             popupInstance = null;
@@ -452,7 +510,7 @@ function onEachFeatureDefault(feature, layer) {
                     centerLatLng = L.latLng(pointOnFeature.geometry.coordinates[1], pointOnFeature.geometry.coordinates[0]);
                 } else {
                     if (layer && layer.getBounds && layer.getBounds().isValid()) {
-                         centerLatLng = layer.getBounds().getCenter();
+                        centerLatLng = layer.getBounds().getCenter();
                     } else { console.warn("Tidak bisa mendapatkan center untuk label:", namaWilayah); return; }
                 }
             } catch (e) {
@@ -464,7 +522,7 @@ function onEachFeatureDefault(feature, layer) {
 
         if (!centerLatLng) { return; }
         const labelIcon = L.divIcon({ className: 'region-map-label-divicon', html: `<span>${namaWilayah}</span>`, iconSize: null });
-        const markerLabel = L.marker(centerLatLng, { icon: labelIcon, interactive: false }); 
+        const markerLabel = L.marker(centerLatLng, { icon: labelIcon, interactive: false });
         (namaWilayah.toLowerCase().startsWith("kota ") || ["surabaya", "batu"].includes(namaWilayah.toLowerCase())) ? markerLabel.addTo(kotaLabelLayerGroup) : markerLabel.addTo(kabupatenLabelLayerGroup);
     }
 }
@@ -474,7 +532,7 @@ function onEachFeatureDefault(feature, layer) {
 
 function styleKomoditasDefault(feature, categoryKey) {
     let count = 0; // Mulai dengan hitungan 0
-    if (feature.properties.categories && 
+    if (feature.properties.categories &&
         Array.isArray(feature.properties.categories[categoryKey])) {
         // Hitung jumlah item dalam array komoditas
         count = feature.properties.categories[categoryKey].length;
@@ -482,11 +540,11 @@ function styleKomoditasDefault(feature, categoryKey) {
 
     return {
         // Gunakan fungsi skala warna kita untuk mengisi warna
-        fillColor: getCommodityColor(count), 
+        fillColor: getCommodityColor(count),
         weight: 1.5, // Sedikit lebih tebal agar batas terlihat jelas
-        opacity: 1, 
-        color: 'white', 
-        dashArray: '3', 
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
         fillOpacity: 0.8 // Sedikit lebih pekat
     };
 }
@@ -539,9 +597,9 @@ function showLayerPanel(properties) {
     if (!panel || !contentDiv) { console.error("Elemen panel detail tidak ditemukan."); return; }
 
     panel.style.display = 'block';
-     panel.style.width = '390px';
+    panel.style.width = '390px';
     const namaKabupaten = properties.WADMKK || 'Tidak Diketahui';
-    
+
     let panelHtml = `<div class="panel-header-info">
                         <h3>${namaKabupaten}</h3>
                         <p class="panel-subtitle">Provinsi: ${properties.WADMPR || '-'}</p>
@@ -555,29 +613,29 @@ function showLayerPanel(properties) {
     }
 
     if (stuntingLayer && map.hasLayer(stuntingLayer)) {
-    addSectionSeparator();
-    panelHtml += `<div class="panel-section stunting-section">`;
+        addSectionSeparator();
+        panelHtml += `<div class="panel-section stunting-section">`;
 
-    // Kita buat variabel untuk menampung teks yang akan ditampilkan
-    let stuntingDisplayText;
+        // Kita buat variabel untuk menampung teks yang akan ditampilkan
+        let stuntingDisplayText;
 
-    // Cek jika properti stunting ada dan bukan "no data"
-    if (typeof properties.stunting_rate !== 'undefined' && properties.stunting_rate !== null && properties.stunting_rate.toString().toLowerCase() !== 'no data') {
-        // Jika ada data angka, tampilkan dengan persen
-        stuntingDisplayText = `${properties.stunting_rate}%`;
-    } else {
-        // Jika nilainya "no data" atau tidak ada sama sekali, tampilkan strip
-        stuntingDisplayText = 'Data Tidak Tersedia';
+        // Cek jika properti stunting ada dan bukan "no data"
+        if (typeof properties.stunting_rate !== 'undefined' && properties.stunting_rate !== null && properties.stunting_rate.toString().toLowerCase() !== 'no data') {
+            // Jika ada data angka, tampilkan dengan persen
+            stuntingDisplayText = `${properties.stunting_rate}%`;
+        } else {
+            // Jika nilainya "no data" atau tidak ada sama sekali, tampilkan strip
+            stuntingDisplayText = 'Data Tidak Tersedia';
+        }
+
+        panelHtml += `<p class="panel-data-text"><strong>Tingkat Stunting:</strong> ${stuntingDisplayText}</p>`;
+
+        panelHtml += `</div>`;
+        dataDisplayedInPanel = true;
     }
 
-    panelHtml += `<p class="panel-data-text"><strong>Tingkat Stunting:</strong> ${stuntingDisplayText}</p>`;
-    
-    panelHtml += `</div>`;
-    dataDisplayedInPanel = true;
-}
-
     const categoriesToShowInPanel = {
-        'Tanaman Hias': {layer: tanamanHiasLayer, key: 'Tanaman_Hias'},
+        'Tanaman Hias': { layer: tanamanHiasLayer, key: 'Tanaman_Hias' },
         'Tanaman Pangan': { layer: tanamanPanganLayer, key: 'Tanaman_Pangan' },
         'Tanaman Sayuran': { layer: tanamanSayuranLayer, key: 'Tanaman_Sayuran' },
         'Tanaman Biofarmaka': { layer: tanamanBiofarmakaLayer, key: 'Tanaman_Biofarmaka' },
@@ -588,7 +646,7 @@ function showLayerPanel(properties) {
         'Perikanan Tangkap': { layer: perikananTangkapLayer, key: 'Perikanan_Tangkap' },
         'Perikanan Budidaya': { layer: perikananBudidayaLayer, key: 'Perikanan_Budidaya' }
     };
-const legendHtml = `<div style="font-size: 11px; font-style: italic; color: #555; margin-top: 4px; margin-bottom: 10px;line-height: 1.6;">
+    const legendHtml = `<div style="font-size: 11px; font-style: italic; color: #555; margin-top: 4px; margin-bottom: 10px;line-height: 1.6;">
                         <div><img src="image/prov.png" style="width: 21px; height: 21px; vertical-align: middle; margin-right: 4px;margin-bottom:5px;"> = Peringkat Jawa Timur</div>
                         <div><img src="image/nas.png" style="width: 21px; height: 20px; vertical-align: middle; margin-right: 4px;"> = Peringkat Nasional</div>
                     </div>`;
@@ -598,53 +656,55 @@ const legendHtml = `<div style="font-size: 11px; font-style: italic; color: #555
             addSectionSeparator();
             panelHtml += `<div class="panel-section commodity-section">
                             <h4 class="panel-section-title">Komoditas ${categoryName}:</h4>`;
-             // <<< GANTI DENGAN KODE LEGENDA BARU INI >>>
+            // <<< GANTI DENGAN KODE LEGENDA BARU INI >>>
 
-                                
+
             panelHtml += legendHtml;
             if (properties.categories && properties.categories[catInfo.key] && properties.categories[catInfo.key].length > 0) {
                 panelHtml += '<ul class="panel-data-list" style="padding-left: 20px;">';
                 // <<< GANTI DENGAN BLOK KODE BARU INI (Lakukan di dua tempat) >>>
-properties.categories[catInfo.key].forEach(item => {
-    let displayValue = item.value;
-    let peringkatLabelHtml = ''; // Variabel untuk menampung semua ikon
+                properties.categories[catInfo.key].forEach(item => {
+                    let displayValue = item.value;
+                    let peringkatLabelHtml = ''; // Variabel untuk menampung semua ikon
 
-    // Cari peringkat PROVINSI
-    // Regex ini dimodifikasi agar tidak mengambil peringkat dengan '*'
-    let matchProvinsi = item.value.match(/\(#(\d+)\)(?!\*)/); // (?!\*) adalah "negative lookahead", artinya "jangan cocok jika diikuti oleh *"
-    if (matchProvinsi) {
-        let peringkatAngka = parseInt(matchProvinsi[1]);
-        // Tambahkan ikon provinsi ke variabel HTML
-        peringkatLabelHtml += getPeringkatProvinsiLabel(peringkatAngka);
-    }
-    // Cari peringkat NASIONAL
-    let matchNasional = item.value.match(/\(#(\d+)\*\)/);
-    if (matchNasional) {
-        let peringkatAngka = parseInt(matchNasional[1]);
-        // Tambahkan ikon nasional ke variabel HTML
-        peringkatLabelHtml += getPeringkatNasionalLabel(peringkatAngka);
-    }
+                    // Cari peringkat PROVINSI
+                    // Regex ini dimodifikasi agar tidak mengambil peringkat dengan '*'
+                    let matchProvinsi = item.value.match(/\(#(\d+)\)(?!\*)/); // (?!\*) adalah "negative lookahead", artinya "jangan cocok jika diikuti oleh *"
+                    if (matchProvinsi) {
+                        let peringkatAngka = parseInt(matchProvinsi[1]);
+                        // Tambahkan ikon provinsi ke variabel HTML
+                        peringkatLabelHtml += getPeringkatProvinsiLabel(peringkatAngka);
+                    }
+                    // Cari peringkat NASIONAL
+                    let matchNasional = item.value.match(/\(#(\d+)\*\)/);
+                    if (matchNasional) {
+                        let peringkatAngka = parseInt(matchNasional[1]);
+                        // Tambahkan ikon nasional ke variabel HTML
+                        peringkatLabelHtml += getPeringkatNasionalLabel(peringkatAngka);
+                    }
 
-    
-    
-    // Membersihkan SEMUA pola peringkat dari teks
-    displayValue = item.value.replace(/\s*\(\#\d+\*?\)/g, '').trim();
 
-    // Kode ini tidak perlu diubah (pastikan variabelnya benar, panelHtml atau content)
-    // Untuk showLayerPanel:
-    panelHtml += `<li class="panel-data-item" style="margin-bottom: 7px;"><strong>${item.name}</strong>: ${displayValue}${peringkatLabelHtml}</li>`;
-    // Untuk createPopupContent:
-    // content += `<li>${item.name}: ${displayValue}${peringkatLabelHtml}</li>`;
-});
+
+                    // Membersihkan SEMUA pola peringkat dari teks
+                    displayValue = item.value.replace(/\s*\(\#\d+\*?\)/g, '').trim();
+
+                    // Kode ini tidak perlu diubah (pastikan variabelnya benar, panelHtml atau content)
+                    // Untuk showLayerPanel:
+                    panelHtml += `<li class="panel-data-item" style="margin-bottom: 7px;"><strong>${item.name}</strong>: ${displayValue}${peringkatLabelHtml}</li>`;
+                    // Untuk createPopupContent:
+                    // content += `<li>${item.name}: ${displayValue}${peringkatLabelHtml}</li>`;
+                });
                 panelHtml += '</ul>';
             } else {
                 panelHtml += `<p class="panel-no-data"><em>Tidak ada data</em></p>`;
             }
+            panelHtml += `<p style="font-size: 14px; font-style: italic; color: #555; margin-top: 25px; padding-left: 5px;">Sumber: Badan Pusat Statistik, 2025</p>`;
+
             panelHtml += '</div>';
             dataDisplayedInPanel = true;
         }
     }
-    
+
     const tkddLabels = {
         'dbh': 'Dana Bagi Hasil (DBH)', 'dau': 'Dana Alokasi Umum (DAU)', 'dak_fisik': 'DAK Fisik',
         'dak_non_fisik': 'DAK Non-Fisik', 'hibah_ke_daerah': 'Hibah ke Daerah', 'dana_desa': 'Dana Desa',
@@ -653,34 +713,37 @@ properties.categories[catInfo.key].forEach(item => {
 
     if (tkddLayer && map.hasLayer(tkddLayer)) {
         addSectionSeparator();
-        panelHtml += `<div class="panel-section tkdd-section"><h4 class="panel-section-title">Data Keuangan TKDD:</h4>`;
+        panelHtml += `<div class="panel-section tkdd-section"><h4 class="panel-section-title">Data Transfer ke Daerah dan Dana Desa (TKDD)</h4>`;
         let tkddHtmlList = '';
         let hasValidTkddItemPanel = false;
         if (properties.Keuangan && Array.isArray(properties.Keuangan.tkdd) && properties.Keuangan.tkdd.length > 0) {
-    
-    // (Opsional tapi direkomendasikan) Mengurutkan data agar rapi
-    const sortedTkdd = [...properties.Keuangan.tkdd].sort((a, b) => {
-        if (a.name === 'rasio_fisikal') return -1;
-        if (b.name === 'rasio_fisikal') return 1;
-        if (a.name === 'jumlah_tkdd') return 1;
-        if (b.name === 'jumlah_tkdd') return -1;
-        return 0;
-    });
 
-    sortedTkdd.forEach(item => {
-        const label = tkddLabels[item.name] || item.name;
-        if (item.value && item.value.trim() !== '-') {
-            // INI PERBAIKANNYA: Kirim 'item.name' sebagai parameter kedua
-            const formattedValue = formatRupiah(item.value, item.name);
-            
-            // Tambahkan <strong> agar nilainya tebal dan rapi
-            tkddHtmlList += `<li class="panel-data-item" style="margin-bottom: 7px;">${label}: <strong>${formattedValue}</strong></li>`;
-            hasValidTkddItemPanel = true;
+            // (Opsional tapi direkomendasikan) Mengurutkan data agar rapi
+            const sortedTkdd = [...properties.Keuangan.tkdd].sort((a, b) => {
+                if (a.name === 'rasio_fisikal') return -1;
+                if (b.name === 'rasio_fisikal') return 1;
+                if (a.name === 'jumlah_tkdd') return 1;
+                if (b.name === 'jumlah_tkdd') return -1;
+                return 0;
+            });
+
+            sortedTkdd.forEach(item => {
+                const label = tkddLabels[item.name] || item.name;
+                if (item.value && item.value.trim() !== '-') {
+                    // INI PERBAIKANNYA: Kirim 'item.name' sebagai parameter kedua
+                    const formattedValue = formatRupiah(item.value, item.name);
+
+                    // Tambahkan <strong> agar nilainya tebal dan rapi
+                    tkddHtmlList += `<li class="panel-data-item" style="margin-bottom: 7px;">${label}: <strong>${formattedValue}</strong></li>`;
+                    hasValidTkddItemPanel = true;
+                }
+            });
         }
-    });
-}
         if (hasValidTkddItemPanel) {
             panelHtml += `<ul class="panel-data-list" style="padding-left: 20px;">${tkddHtmlList}</ul>`;
+            // <<< TAMBAHKAN BARIS DI BAWAH INI >>>
+            panelHtml += `<p style="font-size: 14px; font-style: italic; color: #555; margin-top: 25px; padding-left: 5px;">(Dalam Ribuan Rupiah)</p>`;
+            panelHtml += `<p style="font-size: 14px; font-style: italic; color: #555; margin-top: 10px; padding-left: 5px;">Sumber: Direktorat Jenderal Perimbangan Keuangan, Kementerian Keuangan, 2025</p>`;
         } else {
             panelHtml += `<p class="panel-no-data" style="padding-left: 20px;"><em>Tidak ada data TKDD signifikan untuk wilayah ini.</em></p>`;
         }
@@ -689,7 +752,7 @@ properties.categories[catInfo.key].forEach(item => {
     }
 
     if (!dataDisplayedInPanel) {
-         panelHtml += `<p class="panel-message"><em>Pilih layer data pada "Daftar Layer" untuk menampilkan informasi.</em></p>`;
+        panelHtml += `<p class="panel-message"><em>Pilih layer data pada "Daftar Layer" untuk menampilkan informasi.</em></p>`;
     }
     contentDiv.innerHTML = panelHtml;
 
@@ -703,21 +766,21 @@ properties.categories[catInfo.key].forEach(item => {
     let chartContainer = panel.querySelector('#chartContainer');
     if (stuntingLayer && map.hasLayer(stuntingLayer)) {
         // ===== KODE BARU (DENGAN TAMBAHAN SUMBER) =====
-if (!chartContainer) {
-    chartContainer = document.createElement('div');
-    chartContainer.id = 'chartContainer';
-    chartContainer.className = 'panel-section chart-section';
-    if (dataDisplayedInPanel && !isFirstSection) chartContainer.innerHTML = `<hr class="panel-section-separator">`;
-    
-    // Modifikasi ada di sini
-    chartContainer.innerHTML += `
+        if (!chartContainer) {
+            chartContainer = document.createElement('div');
+            chartContainer.id = 'chartContainer';
+            chartContainer.className = 'panel-section chart-section';
+            if (dataDisplayedInPanel && !isFirstSection) chartContainer.innerHTML = `<hr class="panel-section-separator">`;
+
+            // Modifikasi ada di sini
+            chartContainer.innerHTML += `
         <h4 class="panel-section-title" ">Grafik Stunting</h4>
         <div class="chart-canvas-wrapper"><canvas id="stuntingChart"></canvas></div>
         <p class="chart-source" style="font-size:15px;font-family:italic;">Sumber Data: SSGI 2024</p> 
     `; // <-- TAMBAHKAN BARIS INI
-    
-    contentDiv.appendChild(chartContainer);
-}
+
+            contentDiv.appendChild(chartContainer);
+        }
         chartContainer.style.display = 'block';
         const stuntingRateForChart = parseFloat(properties.stunting_rate);
         if (properties.stunting_rate !== undefined && !isNaN(stuntingRateForChart)) {
@@ -793,14 +856,14 @@ function initializeApplication() {
     };
     for (const key in legends) {
         if (!legends[key] && key !== 'tkdd' && !['dbh', 'dau', 'dakFisik', 'dakNonFisik', 'hibahDaerah', 'danaDesa', 'insentifFiskal', 'jumlahTkdd'].includes(key)) {
-             console.warn(`Elemen legenda untuk '${key}' tidak ditemukan.`);
+            console.warn(`Elemen legenda untuk '${key}' tidak ditemukan.`);
         } else if (key === 'tkdd' && !legends[key]) {
             console.info("Info: Master legenda 'legendaGroupTkdd' tidak ditemukan, ini opsional jika Anda menggunakan legenda komponen individual.");
         }
     }
 
     const layerMapping = {
-        'stunting': stuntingLayer,'stunting': stuntingLayer, 'tkdd': tkddLayer,
+        'stunting': stuntingLayer, 'stunting': stuntingLayer, 'tkdd': tkddLayer,
         'tanamanHias': tanamanHiasLayer, 'tanamanPangan': tanamanPanganLayer,
         'tanamanSayuran': tanamanSayuranLayer, 'tanamanBiofarmaka': tanamanBiofarmakaLayer,
         'buah': buahLayer, 'perkebunan': perkebunanLayer,
@@ -830,16 +893,16 @@ function initializeApplication() {
             }
             if (!layerName || !layerMapping[layerName]) return;
             const layer = layerMapping[layerName];
-            
+
             if (cb.checked) {
                 if (layer && !map.hasLayer(layer)) map.addLayer(layer);
             } else {
                 if (layer && map.hasLayer(layer)) map.removeLayer(layer);
             }
         });
-        
-        updateVisibleLegends(); 
-        syncAllMasterCheckboxesStates(); 
+
+        updateVisibleLegends();
+        syncAllMasterCheckboxesStates();
         masterActionInProgress = false;
     }
 
@@ -861,11 +924,11 @@ function initializeApplication() {
             }
         }
     }
-    
+
     // Event listener untuk checkbox "Stunting" (sekarang bisa berdampingan dengan komoditas)
     // Listener untuk Stunting
     if (stuntingCheckbox) {
-        stuntingCheckbox.addEventListener('change', function() {
+        stuntingCheckbox.addEventListener('change', function () {
             if (this.checked) {
                 // Matikan yang lain
                 komoditasMasterCheckbox.checked = false;
@@ -875,10 +938,10 @@ function initializeApplication() {
             updateMapLayersAndLegends();
         });
     }
-    
+
     // Listener untuk TKDD
     if (dataKeuanganTkddMasterCheckbox) {
-        dataKeuanganTkddMasterCheckbox.addEventListener('change', function() {
+        dataKeuanganTkddMasterCheckbox.addEventListener('change', function () {
             if (this.checked) {
                 // Matikan yang lain
                 stuntingCheckbox.checked = false;
@@ -891,7 +954,7 @@ function initializeApplication() {
 
     // Listener untuk Master Komoditas
     if (komoditasMasterCheckbox) {
-        komoditasMasterCheckbox.addEventListener('change', function() {
+        komoditasMasterCheckbox.addEventListener('change', function () {
             if (this.checked) {
                 // Matikan yang lain
                 stuntingCheckbox.checked = false;
@@ -905,7 +968,7 @@ function initializeApplication() {
 
     // Listener untuk setiap anak komoditas
     komoditasChildCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
+        checkbox.addEventListener('change', function () {
             if (this.checked) {
                 // Jika salah satu anak dicentang, matikan kategori utama lainnya
                 stuntingCheckbox.checked = false;
@@ -914,27 +977,27 @@ function initializeApplication() {
             updateMapLayersAndLegends();
         });
     });
-    
+
     // Event listener untuk checkbox "TKDD" (sekarang bisa berdampingan dengan komoditas)
     if (dataKeuanganTkddMasterCheckbox) {
-        dataKeuanganTkddMasterCheckbox.addEventListener('change', function() {
+        dataKeuanganTkddMasterCheckbox.addEventListener('change', function () {
             // Logika untuk mematikan layer lain sudah dihapus
             updateMapLayersAndLegends();
         });
     }
-    
+
     // Inisialisasi status awal (misalnya Stunting aktif, yang lain tidak)
-    masterActionInProgress = true; 
-    if (stuntingCheckbox) stuntingCheckbox.checked = true; 
+    masterActionInProgress = true;
+    if (stuntingCheckbox) stuntingCheckbox.checked = true;
     if (komoditasMasterCheckbox) komoditasMasterCheckbox.checked = false;
     komoditasChildCheckboxes.forEach(cb => cb.checked = false);
-    if (dataKeuanganTkddMasterCheckbox) dataKeuanganTkddMasterCheckbox.checked = false; 
+    if (dataKeuanganTkddMasterCheckbox) dataKeuanganTkddMasterCheckbox.checked = false;
     masterActionInProgress = false;
     updateMapLayersAndLegends();
     const toggleKabLabelsCheckbox = document.getElementById('toggleKabupatenLabelsCheckbox');
     const toggleKotaLabelsCheckbox = document.getElementById('toggleKotaLabelsCheckbox');
     if (toggleKabLabelsCheckbox) {
-        toggleKabLabelsCheckbox.addEventListener('change', function() {
+        toggleKabLabelsCheckbox.addEventListener('change', function () {
             if (this.checked) {
                 if (kabupatenLabelLayerGroup && !map.hasLayer(kabupatenLabelLayerGroup)) kabupatenLabelLayerGroup.addTo(map);
             } else {
@@ -947,7 +1010,7 @@ function initializeApplication() {
     }
 
     if (toggleKotaLabelsCheckbox) {
-        toggleKotaLabelsCheckbox.addEventListener('change', function() {
+        toggleKotaLabelsCheckbox.addEventListener('change', function () {
             if (this.checked) {
                 if (kotaLabelLayerGroup && !map.hasLayer(kotaLabelLayerGroup)) kotaLabelLayerGroup.addTo(map);
             } else {
@@ -962,12 +1025,12 @@ function initializeApplication() {
     const customLayerControlPanel = document.getElementById('customLayerControl');
     const toggleLayerControlButton = document.getElementById('toggleLayerControlButton');
     const closeCustomLayerControlButton = document.getElementById('closeCustomLayerControl');
-     if (closeCustomLayerControlButton && customLayerControlPanel) {
+    if (closeCustomLayerControlButton && customLayerControlPanel) {
         closeCustomLayerControlButton.addEventListener('click', () => customLayerControlPanel.style.display = 'none');
     }
     if (toggleLayerControlButton && customLayerControlPanel) {
-        const basemapGalleryPanel = document.getElementById('basemapGalleryPanel'); 
-        const wilayahLabelControlPanel = document.getElementById('wilayahLabelControlPanel'); 
+        const basemapGalleryPanel = document.getElementById('basemapGalleryPanel');
+        const wilayahLabelControlPanel = document.getElementById('wilayahLabelControlPanel');
         toggleLayerControlButton.addEventListener('click', () => {
             const isHidden = customLayerControlPanel.style.display === 'none' || customLayerControlPanel.style.display === '';
             customLayerControlPanel.style.display = isHidden ? 'block' : 'none';
@@ -998,7 +1061,7 @@ function initializeApplication() {
         const checkbox = item.querySelector('input[type="checkbox"]');
 
         if (!toggleBtn || !checkbox || !legendContentPanel) {
-            if(toggleBtn) toggleBtn.style.display = 'none'; return;
+            if (toggleBtn) toggleBtn.style.display = 'none'; return;
         }
 
         toggleBtn.style.visibility = 'hidden';
@@ -1006,9 +1069,9 @@ function initializeApplication() {
         const legendGroupId = checkbox.dataset.legendGroupId;
 
         if (legendGroupId) {
-            const sourceLegendGroup = document.getElementById(legendGroupId); 
+            const sourceLegendGroup = document.getElementById(legendGroupId);
             if (sourceLegendGroup) {
-                legendContentPanel.innerHTML = sourceLegendGroup.innerHTML; 
+                legendContentPanel.innerHTML = sourceLegendGroup.innerHTML;
                 toggleBtn.style.visibility = 'visible';
                 updateArrowIcon(toggleBtn, legendContentPanel);
 
@@ -1045,11 +1108,11 @@ function initializeApplication() {
                 groupHeader.addEventListener('click', (event) => {
                     const masterLabel = groupHeader.querySelector('.group-master-label');
                     const masterCheckbox = masterLabel ? masterLabel.querySelector('input[type="checkbox"]') : null;
-                    
+
                     if (event.target === masterCheckbox || (masterLabel && masterLabel.contains(event.target) && event.target.nodeName !== 'SPAN')) {
                         return;
                     }
-                     if (event.target === button || button.contains(event.target) || (masterLabel && masterLabel.contains(event.target) && event.target.nodeName === 'SPAN')) {
+                    if (event.target === button || button.contains(event.target) || (masterLabel && masterLabel.contains(event.target) && event.target.nodeName === 'SPAN')) {
                         const isExpanded = groupContentPanel.style.display === 'block';
                         groupContentPanel.style.display = isExpanded ? 'none' : 'block';
                         button.setAttribute('aria-expanded', String(!isExpanded));
@@ -1083,7 +1146,7 @@ function initializeApplication() {
     const basemapGalleryPanel = document.getElementById('basemapGalleryPanel');
     const toggleBasemapGalleryButton = document.getElementById('toggleBasemapGalleryButton');
     const closeBasemapGalleryButton = document.getElementById('closeBasemapGalleryButton');
-     if (toggleBasemapGalleryButton && basemapGalleryPanel && closeBasemapGalleryButton) {
+    if (toggleBasemapGalleryButton && basemapGalleryPanel && closeBasemapGalleryButton) {
         toggleBasemapGalleryButton.addEventListener('click', () => {
             const isPanelHidden = basemapGalleryPanel.style.display === 'none' || basemapGalleryPanel.style.display === '';
             basemapGalleryPanel.style.display = isPanelHidden ? 'block' : 'none';
@@ -1094,9 +1157,9 @@ function initializeApplication() {
             if (customLayerControlPanel && isPanelHidden && customLayerControlPanel.style.display !== 'none') customLayerControlPanel.style.display = 'none';
             if (wilayahLabelControlPanel && isPanelHidden && wilayahLabelControlPanel.style.display !== 'none') wilayahLabelControlPanel.style.display = 'none';
         });
-        closeBasemapGalleryButton.addEventListener('click', () => {  basemapGalleryPanel.style.display = 'none' });
+        closeBasemapGalleryButton.addEventListener('click', () => { basemapGalleryPanel.style.display = 'none' });
         document.querySelectorAll('#basemapGalleryPanel .basemap-item').forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function () {
                 const selectedBasemapType = this.dataset.basemapType;
                 if (selectedBasemapType) setBasemap(selectedBasemapType);
             });
@@ -1135,10 +1198,10 @@ Promise.all([
     })
 ]).then(([geojson, trendData]) => {
     console.log("GeoJSON dan Data Tren berhasil dimuat.");
-    
+
     // 1. (TETAP) Proses data kemiskinan untuk layer spesifik
     const processedKemiskinanData = processTrendData(trendData);
-    
+
     // 2. (TETAP) Proses SEMUA data indikator untuk tahun 2024
     const allIndicators2024 = processAllIndicatorsForYear(trendData, 2024);
 
@@ -1190,12 +1253,12 @@ Promise.all([
     telurUnggasLayer = L.geoJson(geojsonData, { style: styleTelurUnggas, onEachFeature: onEachFeatureDefault });
     perikananTangkapLayer = L.geoJson(geojsonData, { style: stylePerikananTangkap, onEachFeature: onEachFeatureDefault });
     perikananBudidayaLayer = L.geoJson(geojsonData, { style: stylePerikananBudidaya, onEachFeature: onEachFeatureDefault });
-    
-    initializeApplication(); 
+
+    initializeApplication();
 })
-.catch(error => {
-    console.error('GAGAL MEMUAT DATA:', error);
-});
+    .catch(error => {
+        console.error('GAGAL MEMUAT DATA:', error);
+    });
 
 // Fungsi pencarian (search)
 const searchContainer = document.createElement('div');
@@ -1225,8 +1288,8 @@ searchInput.addEventListener('input', function () {
             filteredKab.forEach(kab => {
                 const li = document.createElement('li'); li.textContent = kab.name;
                 li.style = 'padding: 10px; cursor: pointer; border-bottom: 1px solid #eee;';
-                li.onmouseover = function() { this.style.backgroundColor = '#f0f0f0'; };
-                li.onmouseout = function() { this.style.backgroundColor = 'white'; };
+                li.onmouseover = function () { this.style.backgroundColor = '#f0f0f0'; };
+                li.onmouseout = function () { this.style.backgroundColor = 'white'; };
                 li.addEventListener('click', () => {
                     if (!kab.coords) { console.error("Koordinat tidak valid:", kab.name); return; }
                     map.setView(kab.coords, 10);
@@ -1251,13 +1314,13 @@ clearButton.addEventListener('click', function () {
     searchInput.value = ''; resultContainer.innerHTML = '';
     resultContainer.style.display = 'none'; clearButton.style.display = 'none'; searchInput.focus();
 });
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     if (searchContainer && !searchContainer.contains(event.target) && resultContainer) {
         resultContainer.style.display = 'none';
     }
 });
-searchInput.addEventListener('focus', function() {
+searchInput.addEventListener('focus', function () {
     if (this.value && resultContainer && resultContainer.childNodes.length > 0) {
         resultContainer.style.display = 'block';
-   }
+    }
 });

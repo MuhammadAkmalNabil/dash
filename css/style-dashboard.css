@@ -457,7 +457,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
   top: -300px;
   font-family: sans-serif;
   position: relative;
-  right: 500px;
+  right: 470px;
   opacity: 0;
   transform: translateX(-100px);
   transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -469,14 +469,15 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
   transform: translateX(0);
 }
 
+
 .deskripsi-video p {
-  font-family: sans-serif;
+  /* font-family: sans-serif;
   position: relative;
-  left: 510px;
+  left: 600px;
   top: -10px;
   font-size: 15px;
-  text-align: justify;
-  padding: 15px;
+  text-align: justify; */
+  padding: 10px;
 }
 /* CSS untuk #hero-video (iframe) tetap sama seperti sebelumnya */
 #hero-video {
@@ -624,7 +625,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
 
 .card-title-d {
   position: relative;
-  top: 1px;
+  top: 5px;
   right: -2px;
   font-size: 200rem;
   margin: 0;
@@ -632,7 +633,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
 
 .card-title-p {
   position: relative;
-  top: 10px;
+  top: 1px;
   right: -2px;
   font-size: 200rem;
   margin: 0;
@@ -640,7 +641,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
 
 .card-title-w {
   position: relative;
-  top: 3px;
+  top: 5px;
   right: -2px;
   font-size: 200rem;
   margin: 0;

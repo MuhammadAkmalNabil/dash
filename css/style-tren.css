@@ -124,7 +124,7 @@
   }
   
   .sidebar {
-    width: 290px;
+    width: 300px;
     flex-shrink: 0; /* prevent shrinking or stretching */
     height: calc(100vh - 120px);
     overflow-y: auto;
@@ -222,6 +222,7 @@
 }
 
 #location-selector-wrapper { 
+  color: #1a5a9c;
   margin-top: 10px;
   margin-bottom: 2px; 
 }
