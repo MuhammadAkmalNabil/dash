@@ -339,32 +339,31 @@ const WARNA_TKDD_TIDAK_ADA = '#E0E0E0'; // Abu-abu muda
 function styleTkdd(feature) {
     let rasioValue = null;
 
-    // 1. Logika diubah untuk mencari 'rasio_fisikal'
+    // Bagian ini tidak berubah, tetap mencari nilai 'rasio_fisikal'
     if (feature.properties.Keuangan && Array.isArray(feature.properties.Keuangan.tkdd)) {
         const rasioItem = feature.properties.Keuangan.tkdd.find(item => item.name === 'rasio_fisikal');
         if (rasioItem && rasioItem.value && rasioItem.value !== '-') {
-            // Mengubah string "1.031" menjadi angka 1.031
             rasioValue = parseNumericString(rasioItem.value);
         }
     }
 
-    // 2. Rentang nilai dan warna disesuaikan dengan legenda RKFD
-     let fillColor;
+    // MODIFIKASI: Menerapkan rentang dari tabel dengan warna yang sudah ada
+    let fillColor;
     if (rasioValue === null) {
-        fillColor = '#E0E0E0'; // Tidak Ada Data (sesuai legenda)
-    } else if (rasioValue < 0.905) {
-        fillColor = '#fce893';       // Sangat Rendah
-    } else if (rasioValue < 1.141) {
-        fillColor = '#d1c452';       
-    } else if (rasioValue < 1.378) {
-        fillColor = '#cebb10';       // Sedang
-    } else if (rasioValue < 1.615) {
-        fillColor = '#a1920c';       // Tinggi
-    } else { // >= 1.615
-        fillColor = '#6d6607';       // Sangat Tinggi
+        fillColor = '#E0E0E0';       // Tidak Ada Data
+    } else if (rasioValue < 1.119) {
+        fillColor = '#fce893';       // Kategori: sangat rendah
+    } else if (rasioValue < 1.656) {
+        fillColor = '#d1c452';       // Kategori: rendah
+    } else if (rasioValue < 2.193) {
+        fillColor = '#cebb10';       // Kategori: sedang
+    } else if (rasioValue < 2.730) {
+        fillColor = '#a1920c';       // Kategori: tinggi
+    } else { // >= 2.730
+        fillColor = '#6d6607';       // Kategori: sangat tinggi
     }
 
-    // 3. Objek style yang dikembalikan tetap sama
+    // Bagian ini tidak berubah, mengembalikan objek style
     return {
         fillColor: fillColor,
         weight: 1.5,
@@ -556,18 +555,26 @@ function showLayerPanel(properties) {
     }
 
     if (stuntingLayer && map.hasLayer(stuntingLayer)) {
-        addSectionSeparator();
-        panelHtml += `<div class="panel-section stunting-section">`;
-        if (typeof properties.stunting_rate !== 'undefined') {
-            panelHtml += `<p class="panel-data-text"><strong>Tingkat Stunting:</strong> ${properties.stunting_rate}%</p>`;
-            panelHtml += `<p class="panel-data-text"><strong>Komoditas Utama Umum:</strong> ${properties.main_commodity || '-'}</p>`;
-        } else {
-            panelHtml += `<p class="panel-data-text"><strong>Tingkat Stunting:</strong> <em class="panel-no-data-inline">Data tidak tersedia</em></p>`;
-            panelHtml += `<p class="panel-data-text"><strong>Komoditas Utama Umum:</strong> ${properties.main_commodity || '-'}</p>`;
-        }
-        panelHtml += `</div>`;
-        dataDisplayedInPanel = true;
+    addSectionSeparator();
+    panelHtml += `<div class="panel-section stunting-section">`;
+
+    // Kita buat variabel untuk menampung teks yang akan ditampilkan
+    let stuntingDisplayText;
+
+    // Cek jika properti stunting ada dan bukan "no data"
+    if (typeof properties.stunting_rate !== 'undefined' && properties.stunting_rate !== null && properties.stunting_rate.toString().toLowerCase() !== 'no data') {
+        // Jika ada data angka, tampilkan dengan persen
+        stuntingDisplayText = `${properties.stunting_rate}%`;
+    } else {
+        // Jika nilainya "no data" atau tidak ada sama sekali, tampilkan strip
+        stuntingDisplayText = 'Data Tidak Tersedia';
     }
+
+    panelHtml += `<p class="panel-data-text"><strong>Tingkat Stunting:</strong> ${stuntingDisplayText}</p>`;
+    
+    panelHtml += `</div>`;
+    dataDisplayedInPanel = true;
+}
 
     const categoriesToShowInPanel = {
         'Tanaman Hias': {layer: tanamanHiasLayer, key: 'Tanaman_Hias'},
