@@ -242,7 +242,7 @@ function createPopupContent(properties) {
 
     let dataAdded = false;
     if (properties.sektor && properties.sektor.basis && Array.isArray(properties.sektor.basis) && properties.sektor.basis.length > 0) {
-        content += `<hr style="margin: 8px 0;">
+        content += `<hr style="margin: 8px 10;">
                 <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 0;font-size:11px;">`;
 
         // Langkah 1: Ekstrak data Luas Wilayah terlebih dahulu
@@ -281,14 +281,14 @@ function createPopupContent(properties) {
         });
 
         // Langkah 3: Gabungkan dan tampilkan data Luas Wilayah jika ada
-        if (luasWilayahValue && luasPersenValue) {
-            content += `<li style="list-style-type: none; margin-left: -20px;"><strong>Luas Wilayah:</strong> ${luasWilayahValue} (${luasPersenValue} %)</li>`;
-        }
-
+        // Langkah 3: Gabungkan dan tampilkan data Luas Wilayah jika ada
+if (luasWilayahValue && luasPersenValue) {
+    // TAMBAHKAN STYLE border-top, margin-top, dan padding-top DI SINI
+    content += `<li style="list-style-type: none; margin-left: -20px; border-top: 1px solid #aaa; margin-top: 8px; padding-top: 8px;"><strong>Luas Wilayah:</strong> ${luasWilayahValue} (${luasPersenValue} %)</li>`;
+}
         content += `</ul>`;
         dataAdded = true;
     }
-
     // BAGIAN 1: DATA TREN (SELALU TAMPIL)
     if (properties.trendIndicators2024 && Object.keys(properties.trendIndicators2024).length > 0) {
         content += `<hr style="margin: 8px 0;"><strong>Indikator Utama (2024):</strong>

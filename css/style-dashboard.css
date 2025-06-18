@@ -119,7 +119,7 @@ header.scrolled .logo{
 }
 header.scrolled {
     position: fixed; /* Ubah ke fixed agar tetap di atas saat scroll */
-    background-color: #457c43; /* Warna latar belakang solid saat di-scroll */
+    background: linear-gradient(to right, #009900 0%, #003300 100%);
     color: #ffffff; /* Warna teks default menjadi gelap */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Tambahkan shadow */
     padding: 1px;
@@ -224,34 +224,45 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
 }
 
 .hero-text {
-    font-family: sans-serif;
-    flex: 1;
-    position: relative;
-    top: -55px;
-    left: 100px;
-    max-width: 900px;
+    text-align: center; /* Memusatkan semua teks di dalamnya */
+    color: #ffffff; /* Warna teks putih */
+    /* Hapus positioning aneh dari p dan h1 sebelumnya, biarkan default */
 }
 
-.hero-text h1 {
-    font-size: 4.1rem;
-    margin-bottom: 0rem;
-    margin-left: 7.2rem;
-    color: #ffffff;
-    font-weight: bold;
+/* Gaya untuk Sub-Judul (seperti "MENUJU VISI INDONESIA 2045") */
+.sub-headline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300; /* Font tipis (Light) */
+    font-size: 1.2rem; /* Ukuran font lebih kecil */
+    text-transform: uppercase; /* Semua huruf kapital */
+    letter-spacing: 10px; /* KUNCI: Jarak antar huruf yang lebar */
+    margin-bottom: 1rem; /* Jarak ke judul utama */
+    opacity: 0.9;
 }
 
-.hero-text p {
-    font-size: 1.2rem;
-    
-    color: #ffffff;
-    margin-left: 2rem;
-    text-align: center;
+/* Gaya untuk Judul Utama (seperti "KOTA DUNIA UNTUK SEMUA") */
+.main-headline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600; /* KUNCI: Font sangat tebal (ExtraBold) */
+    font-size: 4.5rem; /* Ukuran font besar dan dominan */
+    text-transform: uppercase; /* Semua huruf kapital */
+    letter-spacing: 2px; /* Sedikit jarak agar tidak terlalu rapat */
+    line-height: 1.1;
+    margin: 0;
+    /* Tambahan: bayangan agar teks lebih terbaca di atas gambar ramai */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-.hero-text p:first-of-type {
-    margin-top: -5px;
+/* Gaya untuk deskripsi */
+.hero-description {
+    font-family: 'Montserrat', sans-serif; /* <-- Font Montserrat sudah ditambahkan */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    font-weight: 400;
+    max-width: 750px;
+    margin: 1.5rem auto 0;
+    opacity: 0.95;
 }
-
  /* Responsivitas */
  @media screen and (max-width: 768px) {
 	.menu {
@@ -329,7 +340,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
   /* Bagian atas .card1 akan berada 100px dari atas kontainernya SETELAH animasi. */
   top: 620px;
   /* << GANTI NILAI INI untuk posisi akhir yang Anda inginkan */
-  right: 530px;
+  right: 520px;
   /* Posisi horizontal akhir Anda */
 
   /* 2. Atur Offset AWAL agar "Mengintip" */
@@ -363,7 +374,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
 
   top: 300px;
   /* Posisi akhir */
-  right: 184px;
+  right: 178px;
 
   opacity: 1;
   /* Terlihat */
@@ -454,7 +465,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
 
 /* Pastikan CSS untuk deskripsi-video tidak berubah */
 .deskripsi-video {
-  top: -300px;
+  top: -250px;
   font-family: sans-serif;
   position: relative;
   right: 470px;
@@ -531,7 +542,7 @@ header.scrolled .tombol { /* Jika tombol hamburger digunakan */
   gap: 20px;
   /* Jarak antar kartu */
   position: relative;
-  right: 270px;
+  right: 320px;
   margin: 20px;
 }
 

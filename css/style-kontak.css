@@ -132,6 +132,7 @@ footer {
 .logo-footer img {
     /* width: 40px; */
     margin-right: 10px;
+
     vertical-align: middle;
 }
 
@@ -149,8 +150,7 @@ footer {
 
 .footer-bottom {
     text-align: center;
-    margin-top: 20px;
-    padding-top: 10px;
+    margin-bottom: 50px;
     border-top: 1px solid #ccc;
 }
 
